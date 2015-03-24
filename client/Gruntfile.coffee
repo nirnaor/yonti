@@ -1,5 +1,5 @@
 module.exports = (grunt)->
-  for task in [ 'grunt-contrib-coffee' ] 
+  for task in [ 'grunt-contrib-coffee' , 'grunt-browserify' ] 
     grunt.loadNpmTasks task
 
 
@@ -14,6 +14,13 @@ module.exports = (grunt)->
       src: ['**/*.coffee' ],
       dest: coffee_output
       ext: '.js'
+
+  config.browserify =
+    main:
+      src: "#{coffee_output}/index.js"
+      dest: "#{coffee_output}/browserified.js"
+
+
 
 
 
