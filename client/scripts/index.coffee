@@ -1,6 +1,9 @@
 _ = require "underscore"
+
 $ = require "jquery"
 Backbone = require "backbone"
+Backbone.$ = $
+Marionette = require "backbone.marionette"
 
 Phrase = require "./models/phrase"
 PhrasesViews = require "./views/phrases"
@@ -8,16 +11,23 @@ PhrasesViews = require "./views/phrases"
 DummyData = require "./dummy_data"
 
 
-phrases = new Backbone.Collection()
-_(DummyData.data).forEach (el)->
-  phrases.add(new Phrase(el))
 
-$ ->
+
+app = new Marionette.Application()
+
+app.on("before:start", (options)->
+  @phrases = new Backbone.Collection()
+  _(DummyData.data).forEach (el)=>
+    @phrases.add(new Phrase(el))
+)
+
+app.on("start", (options)->
   phrases_view = new PhrasesViews.PhrasesViews(
     el: $("div.main")
-    collection: phrases
+    collection: app.phrases
   )
   phrases_view.render()
-phrase = new Phrase()
-phrase.set("first", "gil")
-console.log phrase.get "first"
+)
+
+$ ->
+  app.start()
