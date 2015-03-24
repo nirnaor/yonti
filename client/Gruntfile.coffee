@@ -25,7 +25,7 @@ module.exports = (grunt)->
 
   config.browserify =
     main:
-      src: "#{coffee_output}/index.js"
+      src: "#{coffee_output}/app.js"
       dest: "#{coffee_output}/browserified.js"
 
 
