@@ -23,7 +23,7 @@ app.on("before:start", (options)->
 
 app.on("start", (options)->
   phrases_view = new PhrasesViews.PhrasesViews(
-    el: $("div.main")
+    el: $("div.content")
     collection: app.phrases
   )
   phrases_view.render()
