@@ -1,9 +1,17 @@
 module.exports = (grunt)->
-  for task in [ 'grunt-contrib-coffee' , 'grunt-browserify' ] 
+  for task in [ 'grunt-contrib-coffee' , 'grunt-browserify',
+  'grunt-contrib-watch' ]
     grunt.loadNpmTasks task
 
 
   config = {}
+
+  config.watch =
+    code:
+      files: "scripts/**/*.coffee"
+      tasks: [ "code" ]
+      options: livereload: 35729
+  
 
   coffee_output = "build"
   config.coffee =
