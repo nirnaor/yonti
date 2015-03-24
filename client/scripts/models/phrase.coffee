@@ -1,1 +1,3 @@
-alert("this is the model speaking")
+Backbone = require "backbone"
+Phrase = Backbone.Model.extend({})
+module.exports = Phrase

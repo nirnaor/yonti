@@ -24,6 +24,8 @@ module.exports = (grunt)->
 
 
 
+
   grunt.initConfig config
+  grunt.registerTask("code", [ "coffee", "browserify" ])
 
 
