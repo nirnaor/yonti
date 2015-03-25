@@ -1,10 +1,13 @@
 Marionette = require "backbone.marionette"
-
-
 Phrase = require "..//models/phrase"
 
-PhrasesView = Marionette.ItemView.extend
+PhraseView = Marionette.ItemView.extend
+  template: "phrase"
+  
+PhraseCollectionView = Marionette.CollectionView.extend
+  childView: PhraseView
   template: "phrases"
 
 module.exports =
-  PhrasesViews: PhrasesView
+  PhraseView: PhraseView
+  PhrasesCollectionView: PhraseCollectionView

@@ -24,10 +24,9 @@ app.on("before:start", (options)->
 )
 
 app.on("start", (options)->
-  phrase = new Phrase(phrase: "nir")
-  phrases_view = new PhrasesViews.PhrasesViews(
+  phrases_view = new PhrasesViews.PhrasesCollectionView(
+    collection: @phrases
     el: $("div.content")
-    model: phrase
   )
   phrases_view.render()
 )
