@@ -1,6 +1,6 @@
 module.exports = (grunt)->
   for task in [ 'grunt-contrib-coffee' , 'grunt-browserify',
-  'grunt-contrib-watch' ]
+  'grunt-contrib-watch', 'grunt-jade-plugin' ]
     grunt.loadNpmTasks task
 
 
@@ -29,11 +29,23 @@ module.exports = (grunt)->
       dest: "#{coffee_output}/browserified.js"
 
 
+  # Templates
+  jade_files= {}
+  jade_output  = "build/templates.js"
+  jade_files[ jade_output ] =["templates/*.jade"]
+  config.jade2js =
+    compile:
+      options:
+        namespace: "JST"
+      files: jade_files
+
+
 
 
 
 
   grunt.initConfig config
   grunt.registerTask("code", [ "coffee", "browserify" ])
+  grunt.registerTask("templates", [ "jade2js" ])
 
 
