@@ -25,9 +25,8 @@ app.on("before:start", (options)->
 app.on("start", (options)->
   phrases_view = new Phrase.Views.Collection(
     collection: @phrases
-    el: $("div.content")
-  )
-  phrases_view.render()
+  ).render()
+  $("div.content").append(phrases_view.el)
 )
 
 $ ->
