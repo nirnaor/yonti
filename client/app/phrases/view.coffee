@@ -2,12 +2,6 @@ $ = require "jquery"
 Marionette = require "backbone.marionette"
 Phrase = require "./model"
 
-PhraseView = Marionette.ItemView.extend
-  template: "phrase"
-  className: "table-view-cell"
-  onRender:->
-    @$el.click => @trigger "click"
-
 MeaningView = Marionette.ItemView.extend
   template: "meaning"
   className: "table-view-cell"
@@ -25,6 +19,12 @@ MeaningsCollectionView = Marionette.CollectionView.extend
       phrase.set("answer", ev.model)
       @trigger "meaning_picked"
 
+
+PhraseView = Marionette.ItemView.extend
+  template: "phrase"
+  className: "table-view-cell"
+  onRender:->
+    @$el.click => @trigger "click"
 
   
 PhrasesCollectionView = Marionette.CollectionView.extend
