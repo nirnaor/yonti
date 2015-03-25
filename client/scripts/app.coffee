@@ -11,6 +11,8 @@ PhrasesViews = require "./views/phrases"
 DummyData = require "./dummy_data"
 
 
+Backbone.Marionette.Renderer.render = (template, data)->
+  JST[template](data)
 
 
 app = new Marionette.Application()
@@ -22,9 +24,10 @@ app.on("before:start", (options)->
 )
 
 app.on("start", (options)->
+  phrase = new Phrase(phrase: "nir")
   phrases_view = new PhrasesViews.PhrasesViews(
     el: $("div.content")
-    collection: app.phrases
+    model: phrase
   )
   phrases_view.render()
 )
