@@ -6,7 +6,7 @@ module.exports = (grunt)->
 
   config = {}
 
-  app_folder = "scripts"
+  app_folder = "app"
   config.watch =
     code:
       files: "#{app_folder}/**/*.coffee"
