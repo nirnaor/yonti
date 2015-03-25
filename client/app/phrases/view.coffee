@@ -45,14 +45,14 @@ QuizView = Marionette.ItemView.extend
       console.log "quiz noticed phrase was clicked"
       console.log ev
       @meanings_view.phrase = ev.phrase
-      $("div.content").html(@meanings_view.render().el)
+      @$el.html(@meanings_view.render().el)
 
     @meanings_view = new MeaningsCollectionView(
       collection: @options.collection
     )
     @meanings_view.on "meaning_picked", (ev)=>
       console.log "noticed that meaning picked"
-      $("div.content").html(@phrases_view.render().el)
+      @$el.html(@phrases_view.render().el)
 
   onRender: ->
     @$el.html(@phrases_view.render().el)
