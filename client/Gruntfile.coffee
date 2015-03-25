@@ -6,13 +6,14 @@ module.exports = (grunt)->
 
   config = {}
 
+  app_folder = "scripts"
   config.watch =
     code:
-      files: "scripts/**/*.coffee"
+      files: "#{app_folder}/**/*.coffee"
       tasks: [ "code" ]
       options: livereload: 35729
     templates:
-      files: "scripts/**/*.jade"
+      files: "#{app_folder}/**/*.jade"
       tasks: [ "templates" ]
       options: livereload: 35729
 
@@ -23,7 +24,7 @@ module.exports = (grunt)->
     glob_to_multiple:
       expand: true,
       flatten: false, #keep folder structure when compiling
-      cwd: 'scripts',
+      cwd: app_folder,
       src: ['**/*.coffee' ],
       dest: coffee_output
       ext: '.js'
@@ -37,7 +38,7 @@ module.exports = (grunt)->
   # Templates
   jade_files= {}
   jade_output  = "build/templates.js"
-  jade_files[ jade_output ] =["scripts/**/*.jade"]
+  jade_files[ jade_output ] =["#{app_folder}/**/*.jade"]
   config.jade2js =
     compile:
       options:
