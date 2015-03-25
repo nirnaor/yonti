@@ -21,7 +21,7 @@ MeaningsCollectionView = Marionette.CollectionView.extend
   childEvents:
     click: (ev)->
       meaning = ev.model
-      phrase = @options.phrase
+      phrase = @phrase
       phrase.set("answer", ev.model)
       @trigger "meaning_picked"
 
@@ -33,21 +33,39 @@ PhrasesCollectionView = Marionette.CollectionView.extend
   className: "table-view"
   tagName: "ul"
   childEvents:
-    meaning_picked: (ev)->
-      console.log "nir"
     click: (ev)->
-      console.log ev
-      meanings_view = new MeaningsCollectionView
-        collection: @collection
-        phrase: ev.model
-      meanings_view.on "meaning_picked", (ev)=>
-        console.log "noticed that meaning picked"
-        $("div.content").html(@render().el)
+      @trigger "phrase_clicked", phrase:ev.model
 
-      $("div.content").html(meanings_view.render().el)
+QuizView = Marionette.ItemView.extend
+  template: false
+  initialize: (options)->
+
+    @phrases_view = new PhrasesCollectionView(collection: @options.collection)
+    @phrases_view.on "phrase_clicked", (ev)=>
+      console.log "quiz noticed phrase was clicked"
+      console.log ev
+      @meanings_view.phrase = ev.phrase
+      $("div.content").html(@meanings_view.render().el)
+
+    @meanings_view = new MeaningsCollectionView(
+      collection: @options.collection
+    )
+    @meanings_view.on "meaning_picked", (ev)=>
+      console.log "noticed that meaning picked"
+      $("div.content").html(@phrases_view.render().el)
+
+  onRender: ->
+    @$el.html(@phrases_view.render().el)
+
+
+
+
+
+
     
 
 
 module.exports =
   PhraseView: PhraseView
   PhrasesView: PhrasesCollectionView
+  QuizView: QuizView

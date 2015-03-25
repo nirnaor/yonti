@@ -3,5 +3,5 @@ PhraseViews=  require "./view"
 module.exports =
   Model: Phrase
   Views:
-    Collection: PhraseViews.PhrasesView
+    Quiz: PhraseViews.QuizView
   
