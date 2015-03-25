@@ -5,14 +5,13 @@ Backbone = require "backbone"
 Backbone.$ = $
 Marionette = require "backbone.marionette"
 
-Phrase = require "./models/phrase"
-PhrasesViews = require "./views/phrases"
+Backbone.Marionette.Renderer.render = (template, data)->
+  JST[template](data)
 
+Phrase = require "./phrases/module"
 DummyData = require "./dummy_data"
 
 
-Backbone.Marionette.Renderer.render = (template, data)->
-  JST[template](data)
 
 
 app = new Marionette.Application()
@@ -20,11 +19,11 @@ app = new Marionette.Application()
 app.on("before:start", (options)->
   @phrases = new Backbone.Collection()
   _(DummyData.data).forEach (el)=>
-    @phrases.add(new Phrase(el))
+    @phrases.add(new Phrase.Model(el))
 )
 
 app.on("start", (options)->
-  phrases_view = new PhrasesViews.PhrasesCollectionView(
+  phrases_view = new Phrase.Views.Collection(
     collection: @phrases
     el: $("div.content")
   )

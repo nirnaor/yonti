@@ -12,7 +12,7 @@ module.exports = (grunt)->
       tasks: [ "code" ]
       options: livereload: 35729
     templates:
-      files: "templates/**/*.jade"
+      files: "scripts/**/*.jade"
       tasks: [ "templates" ]
       options: livereload: 35729
 
@@ -37,7 +37,7 @@ module.exports = (grunt)->
   # Templates
   jade_files= {}
   jade_output  = "build/templates.js"
-  jade_files[ jade_output ] =["templates/*.jade"]
+  jade_files[ jade_output ] =["scripts/**/*.jade"]
   config.jade2js =
     compile:
       options:
@@ -52,5 +52,6 @@ module.exports = (grunt)->
   grunt.initConfig config
   grunt.registerTask("code", [ "coffee", "browserify" ])
   grunt.registerTask("templates", [ "jade2js" ])
+  grunt.registerTask("default", ["code", "templates"])
 
 
