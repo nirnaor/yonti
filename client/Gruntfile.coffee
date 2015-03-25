@@ -11,6 +11,11 @@ module.exports = (grunt)->
       files: "scripts/**/*.coffee"
       tasks: [ "code" ]
       options: livereload: 35729
+    templates:
+      files: "templates/**/*.jade"
+      tasks: [ "templates" ]
+      options: livereload: 35729
+
   
 
   coffee_output = "build"
