@@ -42,8 +42,6 @@ QuizView = Marionette.ItemView.extend
 
     @phrases_view = new PhrasesCollectionView(collection: @options.collection)
     @phrases_view.on "phrase_clicked", (ev)=>
-      console.log "quiz noticed phrase was clicked"
-      console.log ev
       @meanings_view.phrase = ev.phrase
       @$el.html(@meanings_view.render().el)
 
@@ -51,7 +49,6 @@ QuizView = Marionette.ItemView.extend
       collection: @options.collection
     )
     @meanings_view.on "meaning_picked", (ev)=>
-      console.log "noticed that meaning picked"
       @$el.html(@phrases_view.render().el)
 
   onRender: ->
