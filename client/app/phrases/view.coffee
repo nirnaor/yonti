@@ -16,10 +16,9 @@ MeaningView = Marionette.ItemView.extend
 MeaningsCollectionView = Marionette.CollectionView.extend
   className: "table-view"
   childView: MeaningView
-  template: "meanings"
 
   
-PhrasesView = Marionette.CollectionView.extend
+PhrasesCollectionView = Marionette.CollectionView.extend
   childView: PhraseView
   template: "phrases"
   className: "table-view"
@@ -34,4 +33,4 @@ PhrasesView = Marionette.CollectionView.extend
 
 module.exports =
   PhraseView: PhraseView
-  PhrasesView: PhrasesView
+  PhrasesView: PhrasesCollectionView
