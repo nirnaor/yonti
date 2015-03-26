@@ -1,77 +1,100 @@
 $ = require "jquery"
+Backbone = require "backbone"
 Marionette = require "backbone.marionette"
 Phrase = require "./model"
 
-MeaningView = Marionette.ItemView.extend
+
+Question = Backbone.Model.extend({})
+Answer = Backbone.Model.extend({})
+
+AnswerView = Marionette.ItemView.extend
   template: "meaning"
   className: "table-view-cell"
   ui:
-    "meaning": ".meaning"
+    "answer": ".answer"
   events:
-    "click @ui.meaning": "on_meaning_clicked"
-  on_meaning_clicked:->
-    console.log "MeaningView: meaning clicked on meaning view"
-    @triggerMethod "on_meaning_clicked"
+    "click @ui.answer": "on_answer_clicked"
+  on_answer_clicked:->
+    console.log "AnswerView: answer clicked"
+    @triggerMethod "on_answer_clicked"
   onRender: ->
-    answer = @model.get "answer"
-    if(typeof(answer) isnt "undefined")
-      phrase_name = answer.get('phrase')
-      @$el.append("----#{phrase_name}")
+    guess = @model.get "guess"
+    if(typeof(guess) isnt "undefined")
+      bla = guess.get "question"
+      @$el.append("----#{bla}")
 
       
-MeaningsCollectionView = Marionette.CollectionView.extend
+AnswersCollectionView = Marionette.CollectionView.extend
   className: "table-view"
-  childView: MeaningView
+  childView: AnswerView
   childEvents:
-    "on_meaning_clicked": (ev)->
-      console.log "MeaningsCollectionView:meaning clicked" 
+    "on_answer_clicked": (ev)->
+      console.log "AnswersCollectionView:answer clicked" 
       @triggerMethod "meaning_picked", meaning: ev.model
 
 
-PhraseView = Marionette.ItemView.extend
+QuestionView = Marionette.ItemView.extend
   template: "phrase"
   className: "table-view-cell"
   ui:
     "phrase": ".phrase"
   events:
-    "click @ui.phrase": "on_phrase_clicked"
-  on_phrase_clicked: ->
-    console.log "PhraseView: phrase clicked"
-    @triggerMethod "phrase_clicked"
+    "click @ui.phrase": "on_question_clicked"
+  on_question_clicked: ->
+    console.log "QuestionView: phrase clicked"
+    @triggerMethod "question_clicked"
 
   
-PhrasesCollectionView = Marionette.CollectionView.extend
-  childView: PhraseView
+QuestionsCollectionView = Marionette.CollectionView.extend
+  childView: QuestionView
   template: "phrases"
   className: "table-view"
   tagName: "ul"
   childEvents:
-    "phrase_clicked": (ev)->
+    "question_clicked": (ev)->
       console.log "PhrasesCollectionView: phrase clicked"
-      @triggerMethod "phrase_clicked", phrase: ev.model
+      @triggerMethod "question_clicked", question: ev.model
 
 QuizView = Marionette.ItemView.extend
   template: false
   initialize: (options)->
 
-    @phrases_view = new PhrasesCollectionView(collection: @options.collection)
-    @phrases_view.on "phrase_clicked", (ev)=>
-      console.log "QuizView: phrase #{ev.phrase.get('phrase')} clicked"
-      @selected_phrase = ev.phrase
-      @$el.html(@meanings_view.render().el)
+    # Questions realted boilerplate
+    @questions = new Backbone.Collection()
+    @options.collection.forEach (phrase)=>
+      question = new Question({question: phrase.get("phrase")})
+      @questions.add question
 
-    @meanings_view = new MeaningsCollectionView(
-      collection: @options.collection
+    @questions_view =  new QuestionsCollectionView(collection: @questions)
+
+    # Answers realted boilerplate
+    @answers = new Backbone.Collection()
+    @options.collection.forEach (phrase)=>
+      answer = new Answer({answer: phrase.get("meaning")})
+      @answers.add answer
+
+    @answers_view = new AnswersCollectionView(
+      collection: @answers
     )
-    @meanings_view.on "meaning_picked", (ev)=>
+
+
+
+    # View events
+    @questions_view.on "question_clicked", (ev)=>
+      console.log "QuizView: question #{ev.question.get('question')} clicked"
+      @selected_phrase = ev.question
+      @$el.html(@answers_view.render().el)
+
+    @answers_view.on "meaning_picked", (ev)=>
       meaning = ev.meaning
       console.log "QuizView: Meaning #{meaning.get('meaning')} picked
       for #{@selected_phrase.get('phrase')}"
-      @selected_phrase.set("answer", meaning)
-      @$el.html(@phrases_view.render().el)
+      @selected_phrase.set("guess", meaning)
+      meaning.set("guess", @selected_phrase)
+      @$el.html(@questions_view.render().el)
 
   onRender: ->
-    @$el.html(@phrases_view.render().el)
+    @$el.html(@questions_view.render().el)
 
 
 
@@ -82,6 +105,6 @@ QuizView = Marionette.ItemView.extend
 
 
 module.exports =
-  PhraseView: PhraseView
-  PhrasesView: PhrasesCollectionView
+  QuestionView: QuestionView
+  PhrasesView: QuestionsCollectionView
   QuizView: QuizView
