@@ -8,7 +8,7 @@ Question = Backbone.Model.extend({})
 Answer = Backbone.Model.extend({})
 
 AnswerView = Marionette.ItemView.extend
-  template: "meaning"
+  template: "answer"
   className: "table-view-cell"
   ui:
     "answer": ".answer"
@@ -29,12 +29,12 @@ AnswersCollectionView = Marionette.CollectionView.extend
 
 
 QuestionView = Marionette.ItemView.extend
-  template: "phrase"
+  template: "question"
   className: "table-view-cell"
   ui:
-    "phrase": ".phrase"
+    "question": ".question"
   events:
-    "click @ui.phrase": "on_question_clicked"
+    "click @ui.question": "on_question_clicked"
   on_question_clicked: ->
     console.log "QuestionView: phrase clicked"
     @triggerMethod "question_clicked"
