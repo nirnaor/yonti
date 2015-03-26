@@ -67,7 +67,7 @@ QuizView = Marionette.ItemView.extend
       meaning = ev.meaning
       console.log "QuizView: Meaning #{meaning.get('meaning')} picked
       for #{@selected_phrase.get('phrase')}"
-      meaning.set("answer", @selected_phrase)
+      @selected_phrase.set("answer", meaning)
       @$el.html(@phrases_view.render().el)
 
   onRender: ->
