@@ -6,6 +6,14 @@ Phrase = require "./model"
 
 HeaderView = Marionette.ItemView.extend
   template: "header"
+  ui:
+    "title": ".title"
+  onRender: ->
+    header = {
+      questions: "Pick a phrase"
+      answers: "Pick matching definition"
+    }[@options.mode]
+    @ui.title.html(header)
 
 
 
@@ -98,7 +106,7 @@ QuizView = Marionette.LayoutView.extend
 
   initialize: (options)->
 
-    @header_view = new HeaderView()
+    @header_view = new HeaderView(mode: "answers")
 
     # Questions realted boilerplate
     @questions = new QuestionCollection()
