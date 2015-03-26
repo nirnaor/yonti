@@ -77,6 +77,19 @@ QuizView = Marionette.ItemView.extend
       collection: @answers
     )
 
+    @questions.on("change:guess", (changed_question)=>
+      console.log "Picked answer for #{changed_question.get('question')}"
+
+      @questions.forEach (question) ->
+        if question.cid != changed_question.cid
+          guess = question.get("guess")
+          if(typeof(guess) != "undefined")
+            if guess.get("answer") == changed_question.get("guess").get("answer")
+              question.unset("guess", silent: true)
+              console.log "Reset duplicate answer"
+      @$el.html(@questions_view.render().el)
+    )
+
 
 
     # View events
@@ -90,7 +103,6 @@ QuizView = Marionette.ItemView.extend
       console.log "QuizView: Meaning #{meaning.get('meaning')} picked
       for #{@selected_question.get('phrase')}"
       @selected_question.set("guess", meaning)
-      @$el.html(@questions_view.render().el)
 
   onRender: ->
     @$el.html(@questions_view.render().el)
