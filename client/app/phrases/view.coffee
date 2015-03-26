@@ -75,7 +75,6 @@ QuestionView = Marionette.ItemView.extend
   
 QuestionsCollectionView = Marionette.CollectionView.extend
   childView: QuestionView
-  template: "phrases"
   className: "table-view"
   tagName: "ul"
   childEvents:
