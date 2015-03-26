@@ -10,8 +10,13 @@ MeaningView = Marionette.ItemView.extend
   events:
     "click @ui.meaning": "on_meaning_clicked"
   on_meaning_clicked:->
-    console.log "meaning clicked on meaning view"
+    console.log "MeaningView: meaning clicked on meaning view"
     @triggerMethod "on_meaning_clicked"
+  onRender: ->
+    answer = @model.get "answer"
+    if(typeof(answer) isnt "undefined")
+      phrase_name = answer.get('phrase')
+      @$el.append("----#{phrase_name}")
 
       
 MeaningsCollectionView = Marionette.CollectionView.extend
@@ -19,8 +24,8 @@ MeaningsCollectionView = Marionette.CollectionView.extend
   childView: MeaningView
   childEvents:
     "on_meaning_clicked": (ev)->
-      console.log "meaning clicked on meanings collection view"
-      @triggerMethod "meaning_picked"
+      console.log "MeaningsCollectionView:meaning clicked" 
+      @triggerMethod "meaning_picked", meaning: ev.model
 
 
 PhraseView = Marionette.ItemView.extend
@@ -31,7 +36,7 @@ PhraseView = Marionette.ItemView.extend
   events:
     "click @ui.phrase": "on_phrase_clicked"
   on_phrase_clicked: ->
-    console.log "PhraseView phrase clicked"
+    console.log "PhraseView: phrase clicked"
     @triggerMethod "phrase_clicked"
 
   
@@ -42,8 +47,8 @@ PhrasesCollectionView = Marionette.CollectionView.extend
   tagName: "ul"
   childEvents:
     "phrase_clicked": (ev)->
-      console.log "phrase collection view phrase clicked"
-      @triggerMethod "phrase_clicked", phrase:ev.model
+      console.log "PhrasesCollectionView: phrase clicked"
+      @triggerMethod "phrase_clicked", phrase: ev.model
 
 QuizView = Marionette.ItemView.extend
   template: false
@@ -51,13 +56,18 @@ QuizView = Marionette.ItemView.extend
 
     @phrases_view = new PhrasesCollectionView(collection: @options.collection)
     @phrases_view.on "phrase_clicked", (ev)=>
-      @meanings_view.phrase = ev.phrase
+      console.log "QuizView: phrase #{ev.phrase.get('phrase')} clicked"
+      @selected_phrase = ev.phrase
       @$el.html(@meanings_view.render().el)
 
     @meanings_view = new MeaningsCollectionView(
       collection: @options.collection
     )
     @meanings_view.on "meaning_picked", (ev)=>
+      meaning = ev.meaning
+      console.log "QuizView: Meaning #{meaning.get('meaning')} picked
+      for #{@selected_phrase.get('phrase')}"
+      meaning.set("answer", @selected_phrase)
       @$el.html(@phrases_view.render().el)
 
   onRender: ->
