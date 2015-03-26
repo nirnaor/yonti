@@ -11,7 +11,7 @@ HeaderView = Marionette.ItemView.extend
   onRender: ->
     header = {
       questions: "Pick a phrase"
-      answers: "Pick matching definition"
+      answers: "Find the match"
     }[@options.mode]
     @ui.title.html(header)
 
@@ -95,9 +95,11 @@ QuizView = Marionette.LayoutView.extend
       @selected_question = msg.question
       @showChildView("content",
         new AnswersCollectionView(collection: @answers))
+      @showChildView("header", new HeaderView(mode: "answers"))
     "meaning_picked": (childView, msg)->
       console.log "SHIT"
       meaning = msg.meaning
+      @showChildView("header", new HeaderView(mode: "questions"))
       console.log "QuizView: Meaning #{meaning.get('meaning')} picked
       for #{@selected_question.get('phrase')}"
       @selected_question.set("guess", meaning)
@@ -106,7 +108,7 @@ QuizView = Marionette.LayoutView.extend
 
   initialize: (options)->
 
-    @header_view = new HeaderView(mode: "answers")
+    @header_view = new HeaderView(mode: "questions")
 
     # Questions realted boilerplate
     @questions = new QuestionCollection()
