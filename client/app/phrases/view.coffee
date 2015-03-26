@@ -5,26 +5,34 @@ Phrase = require "./model"
 MeaningView = Marionette.ItemView.extend
   template: "meaning"
   className: "table-view-cell"
-  onRender:->
-    @$el.click => @trigger "click"
+  ui:
+    "meaning": ".meaning"
+  events:
+    "click @ui.meaning": "on_meaning_clicked"
+  on_meaning_clicked:->
+    console.log "meaning clicked on meaning view"
+    @triggerMethod "on_meaning_clicked"
 
       
 MeaningsCollectionView = Marionette.CollectionView.extend
   className: "table-view"
   childView: MeaningView
   childEvents:
-    click: (ev)->
-      meaning = ev.model
-      phrase = @phrase
-      phrase.set("answer", ev.model)
-      @trigger "meaning_picked"
+    "on_meaning_clicked": (ev)->
+      console.log "meaning clicked on meanings collection view"
+      @triggerMethod "meaning_picked"
 
 
 PhraseView = Marionette.ItemView.extend
   template: "phrase"
   className: "table-view-cell"
-  onRender:->
-    @$el.click => @trigger "click"
+  ui:
+    "phrase": ".phrase"
+  events:
+    "click @ui.phrase": "on_phrase_clicked"
+  on_phrase_clicked: ->
+    console.log "PhraseView phrase clicked"
+    @triggerMethod "phrase_clicked"
 
   
 PhrasesCollectionView = Marionette.CollectionView.extend
@@ -33,8 +41,9 @@ PhrasesCollectionView = Marionette.CollectionView.extend
   className: "table-view"
   tagName: "ul"
   childEvents:
-    click: (ev)->
-      @trigger "phrase_clicked", phrase:ev.model
+    "phrase_clicked": (ev)->
+      console.log "phrase collection view phrase clicked"
+      @triggerMethod "phrase_clicked", phrase:ev.model
 
 QuizView = Marionette.ItemView.extend
   template: false
