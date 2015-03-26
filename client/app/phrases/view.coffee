@@ -5,6 +5,10 @@ Phrase = require "./model"
 
 
 Question = Backbone.Model.extend({})
+QuestionCollection = Backbone.Collection.extend
+  initialize: (modles, options)->
+    console.log "QuestionCollection initialize"
+
 Answer = Backbone.Model.extend({})
 
 AnswerView = Marionette.ItemView.extend
@@ -60,7 +64,7 @@ QuizView = Marionette.ItemView.extend
   initialize: (options)->
 
     # Questions realted boilerplate
-    @questions = new Backbone.Collection()
+    @questions = new QuestionCollection()
     @options.collection.forEach (phrase)=>
       question = new Question({question: phrase.get("phrase")})
       @questions.add question
