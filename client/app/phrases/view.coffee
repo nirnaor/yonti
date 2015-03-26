@@ -17,11 +17,6 @@ AnswerView = Marionette.ItemView.extend
   on_answer_clicked:->
     console.log "AnswerView: answer clicked"
     @triggerMethod "on_answer_clicked"
-  onRender: ->
-    guess = @model.get "guess"
-    if(typeof(guess) isnt "undefined")
-      bla = guess.get "question"
-      @$el.append("----#{bla}")
 
       
 AnswersCollectionView = Marionette.CollectionView.extend
@@ -43,6 +38,11 @@ QuestionView = Marionette.ItemView.extend
   on_question_clicked: ->
     console.log "QuestionView: phrase clicked"
     @triggerMethod "question_clicked"
+  onRender: ->
+    guess = @model.get("guess")
+    if (typeof(guess) isnt "undefined")
+      bla = guess.get("answer")
+      @$el.append("____#{bla}")
 
   
 QuestionsCollectionView = Marionette.CollectionView.extend
@@ -82,15 +82,14 @@ QuizView = Marionette.ItemView.extend
     # View events
     @questions_view.on "question_clicked", (ev)=>
       console.log "QuizView: question #{ev.question.get('question')} clicked"
-      @selected_phrase = ev.question
+      @selected_question = ev.question
       @$el.html(@answers_view.render().el)
 
     @answers_view.on "meaning_picked", (ev)=>
       meaning = ev.meaning
       console.log "QuizView: Meaning #{meaning.get('meaning')} picked
-      for #{@selected_phrase.get('phrase')}"
-      @selected_phrase.set("guess", meaning)
-      meaning.set("guess", @selected_phrase)
+      for #{@selected_question.get('phrase')}"
+      @selected_question.set("guess", meaning)
       @$el.html(@questions_view.render().el)
 
   onRender: ->
