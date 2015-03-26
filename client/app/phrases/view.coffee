@@ -4,6 +4,11 @@ Marionette = require "backbone.marionette"
 Phrase = require "./model"
 
 
+HeaderView = Marionette.ItemView.extend
+  template: "header"
+
+
+
 Question = Backbone.Model.extend({})
 QuestionCollection = Backbone.Collection.extend
   initialize: (modles, options)->
@@ -70,9 +75,30 @@ QuestionsCollectionView = Marionette.CollectionView.extend
       console.log "PhrasesCollectionView: phrase clicked"
       @triggerMethod "question_clicked", question: ev.model
 
-QuizView = Marionette.ItemView.extend
-  template: false
+QuizView = Marionette.LayoutView.extend
+  template: "layout"
+  regions:
+    header: ".bar.bar-nav"
+    content: "div.content"
+  childEvents:
+    "question_clicked": (childView, msg)->
+      console.log "crap"
+      console.log "QuizView: question #{msg.question.get('question')} clicked"
+      @selected_question = msg.question
+      @showChildView("content",
+        new AnswersCollectionView(collection: @answers))
+    "meaning_picked": (childView, msg)->
+      console.log "SHIT"
+      meaning = msg.meaning
+      console.log "QuizView: Meaning #{meaning.get('meaning')} picked
+      for #{@selected_question.get('phrase')}"
+      @selected_question.set("guess", meaning)
+
+
+
   initialize: (options)->
+
+    @header_view = new HeaderView()
 
     # Questions realted boilerplate
     @questions = new QuestionCollection()
@@ -93,25 +119,21 @@ QuizView = Marionette.ItemView.extend
     )
 
     @questions.on("change:guess", (changed_question)=>
-      @$el.html(@questions_view.render().el)
+      console.log "WILL NOW SHOW THE QUESTIONS VIEW AGAIN"
+      @showChildView("content", new QuestionsCollectionView(
+        collection: @questions))
     )
+       
 
 
 
     # View events
     @questions_view.on "question_clicked", (ev)=>
-      console.log "QuizView: question #{ev.question.get('question')} clicked"
-      @selected_question = ev.question
-      @$el.html(@answers_view.render().el)
 
-    @answers_view.on "meaning_picked", (ev)=>
-      meaning = ev.meaning
-      console.log "QuizView: Meaning #{meaning.get('meaning')} picked
-      for #{@selected_question.get('phrase')}"
-      @selected_question.set("guess", meaning)
 
   onRender: ->
-    @$el.html(@questions_view.render().el)
+    @showChildView("header", @header_view)
+    @showChildView("content", @questions_view)
 
 
 

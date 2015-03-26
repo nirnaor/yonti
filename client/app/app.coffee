@@ -25,7 +25,7 @@ app.on("before:start", (options)->
 app.on("start", (options)->
   phrases_view = new Phrase.Views.Quiz(
     collection: @phrases
-    el: $("div.content")
+    el: $("body")
   ).render()
 )
 
