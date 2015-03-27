@@ -110,8 +110,15 @@ QuestionsCollectionView = Marionette.CollectionView.extend
       @triggerMethod "question_clicked", question: ev.model
 
 
+TestResultView = QuestionsCollectionView.extend
+  onRender: -> @$el.css("background", "yellow")
+
 TabsView = Marionette.ItemView.extend
   template: "tabs"
+  events:
+    "click a.finish":  "on_finish_clicked"
+  on_finish_clicked: ->
+    @triggerMethod "finish_clicked"
 
 QuizView = Marionette.LayoutView.extend
   template: "layout"
@@ -119,8 +126,12 @@ QuizView = Marionette.LayoutView.extend
     header: ".bar.bar-nav"
     questions: "div.questions"
     answers: "div.answers"
+    results: "div.results"
     tabs: "nav.bar.bar-tab"
   childEvents:
+    "finish_clicked": (childView, msg)->
+      console.log "finish clicked"
+      @show_results()
     "question_clicked": (childView, msg)->
       console.log "crap"
       console.log "QuizView: question #{msg.question.get('question')} clicked"
@@ -174,11 +185,17 @@ QuizView = Marionette.LayoutView.extend
     @showChildView("header", new HeaderView(mode: "answers"))
     @showChildView("answers", new AnswersCollectionView(collection:
       @answers))
+  show_results: ->
+    result_view = new TestResultView(collection: @questions)
+    @showChildView("results", result_view)
+    index = result_view.$el.data("slide-index")
+    @swiper.slideTo(index)
 
 
   onRender: ->
     @show_answers()
     @show_questions()
+    @showChildView("results", new TestResultView(collection: @questions))
     @swiper = new Swiper(".content", {
       direction: 'horizontal'
       loop: true
