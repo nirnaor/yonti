@@ -109,12 +109,17 @@ QuestionsCollectionView = Marionette.CollectionView.extend
       console.log "PhrasesCollectionView: phrase clicked"
       @triggerMethod "question_clicked", question: ev.model
 
+
+TabsView = Marionette.ItemView.extend
+  template: "tabs"
+
 QuizView = Marionette.LayoutView.extend
   template: "layout"
   regions:
     header: ".bar.bar-nav"
     questions: "div.questions"
     answers: "div.answers"
+    tabs: "nav.bar.bar-tab"
   childEvents:
     "question_clicked": (childView, msg)->
       console.log "crap"
@@ -178,6 +183,8 @@ QuizView = Marionette.LayoutView.extend
       direction: 'horizontal'
       loop: true
     })
+
+    @showChildView("tabs", new TabsView())
 
 
 
