@@ -110,8 +110,17 @@ QuestionsCollectionView = Marionette.CollectionView.extend
       @triggerMethod "question_clicked", question: ev.model
 
 
+AnswerResultView = QuestionView.extend
+  onRender: ->
+    answer = @model.get "guess"
+    if(typeof(answer) is "undefined")
+      console.log "no answer"
+      @$el.css("background", "red")
+    else
+      @$el.css("background", "yellow")
+   
 TestResultView = QuestionsCollectionView.extend
-  onRender: -> @$el.css("background", "yellow")
+  childView: AnswerResultView
 
 TabsView = Marionette.ItemView.extend
   template: "tabs"
@@ -195,7 +204,6 @@ QuizView = Marionette.LayoutView.extend
   onRender: ->
     @show_answers()
     @show_questions()
-    @showChildView("results", new TestResultView(collection: @questions))
     @swiper = new Swiper(".content", {
       direction: 'horizontal'
       loop: true
