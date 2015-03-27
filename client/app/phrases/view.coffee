@@ -99,8 +99,12 @@ QuizView = Marionette.LayoutView.extend
     "meaning_picked": (childView, msg)->
       console.log "SHIT"
       meaning = msg.meaning
-      console.log "QuizView: Meaning #{meaning.get('meaning')} picked
-      for #{@selected_question.get('phrase')}"
+      console.log "QuizView: Meaning #{meaning.get('answer')} picked
+      for #{@selected_question.get('question')}"
+
+      # Unseting first because I wanna make sure that chnage is triggered
+      # even if the same answer was picked for the same question
+      @selected_question.unset("guess", silent: true)
       @selected_question.set("guess", meaning)
 
 
