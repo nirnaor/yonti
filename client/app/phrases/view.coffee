@@ -94,14 +94,11 @@ QuizView = Marionette.LayoutView.extend
       console.log "crap"
       console.log "QuizView: question #{msg.question.get('question')} clicked"
       @selected_question = msg.question
-      # @showChildView("answers",
-      #   new AnswersCollectionView(collection: @answers))
-      @showChildView("header", new HeaderView(mode: "answers"))
       @swiper.slideNext()
+      @show_answers()
     "meaning_picked": (childView, msg)->
       console.log "SHIT"
       meaning = msg.meaning
-      @showChildView("header", new HeaderView(mode: "questions"))
       console.log "QuizView: Meaning #{meaning.get('meaning')} picked
       for #{@selected_question.get('phrase')}"
       @selected_question.set("guess", meaning)
@@ -126,25 +123,29 @@ QuizView = Marionette.LayoutView.extend
     @questions.on("change:guess", (changed_question)=>
       console.log "WILL NOW SHOW THE QUESTIONS VIEW AGAIN"
       @swiper.slidePrev()
-      @showChildView("questions", new QuestionsCollectionView(
-        collection: @questions))
+      @show_questions()
     )
        
 
 
-
-
-  onRender: ->
+  show_questions: ->
     @showChildView("header", new HeaderView(mode: "questions"))
     @showChildView("questions", new QuestionsCollectionView(collection:
       @questions))
+  show_answers: ->
+    @showChildView("header", new HeaderView(mode: "answers"))
     @showChildView("answers", new AnswersCollectionView(collection:
       @answers))
 
+
+  onRender: ->
+    @show_answers()
+    @show_questions()
     @swiper = new Swiper(".content", {
       direction: 'horizontal'
       loop: true
     })
+
 
 
 
