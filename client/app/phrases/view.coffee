@@ -107,25 +107,18 @@ QuizView = Marionette.LayoutView.extend
 
   initialize: (options)->
 
-    @header_view = new HeaderView(mode: "questions")
-
     # Questions realted boilerplate
     @questions = new QuestionCollection()
     @options.collection.forEach (phrase)=>
       question = new Question({question: phrase.get("phrase")})
       @questions.add question
 
-    @questions_view =  new QuestionsCollectionView(collection: @questions)
 
     # Answers realted boilerplate
     @answers = new Backbone.Collection()
     @options.collection.forEach (phrase)=>
       answer = new Answer({answer: phrase.get("meaning")})
       @answers.add answer
-
-    @answers_view = new AnswersCollectionView(
-      collection: @answers
-    )
 
     @questions.on("change:guess", (changed_question)=>
       console.log "WILL NOW SHOW THE QUESTIONS VIEW AGAIN"
@@ -136,13 +129,11 @@ QuizView = Marionette.LayoutView.extend
 
 
 
-    # View events
-    @questions_view.on "question_clicked", (ev)=>
-
 
   onRender: ->
-    @showChildView("header", @header_view)
-    @showChildView("content", @questions_view)
+    @showChildView("header", new HeaderView(mode: "questions"))
+    @showChildView("content", new QuestionsCollectionView(collection:
+      @questions))
 
 
 
