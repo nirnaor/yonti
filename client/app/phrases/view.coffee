@@ -60,8 +60,10 @@ AnswersCollectionView = Marionette.CollectionView.extend
 QuestionView = Marionette.ItemView.extend
   template: "question"
   className: "table-view-cell"
+  tagName: "li"
   ui:
     "question": ".question"
+    "guess": ".guess"
   events:
     "click @ui.question": "on_question_clicked"
   on_question_clicked: ->
@@ -70,8 +72,10 @@ QuestionView = Marionette.ItemView.extend
   onRender: ->
     guess = @model.get("guess")
     if (typeof(guess) isnt "undefined")
-      bla = guess.get("answer")
-      @$el.append("____#{bla}")
+      guess_title = guess.get("answer")
+      @ui.guess.html guess_title
+    else
+      @ui.guess.hide()
 
   
 QuestionsCollectionView = Marionette.CollectionView.extend
