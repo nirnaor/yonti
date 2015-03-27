@@ -1,4 +1,5 @@
 $ = require "jquery"
+Swiper = require "swiper"
 Backbone = require "backbone"
 Marionette = require "backbone.marionette"
 Phrase = require "./model"
@@ -65,7 +66,7 @@ QuestionView = Marionette.ItemView.extend
     "click @ui.question": "on_question_clicked"
   on_question_clicked: ->
     console.log "QuestionView: phrase clicked"
-    @triggerMethod "question_clicked"
+    @triggerMethod "single_question_clicked"
   onRender: ->
     guess = @model.get("guess")
     if (typeof(guess) isnt "undefined")
@@ -78,7 +79,7 @@ QuestionsCollectionView = Marionette.CollectionView.extend
   className: "table-view"
   tagName: "ul"
   childEvents:
-    "question_clicked": (ev)->
+    "single_question_clicked": (ev)->
       console.log "PhrasesCollectionView: phrase clicked"
       @triggerMethod "question_clicked", question: ev.model
 
@@ -86,15 +87,17 @@ QuizView = Marionette.LayoutView.extend
   template: "layout"
   regions:
     header: ".bar.bar-nav"
-    content: "div.content"
+    questions: "div.questions"
+    answers: "div.answers"
   childEvents:
     "question_clicked": (childView, msg)->
       console.log "crap"
       console.log "QuizView: question #{msg.question.get('question')} clicked"
       @selected_question = msg.question
-      @showChildView("content",
-        new AnswersCollectionView(collection: @answers))
+      # @showChildView("answers",
+      #   new AnswersCollectionView(collection: @answers))
       @showChildView("header", new HeaderView(mode: "answers"))
+      @swiper.slideNext()
     "meaning_picked": (childView, msg)->
       console.log "SHIT"
       meaning = msg.meaning
@@ -122,7 +125,8 @@ QuizView = Marionette.LayoutView.extend
 
     @questions.on("change:guess", (changed_question)=>
       console.log "WILL NOW SHOW THE QUESTIONS VIEW AGAIN"
-      @showChildView("content", new QuestionsCollectionView(
+      @swiper.slidePrev()
+      @showChildView("questions", new QuestionsCollectionView(
         collection: @questions))
     )
        
@@ -132,8 +136,16 @@ QuizView = Marionette.LayoutView.extend
 
   onRender: ->
     @showChildView("header", new HeaderView(mode: "questions"))
-    @showChildView("content", new QuestionsCollectionView(collection:
+    @showChildView("questions", new QuestionsCollectionView(collection:
       @questions))
+    @showChildView("answers", new AnswersCollectionView(collection:
+      @answers))
+
+    @swiper = new Swiper(".content", {
+      direction: 'horizontal'
+      loop: true
+    })
+
 
 
 
