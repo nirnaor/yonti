@@ -54,7 +54,7 @@ AnswersCollectionView = Marionette.CollectionView.extend
   childEvents:
     "on_answer_clicked": (ev)->
       console.log "AnswersCollectionView:answer clicked" 
-      @triggerMethod "meaning_picked", meaning: ev.model
+      @triggerMethod "answer_picked", answer: ev.model
 
 
 QuestionView = Marionette.ItemView.extend
@@ -100,16 +100,16 @@ QuizView = Marionette.LayoutView.extend
       @selected_question = msg.question
       @swiper.slideNext()
       @show_answers()
-    "meaning_picked": (childView, msg)->
+    "answer_picked": (childView, msg)->
       console.log "SHIT"
-      meaning = msg.meaning
-      console.log "QuizView: Meaning #{meaning.get('answer')} picked
+      answer = msg.answer
+      console.log "QuizView: answer #{answer.get('answer')} picked
       for #{@selected_question.get('question')}"
 
       # Unseting first because I wanna make sure that chnage is triggered
       # even if the same answer was picked for the same question
       @selected_question.unset("guess", silent: true)
-      @selected_question.set("guess", meaning)
+      @selected_question.set("guess", answer)
 
 
 
