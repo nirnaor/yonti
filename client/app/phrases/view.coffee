@@ -115,9 +115,12 @@ AnswerResultView = QuestionView.extend
     answer = @model.get "guess"
     if(typeof(answer) is "undefined")
       console.log "no answer"
-      @$el.css("background", "red")
-    else
       @$el.css("background", "yellow")
+    else
+      if answer.get("answer") == @model.get("correct_answer")
+        @$el.css("background", "green")
+      else
+        @$el.css("background", "red")
    
 TestResultView = QuestionsCollectionView.extend
   childView: AnswerResultView
@@ -168,7 +171,10 @@ QuizView = Marionette.LayoutView.extend
     # Questions realted boilerplate
     @questions = new QuestionCollection()
     @options.collection.forEach (phrase)=>
-      question = new Question({question: phrase.get("phrase")})
+      question = new Question({
+        question: phrase.get("phrase")
+        correct_answer: phrase.get("meaning")
+      })
       @questions.add question
 
 
