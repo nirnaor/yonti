@@ -35,17 +35,39 @@ QuestionCollection = Backbone.Collection.extend
     )
 
 Answer = Backbone.Model.extend({})
+AnswerCollection = Backbone.Collection.extend
+  initialize: (modles, options)->
+    console.log "QuestionCollection initialize"
+    @on("change:attached_question", (changed_answer)->
+
+      @forEach (answer) ->
+        if answer.cid != changed_answer.cid
+          attached_question = answer.get("attached_question")
+          if(typeof(attached_question) != "undefined")
+            if attached_question.get("question") == changed_answer.get("attached_question").get("question")
+              answer.unset("attached_question", silent: true)
+              console.log "Reset duplicate answer"
+    )
 
 AnswerView = Marionette.ItemView.extend
   template: "answer"
   className: "table-view-cell"
+  tagName: "li"
   ui:
     "answer": ".answer"
+    "attached_question": ".attached_question"
   events:
     "click @ui.answer": "on_answer_clicked"
   on_answer_clicked:->
     console.log "AnswerView: answer clicked"
     @triggerMethod "on_answer_clicked"
+  onRender: ->
+    question = @model.get("attached_question")
+    if (typeof(question) isnt "undefined")
+      q_title = question.get("question")
+      @ui.attached_question.html q_title
+    else
+      @ui.attached_question.hide()
 
       
 AnswersCollectionView = Marionette.CollectionView.extend
@@ -110,6 +132,9 @@ QuizView = Marionette.LayoutView.extend
       # even if the same answer was picked for the same question
       @selected_question.unset("guess", silent: true)
       @selected_question.set("guess", answer)
+
+      answer.unset("attached_question", silent: true)
+      answer.set("attached_question", @selected_question)
 
 
 
