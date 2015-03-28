@@ -180,7 +180,6 @@ QuizView = Marionette.LayoutView.extend
       console.log "crap"
       console.log "QuizView: question #{msg.question.get('question')} clicked"
       @selected_question = msg.question
-      @swiper.slideNext()
       @show_answers()
     "answer_picked": (childView, msg)->
       console.log "SHIT"
@@ -217,7 +216,6 @@ QuizView = Marionette.LayoutView.extend
 
     @questions.on("change:guess", (changed_question)=>
       console.log "WILL NOW SHOW THE QUESTIONS VIEW AGAIN"
-      @swiper.slidePrev()
       @show_questions()
     )
        
@@ -227,10 +225,12 @@ QuizView = Marionette.LayoutView.extend
     @showChildView("header", new HeaderView(mode: "questions"))
     @showChildView("questions", new QuestionsCollectionView(collection:
       @questions))
+    @swiper.slideTo(0)
   show_answers: ->
     @showChildView("header", new HeaderView(mode: "answers"))
     @showChildView("answers", new AnswersCollectionView(collection:
       @answers))
+    @swiper.slideTo(1)
   show_results: ->
     result_view = new TestResultView(collection: @questions)
     @showChildView("results", result_view)
@@ -241,12 +241,11 @@ QuizView = Marionette.LayoutView.extend
 
 
   onRender: ->
-    @show_answers()
-    @show_questions()
     @swiper = new Swiper(".content", {
       direction: 'horizontal'
     })
 
+    @show_questions()
     @showChildView("tabs", new TabsView())
 
 
