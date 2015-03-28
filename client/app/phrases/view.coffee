@@ -13,7 +13,7 @@ HeaderView = Marionette.ItemView.extend
     header = {
       questions: "Pick a phrase"
       answers: "Find the match"
-      results: "Test results"
+      results: "Grade: #{@options.grade}"
     }[@options.mode]
     @ui.title.html(header)
 
@@ -44,6 +44,21 @@ QuestionCollection = Backbone.Collection.extend
               question.unset("guess", silent: true)
               console.log "Reset duplicate answer"
     )
+
+  summary: ->
+    correct = []
+    mistake = []
+    missing = []
+    @forEach (question)->
+      switch question.result()
+        when "correct" then correct.push question
+        when "missing" then missing.push question
+        when "mistake" then mistake.push question
+
+    grade = ((100 / @length) * correct.length).toFixed()
+    { grade: grade, correct: correct.length, mistake: mistake.length,
+    missing: missing.length }
+
 
 Answer = Backbone.Model.extend({})
 AnswerCollection = Backbone.Collection.extend
@@ -213,7 +228,7 @@ QuizView = Marionette.LayoutView.extend
     index = result_view.$el.data("slide-index")
     @swiper.slideTo(index)
     @showChildView("header", new HeaderView(
-      mode: "results", answers: @answers))
+      mode: "results", grade: @questions.summary().grade))
      
 
 
