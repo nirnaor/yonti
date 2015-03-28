@@ -1,6 +1,6 @@
 module.exports = (grunt)->
   for task in [ 'grunt-contrib-coffee' , 'grunt-browserify',
-  'grunt-contrib-watch', 'grunt-jade-plugin' ]
+  'grunt-contrib-watch', 'grunt-jade-plugin', 'grunt-contrib-copy' ]
     grunt.loadNpmTasks task
 
 
@@ -33,6 +33,17 @@ module.exports = (grunt)->
     main:
       src: "#{coffee_output}/app.js"
       dest: "#{coffee_output}/browserified.js"
+
+  root_cordova = "com.herokuapp.yonti/www/"
+  config.copy =
+    cordova:
+      files:[
+        {expand: true, src: "build/**/*", dest: "#{root_cordova}"}
+        {expand: true, src: "bower_components/ratchet/dist/css/ratchet.css", dest: "#{root_cordova}"}
+        {expand: true, src: "bower_components/ratchet/dist/js/ratchet.js", dest: "#{root_cordova}"}
+        {expand: true, src: "node_modules/swiper/dist/css/swiper.min.css", dest: "#{root_cordova}"}
+        {expand: true, src: "index.html", dest: "#{root_cordova}"}
+      ]
 
 
   # Templates
