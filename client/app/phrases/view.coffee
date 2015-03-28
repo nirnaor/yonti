@@ -112,6 +112,7 @@ QuestionsCollectionView = Marionette.CollectionView.extend
 
 AnswerResultView = QuestionView.extend
   onRender: ->
+    QuestionView.prototype.onRender.apply(@,arguments)
     answer = @model.get "guess"
     if(typeof(answer) is "undefined")
       console.log "no answer"
