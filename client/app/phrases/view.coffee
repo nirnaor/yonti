@@ -13,6 +13,7 @@ HeaderView = Marionette.ItemView.extend
     header = {
       questions: "Pick a phrase"
       answers: "Find the match"
+      results: "Test results"
     }[@options.mode]
     @ui.title.html(header)
 
@@ -203,6 +204,9 @@ QuizView = Marionette.LayoutView.extend
     @showChildView("results", result_view)
     index = result_view.$el.data("slide-index")
     @swiper.slideTo(index)
+    @showChildView("header", new HeaderView(
+      mode: "results", answers: @answers))
+     
 
 
   onRender: ->
