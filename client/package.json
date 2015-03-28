@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npm install; bower install; grunt",
-    "start": "python -m SimpleHTTPServer 3006",
+    "server": "python -m SimpleHTTPServer 3006",
     "play": "open http://localhost:3006"
   },
   "keywords": [

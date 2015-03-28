@@ -8,7 +8,7 @@ $ npm run build
 ```
 Start the server
 ```sh
-$ npm run start
+$ npm run server
 ```
 Play the game
 ```sh
