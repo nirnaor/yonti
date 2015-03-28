@@ -154,8 +154,11 @@ TabsView = Marionette.ItemView.extend
   template: "tabs"
   events:
     "click a.finish":  "on_finish_clicked"
+    "click a.restart":  "on_restart_clicked"
   on_finish_clicked: ->
     @triggerMethod "finish_clicked"
+  on_restart_clicked: ->
+    @triggerMethod "restart_clicked"
 
 QuizView = Marionette.LayoutView.extend
   template: "layout"
@@ -169,6 +172,10 @@ QuizView = Marionette.LayoutView.extend
     "finish_clicked": (childView, msg)->
       console.log "finish clicked"
       @show_results()
+    "restart_clicked": (childView, msg)->
+      console.log "restart clicked"
+      @init_quiz()
+      @onRender()
     "question_clicked": (childView, msg)->
       console.log "crap"
       console.log "QuizView: question #{msg.question.get('question')} clicked"
@@ -192,6 +199,8 @@ QuizView = Marionette.LayoutView.extend
 
 
   initialize: (options)->
+    @init_quiz()
+  init_quiz: (options)->
 
     # Questions realted boilerplate
     @questions = new QuestionCollection()
