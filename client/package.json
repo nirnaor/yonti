@@ -4,7 +4,9 @@
   "description": "Memory app ofr students",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm install; bower install; grunt",
+    "start": "python -m SimpleHTTPServer 3006",
+    "play": "open http://localhost:3006"
   },
   "keywords": [
     "memory",
