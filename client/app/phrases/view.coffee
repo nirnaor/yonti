@@ -170,6 +170,7 @@ QuizView = Marionette.LayoutView.extend
 
     # Questions realted boilerplate
     @questions = new QuestionCollection()
+    @answers = new Backbone.Collection()
     @options.collection.forEach (phrase)=>
       question = new Question({
         question: phrase.get("phrase")
@@ -177,10 +178,6 @@ QuizView = Marionette.LayoutView.extend
       })
       @questions.add question
 
-
-    # Answers realted boilerplate
-    @answers = new Backbone.Collection()
-    @options.collection.forEach (phrase)=>
       answer = new Answer({answer: phrase.get("meaning")})
       @answers.add answer
 
