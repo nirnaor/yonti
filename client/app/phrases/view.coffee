@@ -19,7 +19,17 @@ HeaderView = Marionette.ItemView.extend
 
 
 
-Question = Backbone.Model.extend({})
+Question = Backbone.Model.extend
+  result: ->
+    answer = @get "guess"
+    if(typeof(answer) is "undefined")
+      return "missing"
+    else
+      if answer.get("answer") == @get("correct_answer")
+        return "correct"
+      else
+        return "mistake"
+
 QuestionCollection = Backbone.Collection.extend
   initialize: (modles, options)->
     console.log "QuestionCollection initialize"
@@ -114,15 +124,13 @@ QuestionsCollectionView = Marionette.CollectionView.extend
 AnswerResultView = QuestionView.extend
   onRender: ->
     QuestionView.prototype.onRender.apply(@,arguments)
-    answer = @model.get "guess"
-    if(typeof(answer) is "undefined")
-      console.log "no answer"
-      @$el.css("background", "yellow")
-    else
-      if answer.get("answer") == @model.get("correct_answer")
-        @$el.css("background", "green")
-      else
-        @$el.css("background", "red")
+    color = {
+      missing: "yellow"
+      mistake: "red"
+      correct: "green"
+    }[@model.result()]
+
+    @$el.css("background", color)
    
 TestResultView = QuestionsCollectionView.extend
   childView: AnswerResultView
