@@ -175,7 +175,7 @@ QuizView = Marionette.LayoutView.extend
     "restart_clicked": (childView, msg)->
       console.log "restart clicked"
       @init_quiz()
-      @onRender()
+      @show_questions()
     "question_clicked": (childView, msg)->
       console.log "crap"
       console.log "QuizView: question #{msg.question.get('question')} clicked"
