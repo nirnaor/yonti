@@ -234,8 +234,7 @@ QuizView = Marionette.LayoutView.extend
   show_results: ->
     result_view = new TestResultView(collection: @questions)
     @showChildView("results", result_view)
-    index = result_view.$el.data("slide-index")
-    @swiper.slideTo(index)
+    @swiper.slideTo(2)
     @showChildView("header", new HeaderView(
       mode: "results", grade: @questions.summary().grade))
      
@@ -246,7 +245,6 @@ QuizView = Marionette.LayoutView.extend
     @show_questions()
     @swiper = new Swiper(".content", {
       direction: 'horizontal'
-      loop: true
     })
 
     @showChildView("tabs", new TabsView())
