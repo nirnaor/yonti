@@ -66,9 +66,6 @@ module.exports = (grunt)->
         {expand: true, src: "index.html", dest: "#{cordova_www}"}
       ]
 
-  clean = "rm -rf #{cordova_root}"
-  create = "cordova create #{cordova_root} com.nirnaor.yonti YontiMemory"
-
   command_in_root = (command)->
     command: command
     options:
@@ -77,16 +74,21 @@ module.exports = (grunt)->
 
   platform_configuration = (platform_name)->
     result = {}
-    result["build_#{platform_name}"] = command_in_root("cordova build #{platform_name}")
-    result["platforms_#{platform_name}"] = command_in_root("cordova platform add #{platform_name}")
-    result["emulate_#{platform_name}"] = command_in_root("cordova emulate #{platform_name}")
+    result["build_#{platform_name}"] =
+      command_in_root("cordova build #{platform_name}")
+    result["platforms_#{platform_name}"] =
+      command_in_root("cordova platform add #{platform_name}")
+    result["emulate_#{platform_name}"] =
+      command_in_root("cordova emulate #{platform_name}")
     result
 
   mobile_shell_config = {}
   mobile_shell_config.create =
-    command: [ clean, create ].join "&&"
+    command: [ "rm -rf #{cordova_root}",
+    "cordova create #{cordova_root} com.nirnaor.yonti YontiMemory" ].join "&&"
 
   _(mobile_shell_config).extend(platform_configuration("ios"))
+  _(mobile_shell_config).extend(platform_configuration("android"))
   config.shell = mobile_shell_config
 
 
@@ -104,6 +106,9 @@ module.exports = (grunt)->
 
   grunt.registerTask("build_ios", ["mobile_base", "shell:platforms_ios",
   "shell:build_ios", "shell:emulate_ios"])
+  grunt.registerTask("build_android", ["mobile_base",
+  "shell:platforms_android", "shell:build_android", "shell:emulate_android"])
+ 
 
  
 
