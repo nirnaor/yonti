@@ -1,6 +1,7 @@
 module.exports = (grunt)->
   for task in [ 'grunt-contrib-coffee' , 'grunt-browserify',
-  'grunt-contrib-watch', 'grunt-jade-plugin', 'grunt-contrib-copy' ]
+  'grunt-contrib-watch', 'grunt-jade-plugin', 'grunt-contrib-copy',
+  'grunt-shell']
     grunt.loadNpmTasks task
 
 
@@ -34,16 +35,6 @@ module.exports = (grunt)->
       src: "#{coffee_output}/app.js"
       dest: "#{coffee_output}/browserified.js"
 
-  root_cordova = "com.herokuapp.yonti/www/"
-  config.copy =
-    cordova:
-      files:[
-        {expand: true, src: "build/**/*", dest: "#{root_cordova}"}
-        {expand: true, src: "bower_components/ratchet/dist/css/ratchet.css", dest: "#{root_cordova}"}
-        {expand: true, src: "bower_components/ratchet/dist/js/ratchet.js", dest: "#{root_cordova}"}
-        {expand: true, src: "node_modules/swiper/dist/css/swiper.min.css", dest: "#{root_cordova}"}
-        {expand: true, src: "index.html", dest: "#{root_cordova}"}
-      ]
 
 
   # Templates
@@ -57,7 +48,44 @@ module.exports = (grunt)->
       files: jade_files
 
 
+  # Mobile deployment
+  cordova_root = "yonti"
+  cordova_www = "#{cordova_root}/www/"
 
+  config.copy =
+    cordova:
+      files:[
+        {expand: true, src: "build/**/*", dest: "#{cordova_www}"}
+        {expand: true, src: "bower_components/ratchet/dist/css/ratchet.css", dest: "#{cordova_www}"}
+        {expand: true, src: "bower_components/ratchet/dist/js/ratchet.js", dest: "#{cordova_www}"}
+        {expand: true, src: "node_modules/swiper/dist/css/swiper.min.css", dest: "#{cordova_www}"}
+        {expand: true, src: "index.html", dest: "#{cordova_www}"}
+      ]
+
+  clean = "rm -rf #{cordova_root}"
+  create = "cordova create #{cordova_root} com.nirnaor.yonti YontiMemory"
+  platform = "cordova platform add ios"
+  build = "cordova build"
+  emulate = "cordova emulate ios"
+  config.shell =
+    create:
+      command: [ clean, create ].join "&&"
+    platforms:
+      command: platform
+      options:
+        execOptions:
+          cwd: cordova_root
+    build:
+      command: build
+      options:
+        execOptions:
+          cwd: cordova_root
+    emulate:
+      command: emulate
+      options:
+        execOptions:
+          cwd: cordova_root
+        
 
 
 
@@ -65,5 +93,6 @@ module.exports = (grunt)->
   grunt.registerTask("code", [ "coffee", "browserify" ])
   grunt.registerTask("templates", [ "jade2js" ])
   grunt.registerTask("default", ["code", "templates"])
+  grunt.registerTask("mobile", ["shell:create", "shell:platforms", "copy:cordova", "shell:build", "shell:emulate"])
 
 
