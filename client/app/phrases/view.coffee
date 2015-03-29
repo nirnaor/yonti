@@ -1,4 +1,5 @@
 $ = require "jquery"
+_ = require "underscore"
 Swiper = require "swiper"
 Backbone = require "backbone"
 Marionette = require "backbone.marionette"
@@ -62,6 +63,9 @@ QuestionCollection = Backbone.Collection.extend
 
 Answer = Backbone.Model.extend({})
 AnswerCollection = Backbone.Collection.extend
+  comparator: (answer)->
+    # Using a sample to make the order random
+    _([-1,0,1]).sample()
   initialize: (modles, options)->
     console.log "QuestionCollection initialize"
     @on("change:attached_question", (changed_answer)->
@@ -74,6 +78,8 @@ AnswerCollection = Backbone.Collection.extend
               answer.unset("attached_question", silent: true)
               console.log "Reset duplicate answer"
     )
+
+
 
 AnswerView = Marionette.ItemView.extend
   template: "answer"
@@ -203,7 +209,7 @@ QuizView = Marionette.LayoutView.extend
 
     # Questions realted boilerplate
     @questions = new QuestionCollection()
-    @answers = new Backbone.Collection()
+    @answers = new AnswerCollection()
     @options.collection.forEach (phrase)=>
       question = new Question({
         question: phrase.get("phrase")
