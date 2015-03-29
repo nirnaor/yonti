@@ -68,28 +68,30 @@ module.exports = (grunt)->
   clean = "rm -rf #{cordova_root}"
   create = "cordova create #{cordova_root} com.nirnaor.yonti YontiMemory"
 
-  platform_name = "ios"
-  platform = "cordova platform add #{platform_name}"
-  build = "cordova build"
-  emulate = "cordova emulate #{platform_name}"
+  add_platform = (platform_name) ->
+    command: "cordova platform add #{platform_name}"
+    options:
+      execOptions:
+        cwd: cordova_root
+
+  emulate_platform = (platform_name)->
+    command: "cordova emulate #{platform_name}"
+    options:
+      execOptions:
+        cwd: cordova_root
+
+
   config.shell =
     create:
       command: [ clean, create ].join "&&"
     build:
-      command: build
+      command: "cordova build"
       options:
         execOptions:
           cwd: cordova_root
-    platforms:
-      command: platform
-      options:
-        execOptions:
-          cwd: cordova_root
-    emulate:
-      command: emulate
-      options:
-        execOptions:
-          cwd: cordova_root
+    platforms: add_platform("ios")
+    emulate: emulate_platform("ios")
+
         
 
 
