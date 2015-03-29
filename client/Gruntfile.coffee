@@ -1,3 +1,4 @@
+_ = require "underscore"
 module.exports = (grunt)->
   for task in [ 'grunt-contrib-coffee' , 'grunt-browserify',
   'grunt-contrib-watch', 'grunt-jade-plugin', 'grunt-contrib-copy',
@@ -68,29 +69,26 @@ module.exports = (grunt)->
   clean = "rm -rf #{cordova_root}"
   create = "cordova create #{cordova_root} com.nirnaor.yonti YontiMemory"
 
-  add_platform = (platform_name) ->
-    command: "cordova platform add #{platform_name}"
+  command_in_root = (command)->
+    command: command
     options:
       execOptions:
         cwd: cordova_root
 
-  emulate_platform = (platform_name)->
-    command: "cordova emulate #{platform_name}"
-    options:
-      execOptions:
-        cwd: cordova_root
+  platform_configuration = (platform_name)->
+    result = {}
+    result["build_#{platform_name}"] = command_in_root("cordova build #{platform_name}")
+    result["platforms_#{platform_name}"] = command_in_root("cordova platform add #{platform_name}")
+    result["emulate_#{platform_name}"] = command_in_root("cordova emulate #{platform_name}")
+    result
 
+  mobile_shell_config = {}
+  mobile_shell_config.create =
+    command: [ clean, create ].join "&&"
 
-  config.shell =
-    create:
-      command: [ clean, create ].join "&&"
-    build:
-      command: "cordova build"
-      options:
-        execOptions:
-          cwd: cordova_root
-    platforms: add_platform("ios")
-    emulate: emulate_platform("ios")
+  _(mobile_shell_config).extend(platform_configuration("ios"))
+  config.shell = mobile_shell_config
+
 
         
 
@@ -104,8 +102,8 @@ module.exports = (grunt)->
 
   grunt.registerTask("mobile_base", ["shell:create","copy:cordova" ])
 
-  grunt.registerTask("mobile", ["mobile_base", "shell:platforms",
-  "shell:build", "shell:emulate"])
+  grunt.registerTask("build_ios", ["mobile_base", "shell:platforms_ios",
+  "shell:build_ios", "shell:emulate_ios"])
 
  
 
