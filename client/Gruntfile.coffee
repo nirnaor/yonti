@@ -56,27 +56,32 @@ module.exports = (grunt)->
     cordova:
       files:[
         {expand: true, src: "build/**/*", dest: "#{cordova_www}"}
-        {expand: true, src: "bower_components/ratchet/dist/css/ratchet.css", dest: "#{cordova_www}"}
-        {expand: true, src: "bower_components/ratchet/dist/js/ratchet.js", dest: "#{cordova_www}"}
-        {expand: true, src: "node_modules/swiper/dist/css/swiper.min.css", dest: "#{cordova_www}"}
+        {expand: true, src: "bower_components/ratchet/dist/css/ratchet.css",
+        dest: "#{cordova_www}"}
+        {expand: true, src: "bower_components/ratchet/dist/js/ratchet.js",
+        dest: "#{cordova_www}"}
+        {expand: true, src: "node_modules/swiper/dist/css/swiper.min.css",
+        dest: "#{cordova_www}"}
         {expand: true, src: "index.html", dest: "#{cordova_www}"}
       ]
 
   clean = "rm -rf #{cordova_root}"
   create = "cordova create #{cordova_root} com.nirnaor.yonti YontiMemory"
-  platform = "cordova platform add ios"
+
+  platform_name = "ios"
+  platform = "cordova platform add #{platform_name}"
   build = "cordova build"
-  emulate = "cordova emulate ios"
+  emulate = "cordova emulate #{platform_name}"
   config.shell =
     create:
       command: [ clean, create ].join "&&"
-    platforms:
-      command: platform
+    build:
+      command: build
       options:
         execOptions:
           cwd: cordova_root
-    build:
-      command: build
+    platforms:
+      command: platform
       options:
         execOptions:
           cwd: cordova_root
@@ -93,6 +98,13 @@ module.exports = (grunt)->
   grunt.registerTask("code", [ "coffee", "browserify" ])
   grunt.registerTask("templates", [ "jade2js" ])
   grunt.registerTask("default", ["code", "templates"])
-  grunt.registerTask("mobile", ["shell:create", "shell:platforms", "copy:cordova", "shell:build", "shell:emulate"])
+
+
+  grunt.registerTask("mobile_base", ["shell:create","copy:cordova" ])
+
+  grunt.registerTask("mobile", ["mobile_base", "shell:platforms",
+  "shell:build", "shell:emulate"])
+
+ 
 
 
