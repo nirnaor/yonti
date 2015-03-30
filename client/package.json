@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npm install; bower install; grunt",
-    "server": "python -m SimpleHTTPServer 3006",
+    "start": "python -m SimpleHTTPServer 3006",
     "game": "open http://localhost:3006"
   },
   "keywords": [
@@ -13,6 +13,10 @@
     "students"
   ],
   "author": "Nir Naor",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nirnaor/yonti.git"
+  },
   "license": "ISC",
   "devDependencies": {
     "grunt": "^0.4.5",
