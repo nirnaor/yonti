@@ -8,7 +8,6 @@ Marionette = require "backbone.marionette"
 Backbone.Marionette.Renderer.render = (template, data)->
   JST[template](data)
 
-Phrase = require "./phrases/module"
 DummyData = require "./dummy_data"
 
 
