@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm install; bower install; grunt",
     "server": "python -m SimpleHTTPServer 3006",
-    "play": "open http://localhost:3006"
+    "game": "open http://localhost:3006"
   },
   "keywords": [
     "memory",
