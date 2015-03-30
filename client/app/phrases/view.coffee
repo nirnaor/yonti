@@ -3,7 +3,6 @@ _ = require "underscore"
 Swiper = require "swiper"
 Backbone = require "backbone"
 Marionette = require "backbone.marionette"
-Phrase = require "./model"
 
 
 HeaderView = Marionette.ItemView.extend
