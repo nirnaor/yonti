@@ -9,6 +9,11 @@ HeaderView = Marionette.ItemView.extend
   template: "header"
   ui:
     "title": ".title"
+    "show_menu": ".icon-list"
+  events:
+    "click @ui.show_menu": "on_show_menu_clicked"
+  on_show_menu_clicked: ->
+    @triggerMethod "show_menu_clicked"
   onRender: ->
     header = {
       questions: "Pick a phrase"
@@ -174,6 +179,8 @@ QuizView = Marionette.LayoutView.extend
     results: "div.results"
     tabs: "nav.bar.bar-tab"
   childEvents:
+    "show_menu_clicked": (childView, msg)->
+      console.log "show menu clicked"
     "finish_clicked": (childView, msg)->
       console.log "finish clicked"
       @show_results()
