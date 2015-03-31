@@ -5,6 +5,7 @@ Backbone = require "backbone"
 Backbone.$ = $
 Marionette = require "backbone.marionette"
 PhraseViews = require "./phrases/view"
+QuizView = require "./phrases/quiz"
 
 Backbone.Marionette.Renderer.render = (template, data)->
   JST[template](data)
@@ -23,7 +24,7 @@ app.on("before:start", (options)->
 )
 
 app.on("start", (options)->
-  phrases_view = new PhraseViews.QuizView(
+  phrases_view = new QuizView.QuizView(
     collection: @phrases.by_category("sport")
     el: $("body")
   ).render()
