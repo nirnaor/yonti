@@ -5,7 +5,7 @@ Marionette = require "backbone.marionette"
 MenuItem = Marionette.ItemView.extend
   className: "table-view-cell"
   tagName: "li"
-  template: "menu"
+  template: "category"
 
 
 CategoryView = Marionette.CollectionView.extend
