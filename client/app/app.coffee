@@ -4,8 +4,8 @@ $ = require "jquery"
 Backbone = require "backbone"
 Backbone.$ = $
 Marionette = require "backbone.marionette"
-PhraseViews = require "./phrases/view"
-QuizView = require "./phrases/quiz"
+PhraseViews = require "./quiz/view"
+QuizView = require "./quiz/quiz"
 
 Backbone.Marionette.Renderer.render = (template, data)->
   JST[template](data)

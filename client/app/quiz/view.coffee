@@ -3,7 +3,7 @@ _ = require "underscore"
 Swiper = require "swiper"
 Backbone = require "backbone"
 Marionette = require "backbone.marionette"
-Menu = require "./menu"
+Menu = require "./category"
 
 
 HeaderView = Marionette.ItemView.extend
