@@ -18,5 +18,5 @@ CategoryView = Marionette.CollectionView.extend
   tagName: "ul"
   
  module.exports =
-   CategoryView: CategoryView
+   View: CategoryView
   

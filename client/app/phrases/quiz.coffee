@@ -3,7 +3,7 @@ _ = require "underscore"
 Swiper = require "swiper"
 Backbone = require "backbone"
 Marionette = require "backbone.marionette"
-Menu = require "./menu"
+Category = require "./category"
 Question = require "./view"
 QuestionsCollectionView = Question.QuestionsCollectionView
 AnswersCollectionView = Question.AnswersCollectionView
@@ -96,7 +96,7 @@ QuizView = Marionette.LayoutView.extend
       mode: "results", grade: @questions.summary().grade))
   show_menu: ->
     @showChildView("header", new HeaderView(mode: "pick_test"))
-    @showChildView("menu", new Menu.CategoryView(questions:
+    @showChildView("menu", new Category.View(questions:
       @questions))
     @swiper.slideTo(3)
 
