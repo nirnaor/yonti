@@ -3,6 +3,7 @@ _ = require "underscore"
 Swiper = require "swiper"
 Backbone = require "backbone"
 Marionette = require "backbone.marionette"
+Menu = require "./menu"
 
 
 HeaderView = Marionette.ItemView.extend
@@ -176,11 +177,13 @@ QuizView = Marionette.LayoutView.extend
     header: ".bar.bar-nav"
     questions: "div.questions"
     answers: "div.answers"
+    menu: "div.menu"
     results: "div.results"
     tabs: "nav.bar.bar-tab"
   childEvents:
     "show_menu_clicked": (childView, msg)->
       console.log "show menu clicked"
+      @show_menu()
     "finish_clicked": (childView, msg)->
       console.log "finish clicked"
       @show_results()
@@ -249,7 +252,11 @@ QuizView = Marionette.LayoutView.extend
     @swiper.slideTo(2)
     @showChildView("header", new HeaderView(
       mode: "results", grade: @questions.summary().grade))
-     
+  show_menu: ->
+    @showChildView("header", new HeaderView(mode: "pick_test"))
+    @showChildView("menu", new Menu.MenuView(collection:
+      @questions))
+    @swiper.slideTo(3)
 
 
   onRender: ->
