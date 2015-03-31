@@ -10,10 +10,7 @@ MenuItem = Marionette.ItemView.extend
 
 CategoryView = Marionette.CollectionView.extend
   initialize: (options)->
-    categories = _(@options.questions.models).map (phrase)->
-      phrase.get("category")
-    models = _(categories).uniq().map (category)-> category: category
-    @collection = new Backbone.Collection(models)
+    @collection = @options.questions.categories()
       
   childView: MenuItem
   template: false

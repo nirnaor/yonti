@@ -50,7 +50,11 @@ QuestionCollection = Backbone.Collection.extend
               question.unset("guess", silent: true)
               console.log "Reset duplicate answer"
     )
-
+  categories: ->
+    categories = _(@models).map (phrase)->
+      phrase.get("category")
+    models = _(categories).uniq().map (category)-> category: category
+    new Backbone.Collection(models)
   summary: ->
     correct = []
     mistake = []
