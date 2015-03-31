@@ -8,6 +8,12 @@ data = [
   { phrase: "karem abdul jabar", meaning: "lakers", category: "sport"}
   { phrase: "tim duncan", meaning: "spurs", category: "sport"}
   { phrase: "kaven garnett", meaning: "minesota", category: "sport"}
+  { phrase: "aviv", meaning: "diamant", category: "friends"}
+  { phrase: "or", meaning: "ziskind", category: "friends"}
+  { phrase: "nir", meaning: "naor", category: "friends"}
+  { phrase: "alon", meaning: "kaplan", category: "friends"}
+  { phrase: "tal", meaning: "carmi", category: "friends"}
+  { phrase: "yonatan", meaning: "kfir", category: "friends"}
 ]
 module.exports =
   data: data

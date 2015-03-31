@@ -55,6 +55,9 @@ QuestionCollection = Backbone.Collection.extend
       phrase.get("category")
     models = _(categories).uniq().map (category)-> category: category
     new Backbone.Collection(models)
+  by_category: (category)->
+    models =@filter (question)-> question.get('category') is category
+    new Backbone.Collection(models)
   summary: ->
     correct = []
     mistake = []
@@ -284,5 +287,6 @@ QuizView = Marionette.LayoutView.extend
 
 module.exports =
   QuestionView: QuestionView
+  QuestionCollection: QuestionCollection
   PhrasesView: QuestionsCollectionView
   QuizView: QuizView

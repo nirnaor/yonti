@@ -17,14 +17,14 @@ DummyData = require "./dummy_data"
 app = new Marionette.Application()
 
 app.on("before:start", (options)->
-  @phrases = new Backbone.Collection()
+  @phrases = new PhraseViews.QuestionCollection()
   _(DummyData.data).forEach (el)=>
     @phrases.add(new Backbone.Model(el))
 )
 
 app.on("start", (options)->
   phrases_view = new PhraseViews.QuizView(
-    collection: @phrases
+    collection: @phrases.by_category("sport")
     el: $("body")
   ).render()
 )
