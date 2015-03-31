@@ -223,6 +223,7 @@ QuizView = Marionette.LayoutView.extend
       question = new Question({
         question: phrase.get("phrase")
         correct_answer: phrase.get("meaning")
+        category: phrase.get("category")
       })
       @questions.add question
 
@@ -254,7 +255,7 @@ QuizView = Marionette.LayoutView.extend
       mode: "results", grade: @questions.summary().grade))
   show_menu: ->
     @showChildView("header", new HeaderView(mode: "pick_test"))
-    @showChildView("menu", new Menu.MenuView(collection:
+    @showChildView("menu", new Menu.CategoryView(questions:
       @questions))
     @swiper.slideTo(3)
 

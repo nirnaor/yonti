@@ -1,13 +1,13 @@
 data = [
-  { phrase: "messi", meaning: "barcelona" }
-  { phrase: "ronaldo", meaning: "realmadrid" }
-  { phrase: "lebron", meaning: "cavs" }
-  { phrase: "jordan", meaning: "bulls" }
-  { phrase: "rooney", meaning: "manchester united" }
-  { phrase: "ibrahimovic", meaning: "PSG" }
-  { phrase: "karem abdul jabar", meaning: "lakers" }
-  { phrase: "tim duncan", meaning: "spurs" }
-  { phrase: "kaven garnett", meaning: "minesota" }
+  { phrase: "messi", meaning: "barcelona", category: "sport"}
+  { phrase: "ronaldo", meaning: "realmadrid", category: "sport"}
+  { phrase: "lebron", meaning: "cavs", category: "sport"}
+  { phrase: "jordan", meaning: "bulls", category: "sport"}
+  { phrase: "rooney", meaning: "manchester united", category: "sport"}
+  { phrase: "ibrahimovic", meaning: "PSG", category: "sport"}
+  { phrase: "karem abdul jabar", meaning: "lakers", category: "sport"}
+  { phrase: "tim duncan", meaning: "spurs", category: "sport"}
+  { phrase: "kaven garnett", meaning: "minesota", category: "sport"}
 ]
 module.exports =
   data: data

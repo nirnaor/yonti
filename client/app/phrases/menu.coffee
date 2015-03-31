@@ -1,3 +1,5 @@
+_ = require "underscore"
+Backbone = require "backbone"
 Marionette = require "backbone.marionette"
 
 MenuItem = Marionette.ItemView.extend
@@ -6,12 +8,18 @@ MenuItem = Marionette.ItemView.extend
   template: "menu"
 
 
-MenuView = Marionette.CollectionView.extend
+CategoryView = Marionette.CollectionView.extend
+  initialize: (options)->
+    categories = _(@options.questions.models).map (phrase)->
+      phrase.get("category")
+    models = _(categories).uniq().map (category)-> category: category
+    @collection = new Backbone.Collection(models)
+      
   childView: MenuItem
   template: false
   className: "table-view"
   tagName: "ul"
   
  module.exports =
-   MenuView: MenuView
+   CategoryView: CategoryView
   
