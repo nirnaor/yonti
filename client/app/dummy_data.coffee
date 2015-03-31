@@ -1,5 +1,5 @@
 data = [
-  { phrase: "messy", meaning: "barcelona" }
+  { phrase: "messi", meaning: "barcelona" }
   { phrase: "ronaldo", meaning: "realmadrid" }
   { phrase: "lebron", meaning: "cavs" }
   { phrase: "jordan", meaning: "bulls" }
