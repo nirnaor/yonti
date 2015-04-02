@@ -60,6 +60,7 @@ QuestionView = BaseList.ListItemView.extend
     console.log "QuestionView: phrase clicked"
     @triggerMethod "single_question_clicked"
   onRender: ->
+    BaseList.ListItemView.prototype.onRender.apply(@,arguments)
     guess = @model.get("guess")
     if (typeof(guess) isnt "undefined")
       guess_title = guess.get("answer")

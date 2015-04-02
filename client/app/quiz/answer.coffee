@@ -33,6 +33,7 @@ AnswerView = BaseList.ListItemView.extend
     console.log "AnswerView: answer clicked"
     @triggerMethod "on_answer_clicked"
   onRender: ->
+    BaseList.ListItemView.prototype.onRender.apply(@,arguments)
     question = @model.get("attached_question")
     if (typeof(question) isnt "undefined")
       q_title = question.get("question")

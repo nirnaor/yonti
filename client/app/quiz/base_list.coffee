@@ -3,8 +3,10 @@ Marionette = require "backbone.marionette"
 ListItemView = Marionette.ItemView.extend
   className: "table-view-cell"
   tagName: "li"
-  events:
-    "click": "item_clicked"
+  onRender: ->
+    @$el.click =>
+      console.log "ListItemView click"
+      @item_clicked()
   item_clicked: (ev)->
     throw new Error("item_clicked should be implemented")
 
