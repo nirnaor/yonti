@@ -25,7 +25,8 @@ app.on("before:start", (options)->
 
 app.on("start", (options)->
   phrases_view = new QuizView.QuizView(
-    collection: @phrases.by_category("sport")
+    category: "sport"
+    collection: @phrases
     el: $("body")
   ).render()
 )

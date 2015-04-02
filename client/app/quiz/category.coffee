@@ -10,7 +10,7 @@ MenuItem = Marionette.ItemView.extend
 
 CategoryView = Marionette.CollectionView.extend
   initialize: (options)->
-    @collection = @options.questions.categories()
+    @collection = @options.phrases.categories()
       
   childView: MenuItem
   template: false

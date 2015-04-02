@@ -88,11 +88,11 @@ QuizView = Marionette.LayoutView.extend
   initialize: (options)->
     @init_quiz()
   init_quiz: (options)->
-
     # Questions realted boilerplate
     @questions = new Question.Collection()
     @answers = new Answer.Collection()
     @options.collection.forEach (phrase)=>
+      return if phrase.get("category") isnt @options.category
       question = new Question.Model({
         question: phrase.get("phrase")
         correct_answer: phrase.get("meaning")
@@ -128,8 +128,8 @@ QuizView = Marionette.LayoutView.extend
       mode: "results", grade: @questions.summary().grade))
   show_menu: ->
     @showChildView("header", new HeaderView(mode: "pick_test"))
-    @showChildView("menu", new Category.View(questions:
-      @questions))
+    @showChildView("menu", new Category.View(phrases:
+      @options.collection))
     @swiper.slideTo(3)
 
 
