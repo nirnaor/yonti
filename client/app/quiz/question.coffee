@@ -2,6 +2,8 @@ _ = require "underscore"
 Backbone = require "backbone"
 Marionette = require "backbone.marionette"
 
+BaseList = require "./base_list"
+
 Question = Backbone.Model.extend
   result: ->
     answer = @get "guess"
@@ -49,10 +51,8 @@ QuestionCollection = Backbone.Collection.extend
     { grade: grade, correct: correct.length, mistake: mistake.length,
     missing: missing.length }
 
-QuestionView = Marionette.ItemView.extend
+QuestionView = BaseList.ListItemView.extend
   template: "question"
-  className: "table-view-cell"
-  tagName: "li"
   ui:
     "question": ".question"
     "guess": ".guess"
@@ -70,10 +70,8 @@ QuestionView = Marionette.ItemView.extend
       @ui.guess.hide()
 
   
-QuestionsCollectionView = Marionette.CollectionView.extend
+QuestionsCollectionView = BaseList.ListView.extend
   childView: QuestionView
-  className: "table-view"
-  tagName: "ul"
   childEvents:
     "single_question_clicked": (ev)->
       console.log "PhrasesCollectionView: phrase clicked"

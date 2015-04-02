@@ -2,6 +2,8 @@ _ = require "underscore"
 Backbone = require "backbone"
 Marionette = require "backbone.marionette"
 
+BaseList = require "./base_list"
+
 Answer = Backbone.Model.extend({})
 AnswerCollection = Backbone.Collection.extend
   comparator: (answer)->
@@ -22,10 +24,8 @@ AnswerCollection = Backbone.Collection.extend
 
 
 
-AnswerView = Marionette.ItemView.extend
+AnswerView = BaseList.ListItemView.extend
   template: "answer"
-  className: "table-view-cell"
-  tagName: "li"
   ui:
     "answer": ".answer"
     "attached_question": ".attached_question"
@@ -43,7 +43,7 @@ AnswerView = Marionette.ItemView.extend
       @ui.attached_question.hide()
 
       
-AnswersCollectionView = Marionette.CollectionView.extend
+AnswersCollectionView = BaseList.ListView.extend
   className: "table-view"
   tagName: "ul"
   childView: AnswerView
