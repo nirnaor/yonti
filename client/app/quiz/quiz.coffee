@@ -82,6 +82,11 @@ QuizView = Marionette.LayoutView.extend
 
       answer.unset("attached_question", silent: true)
       answer.set("attached_question", @selected_question)
+    "category_picked": (childView, msg)->
+      console.log "QuizView category picked"
+      @options.category = msg.category
+      @init_quiz()
+      @show_questions()
 
 
 
