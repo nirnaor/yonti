@@ -1,16 +1,48 @@
 $ = require "jquery"
 _ = require "underscore"
 Swiper = require "swiper"
+Answer = require "./answer"
 Backbone = require "backbone"
 Marionette = require "backbone.marionette"
 Category = require "./category"
-Question = require "./view"
-QuestionsCollectionView = Question.QuestionsCollectionView
-AnswersCollectionView = Question.AnswersCollectionView
+Question = require "./question"
 TabsView = Question.TabsView
-TestResultView = Question.TestResultView
+Result = require "./result"
 
-HeaderView = Question.HeaderView
+
+TabsView = Marionette.ItemView.extend
+  template: "tabs"
+  events:
+    "click a.finish":  "on_finish_clicked"
+    "click a.restart":  "on_restart_clicked"
+  on_finish_clicked: ->
+    @triggerMethod "finish_clicked"
+  on_restart_clicked: ->
+    @triggerMethod "restart_clicked"
+
+HeaderView = Marionette.ItemView.extend
+  template: "header"
+  ui:
+    "title": ".title"
+    "show_menu": ".icon-list"
+  events:
+    "click @ui.show_menu": "on_show_menu_clicked"
+  on_show_menu_clicked: ->
+    @triggerMethod "show_menu_clicked"
+  onRender: ->
+    header = {
+      questions: "Pick a phrase"
+      answers: "Find the match"
+      results: "Grade: #{@options.grade}"
+    }[@options.mode]
+    @ui.title.html(header)
+
+
+
+
+
+
+
 
 QuizView = Marionette.LayoutView.extend
   template: "layout"
@@ -58,17 +90,17 @@ QuizView = Marionette.LayoutView.extend
   init_quiz: (options)->
 
     # Questions realted boilerplate
-    @questions = new Question.QuestionCollection()
-    @answers = new Question.AnswerCollection()
+    @questions = new Question.Collection()
+    @answers = new Answer.Collection()
     @options.collection.forEach (phrase)=>
-      question = new Question.Question({
+      question = new Question.Model({
         question: phrase.get("phrase")
         correct_answer: phrase.get("meaning")
         category: phrase.get("category")
       })
       @questions.add question
 
-      answer = new Question.Answer({answer: phrase.get("meaning")})
+      answer = new Question.Model({answer: phrase.get("meaning")})
       @answers.add answer
 
     @questions.on("change:guess", (changed_question)=>
@@ -80,16 +112,16 @@ QuizView = Marionette.LayoutView.extend
 
   show_questions: ->
     @showChildView("header", new HeaderView(mode: "questions"))
-    @showChildView("questions", new QuestionsCollectionView(collection:
+    @showChildView("questions", new Question.Views.QuestionsCollectionView(collection:
       @questions))
     @swiper.slideTo(0)
   show_answers: ->
     @showChildView("header", new HeaderView(mode: "answers"))
-    @showChildView("answers", new AnswersCollectionView(collection:
+    @showChildView("answers", new Answer.Views.AnswersCollectionView(collection:
       @answers))
     @swiper.slideTo(1)
   show_results: ->
-    result_view = new TestResultView(collection: @questions)
+    result_view = new Result.TestResultView(collection: @questions)
     @showChildView("results", result_view)
     @swiper.slideTo(2)
     @showChildView("header", new HeaderView(

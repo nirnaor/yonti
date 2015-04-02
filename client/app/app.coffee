@@ -18,7 +18,7 @@ DummyData = require "./dummy_data"
 app = new Marionette.Application()
 
 app.on("before:start", (options)->
-  @phrases = new PhraseViews.QuestionCollection()
+  @phrases = new PhraseViews.Question.Collection()
   _(DummyData.data).forEach (el)=>
     @phrases.add(new Backbone.Model(el))
 )
