@@ -6,8 +6,7 @@ BaseList = require "./base_list"
 
 MenuItem = BaseList.ListItemView.extend
   template: "category"
-  events: "click .category": "on_category_clicked"
-  on_category_clicked: (ev)->
+  item_clicked: (ev)->
     console.log "category clicked"
     @triggerMethod("category_clicked", category: @model.get("category"))
 

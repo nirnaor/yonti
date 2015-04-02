@@ -29,9 +29,7 @@ AnswerView = BaseList.ListItemView.extend
   ui:
     "answer": ".answer"
     "attached_question": ".attached_question"
-  events:
-    "click @ui.answer": "on_answer_clicked"
-  on_answer_clicked:->
+  item_clicked:->
     console.log "AnswerView: answer clicked"
     @triggerMethod "on_answer_clicked"
   onRender: ->

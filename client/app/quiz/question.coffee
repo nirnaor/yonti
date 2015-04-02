@@ -56,9 +56,7 @@ QuestionView = BaseList.ListItemView.extend
   ui:
     "question": ".question"
     "guess": ".guess"
-  events:
-    "click @ui.question": "on_question_clicked"
-  on_question_clicked: ->
+  item_clicked: ->
     console.log "QuestionView: phrase clicked"
     @triggerMethod "single_question_clicked"
   onRender: ->
