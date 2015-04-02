@@ -2,20 +2,18 @@ _ = require "underscore"
 Backbone = require "backbone"
 Marionette = require "backbone.marionette"
 
-MenuItem = Marionette.ItemView.extend
-  className: "table-view-cell"
-  tagName: "li"
+BaseList = require "./base_list"
+
+MenuItem = BaseList.ListItemView.extend
   template: "category"
 
 
-CategoryView = Marionette.CollectionView.extend
+CategoryView = BaseList.ListView.extend
   initialize: (options)->
     @collection = @options.phrases.categories()
       
   childView: MenuItem
   template: false
-  className: "table-view"
-  tagName: "ul"
   
  module.exports =
    View: CategoryView
