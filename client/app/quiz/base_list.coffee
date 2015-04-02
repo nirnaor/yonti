@@ -1,14 +1,12 @@
 Marionette = require "backbone.marionette"
 Hammer = require "hammerjs"
+Gestures = require "../gestures"
 
 ListItemView = Marionette.ItemView.extend
   className: "table-view-cell"
   tagName: "li"
   onRender: ->
-    hammer = new Hammer(@el)
-    hammer.on "tap", (ev)=>
-      console.log "tap detected"
-      @item_clicked()
+    hammer = Gestures.add(@el, "tap", @item_clicked, @)
   item_clicked: (ev)->
     throw new Error("item_clicked should be implemented")
 
