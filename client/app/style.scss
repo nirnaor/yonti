@@ -1,4 +1,10 @@
-$color: yellow;
-header.bar{
-  background: $color;
+$header_size: 60px;
+.bar-nav{
+  height: $header_size
+}
+.bar-nav ~ .content{
+  padding-top: $header_size;
+}
+.header .container{
+  padding-top: 19px;
 }

@@ -22,6 +22,7 @@ TabsView = Marionette.ItemView.extend
 
 HeaderView = Marionette.ItemView.extend
   template: "header"
+  className: "header"
   ui:
     "title": ".title"
     "show_menu": ".icon-list"
