@@ -45,6 +45,7 @@ AnswerView = Marionette.ItemView.extend
       
 AnswersCollectionView = Marionette.CollectionView.extend
   className: "table-view"
+  tagName: "ul"
   childView: AnswerView
   childEvents:
     "on_answer_clicked": (ev)->
