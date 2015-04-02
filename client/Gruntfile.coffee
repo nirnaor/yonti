@@ -2,7 +2,7 @@ _ = require "underscore"
 module.exports = (grunt)->
   for task in [ 'grunt-contrib-coffee' , 'grunt-browserify',
   'grunt-contrib-watch', 'grunt-jade-plugin', 'grunt-contrib-copy',
-  'grunt-shell']
+  'grunt-shell', 'grunt-contrib-compass' ]
     grunt.loadNpmTasks task
 
 
@@ -17,6 +17,10 @@ module.exports = (grunt)->
     templates:
       files: "#{app_folder}/**/*.jade"
       tasks: [ "templates" ]
+      options: livereload: 35729
+    style:
+      files: "#{app_folder}/**/*.scss"
+      tasks: [ "style" ]
       options: livereload: 35729
 
   
@@ -47,6 +51,13 @@ module.exports = (grunt)->
       options:
         namespace: "JST"
       files: jade_files
+
+  # Style
+  config.compass =
+    dist:
+      options:
+        sassDir: app_folder
+        cssDir: coffee_output
 
 
   # Mobile deployment
@@ -99,7 +110,8 @@ module.exports = (grunt)->
   grunt.initConfig config
   grunt.registerTask("code", [ "coffee", "browserify" ])
   grunt.registerTask("templates", [ "jade2js" ])
-  grunt.registerTask("default", ["code", "templates"])
+  grunt.registerTask("style", [ "compass" ])
+  grunt.registerTask("default", ["code", "templates", "style" ])
 
 
   grunt.registerTask("mobile_base", ["shell:create","copy:cordova" ])
