@@ -4,6 +4,7 @@ Swiper = require "swiper"
 Answer = require "./answer"
 Backbone = require "backbone"
 Marionette = require "backbone.marionette"
+Gestures = require "../gestures"
 Category = require "./category"
 Question = require "./question"
 TabsView = Question.TabsView
@@ -12,9 +13,12 @@ Result = require "./result"
 
 TabsView = Marionette.ItemView.extend
   template: "tabs"
-  events:
-    "click a.finish":  "on_finish_clicked"
-    "click a.restart":  "on_restart_clicked"
+  ui:
+    finish: "a.finish"
+    restart: "a.restart"
+  onRender: ->
+    Gestures.add(@ui.finish.get(0), "tap", @on_finish_clicked, @)
+    Gestures.add(@ui.restart.get(0), "tap", @on_restart_clicked, @)
   on_finish_clicked: ->
     @triggerMethod "finish_clicked"
   on_restart_clicked: ->
@@ -26,11 +30,10 @@ HeaderView = Marionette.ItemView.extend
   ui:
     "title": ".title"
     "show_menu": ".icon-list"
-  events:
-    "click @ui.show_menu": "on_show_menu_clicked"
   on_show_menu_clicked: ->
     @triggerMethod "show_menu_clicked"
   onRender: ->
+    Gestures.add(@ui.show_menu.get(0), "tap", @on_show_menu_clicked, @)
     header = {
       questions: "Pick a phrase"
       answers: "Find the match"
