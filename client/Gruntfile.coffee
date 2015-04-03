@@ -70,6 +70,8 @@ module.exports = (grunt)->
         {expand: true, src: "build/**/*", dest: "#{cordova_www}"}
         {expand: true, src: "bower_components/ratchet/dist/css/ratchet.css",
         dest: "#{cordova_www}"}
+        {expand: true, src: "bower_components/ratchet/dist/fonts/*",
+        dest: "#{cordova_www}"}
         {expand: true, src: "bower_components/ratchet/dist/js/ratchet.js",
         dest: "#{cordova_www}"}
         {expand: true, src: "node_modules/swiper/dist/css/swiper.min.css",
