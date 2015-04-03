@@ -36,7 +36,7 @@ HeaderView = Marionette.ItemView.extend
     Gestures.add(@ui.show_menu.get(0), "tap", @on_show_menu_clicked, @)
     header = {
       questions: "Pick a phrase"
-      answers: "Find the match"
+      answers: @options.question
       results: "Grade: #{@options.grade}"
     }[@options.mode]
     @ui.title.html(header)
@@ -125,7 +125,11 @@ QuizView = Marionette.LayoutView.extend
       @questions))
     @swiper.slideTo(0)
   show_answers: ->
-    @showChildView("header", new HeaderView(mode: "answers"))
+    header_view = new HeaderView(
+      mode: "answers",
+      question: @selected_question.get("question")
+    )
+    @showChildView("header", header_view)
     @showChildView("answers", new Answer.Views.AnswersCollectionView(collection:
       @answers))
     @swiper.slideTo(1)
