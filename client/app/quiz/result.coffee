@@ -3,6 +3,7 @@ Marionette = require "backbone.marionette"
 Question = require "./question"
 
 AnswerResultView = Question.Views.QuestionView.extend
+  template: "result"
   onRender: ->
     Question.Views.QuestionView.prototype.onRender.apply(@,arguments)
     color = {
