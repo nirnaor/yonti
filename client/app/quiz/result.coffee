@@ -17,10 +17,9 @@ AnswerResultView = Question.Views.QuestionView.extend
       correct: "green"
     }[result]
 
-
+    @ui.guess.css("background", color)
     @ui.correction.html(@model.get("correct_answer"))
 
-    @ui.guess.css("background", color)
     guess = @model.get("guess")
     if guess
       @ui.guess.html(guess.get("answer"))
