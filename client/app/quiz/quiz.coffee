@@ -147,7 +147,7 @@ QuizView = Marionette.LayoutView.extend
 
 
   onRender: ->
-    @slide = new Slide.Slide()
+    @slide = new Slide.Slide(".content")
     @show_questions()
     @showChildView("tabs", new TabsView())
 module.exports =

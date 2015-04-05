@@ -1,8 +1,8 @@
 Swiper = require "swiper"
 
 class Slide
-  constructor: ->
-    @swiper = new Swiper(".content", {
+  constructor: (@selector)->
+    @swiper = new Swiper(@selector, {
       direction: 'horizontal'
     })
 
