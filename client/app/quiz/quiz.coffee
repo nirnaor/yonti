@@ -1,10 +1,10 @@
 $ = require "jquery"
 _ = require "underscore"
-Swiper = require "swiper"
 Answer = require "./answer"
 Backbone = require "backbone"
 Marionette = require "backbone.marionette"
 Gestures = require "../gestures"
+Slide = require "../slide"
 Category = require "./category"
 Question = require "./question"
 TabsView = Question.TabsView
@@ -123,7 +123,7 @@ QuizView = Marionette.LayoutView.extend
     @showChildView("header", new HeaderView(mode: "questions"))
     @showChildView("questions", new Question.Views.QuestionsCollectionView(collection:
       @questions))
-    @swiper.slideTo(0)
+    @slide.to(0)
   show_answers: ->
     header_view = new HeaderView(
       mode: "answers",
@@ -132,25 +132,22 @@ QuizView = Marionette.LayoutView.extend
     @showChildView("header", header_view)
     @showChildView("answers", new Answer.Views.AnswersCollectionView(collection:
       @answers))
-    @swiper.slideTo(1)
+    @slide.to(1)
   show_results: ->
     result_view = new Result.TestResultView(collection: @questions)
     @showChildView("results", result_view)
-    @swiper.slideTo(2)
+    @slide.to(2)
     @showChildView("header", new HeaderView(
       mode: "results", grade: @questions.summary().grade))
   show_menu: ->
     @showChildView("header", new HeaderView(mode: "pick_test"))
     @showChildView("menu", new Category.View(phrases:
       @options.collection))
-    @swiper.slideTo(3)
+    @slide.to(3)
 
 
   onRender: ->
-    @swiper = new Swiper(".content", {
-      direction: 'horizontal'
-    })
-
+    @slide = new Slide.Slide()
     @show_questions()
     @showChildView("tabs", new TabsView())
 module.exports =
