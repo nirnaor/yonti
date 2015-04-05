@@ -15,6 +15,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "ratchet": "~2.0.2"
+    "ratchet": "~2.0.2",
+    "tabletop": "~1.4.0"
   }
 }

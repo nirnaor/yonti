@@ -19,7 +19,7 @@ app = new Marionette.Application()
 
 app.on("before:start", (options)->
   @phrases = new Question.Collection()
-  _(DummyData.data).forEach (el)=>
+  _(options.data).forEach (el)=>
     @phrases.add(new Backbone.Model(el))
 )
 
@@ -32,4 +32,11 @@ app.on("start", (options)->
 )
 
 $ ->
-  app.start()
+  public_spreadsheet_url = "https://docs.google.com/spreadsheets/d/1tbNkD6NIozNB4nywTNdNGDhVyFcFlk-arOHG3oTqTho/pubhtml?gid=1987288858&single=true"
+
+  showInfo = (data, tabletop)->
+      console.log("Successfully processed!")
+      console.log(data)
+      app.start(data: data)
+
+  Tabletop.init( key: public_spreadsheet_url,    callback: showInfo,simpleSheet: true)

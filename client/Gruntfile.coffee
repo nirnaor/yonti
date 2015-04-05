@@ -76,6 +76,8 @@ module.exports = (grunt)->
         dest: "#{cordova_www}"}
         {expand: true, src: "node_modules/swiper/dist/css/swiper.min.css",
         dest: "#{cordova_www}"}
+        {expand: true, src: "bower_components/tabletop/src/tabletop.js",
+        dest: "#{cordova_www}"}
         {expand: true, src: "index.html", dest: "#{cordova_www}"}
       ]
 
