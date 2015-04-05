@@ -1,18 +1,35 @@
+_ = require "underscore"
 Marionette = require "backbone.marionette"
 
 Question = require "./question"
 
 AnswerResultView = Question.Views.QuestionView.extend
   template: "result"
+  ui:
+    "question": ".question"
+    "guess": ".guess"
+    "correction": ".correction"
   onRender: ->
-    Question.Views.QuestionView.prototype.onRender.apply(@,arguments)
+    result = @model.result()
     color = {
       missing: "yellow"
       mistake: "red"
       correct: "green"
-    }[@model.result()]
+    }[result]
 
-    @$el.css("background", color)
+
+    @ui.correction.html(@model.get("correct_answer"))
+
+    @ui.guess.css("background", color)
+    guess = @model.get("guess")
+    if guess
+      @ui.guess.html(guess.get("answer"))
+    else
+      @ui.guess.html("missing")
+
+    if result is "correct"
+      @ui.correction.hide()
+
    
 TestResultView = Question.Views.QuestionsCollectionView.extend
   childView: AnswerResultView
