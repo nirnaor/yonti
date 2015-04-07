@@ -33,8 +33,8 @@ app.on("start", (options)->
 )
 
 $ ->
-  # data = new Data.Data()
-  data = new DummyData.Data()
+  data = new Data.Data()
+  # data = new DummyData.Data()
   data.on "load_finished",(ev)->
     console.log ev.data
     app.start(data: ev.data)
