@@ -11,6 +11,7 @@ Backbone.Marionette.Renderer.render = (template, data)->
   JST[template](data)
 
 DummyData = require "./dummy_data"
+Data = require "./data"
 
 
 
@@ -32,11 +33,8 @@ app.on("start", (options)->
 )
 
 $ ->
-  public_spreadsheet_url = "https://docs.google.com/spreadsheets/d/1tbNkD6NIozNB4nywTNdNGDhVyFcFlk-arOHG3oTqTho/pubhtml?gid=1987288858&single=true"
-
-  showInfo = (data, tabletop)->
-      console.log("Successfully processed!")
-      console.log(data)
-      app.start(data: data)
-
-  Tabletop.init( key: public_spreadsheet_url,    callback: showInfo,simpleSheet: true)
+  data = new Data.Data()
+  data.load()
+  data.on "load_finished",(ev)->
+    console.log ev.data
+    app.start(data: ev.data)
