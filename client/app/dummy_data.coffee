@@ -1,3 +1,4 @@
+Marionette = require "backbone.marionette"
 data = [
   { phrase: "messi", meaning: "barcelona", category: "sport"}
   { phrase: "ronaldo", meaning: "realmadrid", category: "sport"}
@@ -21,5 +22,9 @@ data = [
   { phrase: "tal", meaning: "carmi", category: "friends"}
   { phrase: "yonatan", meaning: "kfir", category: "friends"}
 ]
+
+DummyData = Marionette.Object.extend
+  load: ->
+    @triggerMethod "load_finished", data: data
 module.exports =
-  data: data
+  Data: DummyData
