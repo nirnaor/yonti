@@ -131,7 +131,7 @@ module.exports = (grunt)->
 
   grunt.registerTask("mobile_base", [ "default", "shell:create", "copy:cordova" ])
 
-  grunt.registerTask("build_ios", ["mobile_base", "shell:platforms_ios","copy:cordova"
+  grunt.registerTask("build_ios", ["mobile_base", "shell:platforms_ios"
   "shell:build_ios", "shell:emulate_ios"])
   grunt.registerTask("build_android", ["mobile_base",
   "shell:platforms_android", "shell:build_android", "shell:emulate_android"])
