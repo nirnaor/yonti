@@ -106,6 +106,7 @@ module.exports = (grunt)->
   _(mobile_shell_config).extend(platform_configuration("ios"))
   _(mobile_shell_config).extend(platform_configuration("android"))
   config.shell = mobile_shell_config
+  config.shell.clean_coffee = command: "rm -rf #{coffee_output}"
 
 
         
@@ -113,7 +114,7 @@ module.exports = (grunt)->
 
 
   grunt.initConfig config
-  grunt.registerTask("code", [ "coffee", "browserify" ])
+  grunt.registerTask("code", [ "shell:clean_coffee", "coffee", "browserify" ])
   grunt.registerTask("templates", [ "jade2js" ])
   grunt.registerTask("style", [ "compass" ])
   grunt.registerTask("default", ["code", "templates", "style" ])
