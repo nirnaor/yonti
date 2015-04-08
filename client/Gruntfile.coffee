@@ -25,7 +25,8 @@ module.exports = (grunt)->
 
   
 
-  coffee_output = "build"
+  build_folder = "build"
+  coffee_output = "#{build_folder}/coffee_output"
   config.coffee =
     glob_to_multiple:
       expand: true,
@@ -38,13 +39,13 @@ module.exports = (grunt)->
   config.browserify =
     main:
       src: "#{coffee_output}/app.js"
-      dest: "#{coffee_output}/browserified.js"
+      dest: "#{build_folder}/browserified.js"
 
 
 
   # Templates
   jade_files= {}
-  jade_output  = "#{coffee_output}/templates.js"
+  jade_output  = "#{build_folder}/templates.js"
   jade_files[ jade_output ] =["#{app_folder}/**/*.jade"]
   config.jade2js =
     compile:
@@ -57,7 +58,7 @@ module.exports = (grunt)->
     dist:
       options:
         sassDir: app_folder
-        cssDir: coffee_output
+        cssDir: build_folder
 
 
   # Mobile deployment
