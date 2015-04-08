@@ -44,7 +44,7 @@ module.exports = (grunt)->
 
   # Templates
   jade_files= {}
-  jade_output  = "build/templates.js"
+  jade_output  = "#{coffee_output}/templates.js"
   jade_files[ jade_output ] =["#{app_folder}/**/*.jade"]
   config.jade2js =
     compile:
@@ -67,7 +67,7 @@ module.exports = (grunt)->
   config.copy =
     cordova:
       files:[
-        {expand: true, src: "build/**/*", dest: "#{cordova_www}"}
+        {expand: true, src: "#{coffee_output}/**/*", dest: "#{cordova_www}"}
         {expand: true, src: "bower_components/ratchet/dist/css/ratchet.css",
         dest: "#{cordova_www}"}
         {expand: true, src: "bower_components/ratchet/dist/fonts/*",
