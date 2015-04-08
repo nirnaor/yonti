@@ -85,8 +85,10 @@ module.exports = (grunt)->
 
   config.copy =
     build: files_to(build_folder)
-    cordova:
-      { src: [ '**' ], dest: cordova_www, cwd: build_folder, expand: true}
+    cordova: files: [
+      { src: [ '**' ], dest: cordova_www, cwd: build_folder, expand: true},
+      { src: "config.xml", dest: "#{cordova_root}/"}
+    ]
 
   command_in_root = (command)->
     command: command
