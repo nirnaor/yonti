@@ -26,6 +26,7 @@ module.exports = (grunt)->
   
 
   build_folder = "build"
+  files_build_folder = "build/files"
   coffee_output = "#{build_folder}/coffee_output"
   config.coffee =
     glob_to_multiple:
@@ -39,13 +40,13 @@ module.exports = (grunt)->
   config.browserify =
     main:
       src: "#{coffee_output}/app.js"
-      dest: "#{build_folder}/browserified.js"
+      dest: "#{files_build_folder}/browserified.js"
 
 
 
   # Templates
   jade_files= {}
-  jade_output  = "#{build_folder}/templates.js"
+  jade_output  = "#{files_build_folder}/templates.js"
   jade_files[ jade_output ] =["#{app_folder}/**/*.jade"]
   config.jade2js =
     compile:
@@ -58,29 +59,34 @@ module.exports = (grunt)->
     dist:
       options:
         sassDir: app_folder
-        cssDir: build_folder
+        cssDir: files_build_folder
 
 
   # Mobile deployment
   cordova_root = "yonti"
   cordova_www = "#{cordova_root}/www/"
 
+  files_to = (folder)->
+    files_folder ="#{folder}/files"
+    files:[
+      # {expand: true, src: "#{coffee_output}/**/*", dest: "#{files_folder}"}
+      {expand: true, src: "bower_components/ratchet/dist/css/ratchet.css",
+      dest: "#{files_folder}"}
+      {expand: true, src: "bower_components/ratchet/dist/fonts/*",
+      dest: "#{files_folder}"}
+      {expand: true, src: "bower_components/ratchet/dist/js/ratchet.js",
+      dest: "#{files_folder}"}
+      {expand: true, src: "node_modules/swiper/dist/css/swiper.min.css",
+      dest: "#{files_folder}"}
+      {expand: true, src: "bower_components/tabletop/src/tabletop.js",
+      dest: "#{files_folder}"}
+      {expand: true, src: "index.html", dest: "#{folder}"}
+    ]
+
   config.copy =
+    build: files_to(build_folder)
     cordova:
-      files:[
-        {expand: true, src: "#{coffee_output}/**/*", dest: "#{cordova_www}"}
-        {expand: true, src: "bower_components/ratchet/dist/css/ratchet.css",
-        dest: "#{cordova_www}"}
-        {expand: true, src: "bower_components/ratchet/dist/fonts/*",
-        dest: "#{cordova_www}"}
-        {expand: true, src: "bower_components/ratchet/dist/js/ratchet.js",
-        dest: "#{cordova_www}"}
-        {expand: true, src: "node_modules/swiper/dist/css/swiper.min.css",
-        dest: "#{cordova_www}"}
-        {expand: true, src: "bower_components/tabletop/src/tabletop.js",
-        dest: "#{cordova_www}"}
-        {expand: true, src: "index.html", dest: "#{cordova_www}"}
-      ]
+      { src: [ '**' ], dest: cordova_www, cwd: build_folder, expand: true}
 
   command_in_root = (command)->
     command: command
@@ -118,12 +124,12 @@ module.exports = (grunt)->
 
   grunt.registerTask("templates", [ "jade2js" ])
   grunt.registerTask("style", [ "compass" ])
-  grunt.registerTask("default", ["code", "templates", "style" ])
+  grunt.registerTask("default", ["code", "templates", "style", "copy:build"])
 
 
-  grunt.registerTask("mobile_base", ["shell:create","copy:cordova" ])
+  grunt.registerTask("mobile_base", [ "default", "shell:create", "copy:cordova" ])
 
-  grunt.registerTask("build_ios", ["mobile_base", "shell:platforms_ios",
+  grunt.registerTask("build_ios", ["mobile_base", "shell:platforms_ios","copy:cordova"
   "shell:build_ios", "shell:emulate_ios"])
   grunt.registerTask("build_android", ["mobile_base",
   "shell:platforms_android", "shell:build_android", "shell:emulate_android"])
