@@ -10,8 +10,7 @@ Question = require "./quiz/question"
 Backbone.Marionette.Renderer.render = (template, data)->
   JST[template](data)
 
-DummyData = require "./lib/dummy_data"
-Data = require "./lib/data"
+DataManager = require "./lib/data_manager"
 
 
 
@@ -33,7 +32,7 @@ app.on("start", (options)->
 )
 
 $ ->
-  data = new Data.Data()
+  data = new DataManager.DataManager()
   # data = new DummyData.Data()
   data.on "load_finished",(ev)->
     console.log ev.data
