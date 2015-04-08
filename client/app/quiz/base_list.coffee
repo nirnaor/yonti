@@ -1,6 +1,6 @@
 Marionette = require "backbone.marionette"
 Hammer = require "hammerjs"
-Gestures = require "../gestures"
+Gestures = require "../lib/gestures"
 
 ListItemView = Marionette.ItemView.extend
   className: "table-view-cell"

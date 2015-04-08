@@ -10,8 +10,8 @@ Question = require "./quiz/question"
 Backbone.Marionette.Renderer.render = (template, data)->
   JST[template](data)
 
-DummyData = require "./dummy_data"
-Data = require "./data"
+DummyData = require "./lib/dummy_data"
+Data = require "./lib/data"
 
 
 
