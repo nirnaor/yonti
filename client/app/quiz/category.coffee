@@ -4,7 +4,7 @@ Marionette = require "backbone.marionette"
 
 BaseList = require "./base_list"
 
-MenuItem = BaseList.ListItemView.extend
+CategoryItem = BaseList.ListItemView.extend
   template: "category"
   item_clicked: (ev)->
     console.log "category clicked"
@@ -15,7 +15,7 @@ CategoryView = BaseList.ListView.extend
   initialize: (options)->
     @collection = @options.phrases.categories()
       
-  childView: MenuItem
+  childView: CategoryItem
   template: false
   childEvents:
     "category_clicked": (childView, msg)->
