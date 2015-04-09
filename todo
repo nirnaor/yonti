@@ -1,0 +1,5 @@
+1. Place the phrase in the answers header view.
+2. Show the correct answer when answer was not correct
+3. instant mode.
+4. disable horizontal scrolling (by capturing swipe event maybe)
+

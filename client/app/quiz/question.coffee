@@ -2,7 +2,7 @@ _ = require "underscore"
 Backbone = require "backbone"
 Marionette = require "backbone.marionette"
 
-BaseList = require "./base_list"
+BaseList = require "../base/base_list"
 
 Question = Backbone.Model.extend
   result: ->

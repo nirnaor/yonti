@@ -99,7 +99,7 @@ module.exports = (grunt)->
   platform_configuration = (platform_name)->
     result = {}
     result["build_#{platform_name}"] =
-      command_in_root("cordova build #{platform_name}")
+      command_in_root("cordova build #{platform_name} --release")
     result["platforms_#{platform_name}"] =
       command_in_root("cordova platform add #{platform_name}")
     result["emulate_#{platform_name}"] =
