@@ -26,7 +26,7 @@ QuestionCollection = Backbone.Collection.extend
           guess = question.get("guess")
           if(typeof(guess) != "undefined")
             if guess.get("answer") == changed_question.get("guess").get("answer")
-              question.unset("guess", silent: true)
+              # question.unset("guess", silent: true)
               console.log "Reset duplicate answer"
     )
   categories: ->
