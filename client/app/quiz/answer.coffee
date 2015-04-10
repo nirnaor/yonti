@@ -37,7 +37,7 @@ AnswerView = BaseList.ListItemView.extend
     question = @model.get("attached_question")
     if (typeof(question) isnt "undefined")
       q_title = question.get("question")
-      @ui.attached_question.html q_title
+      @ui.attached_question.html(q_title.substring(0,10))
     else
       @ui.attached_question.hide()
 

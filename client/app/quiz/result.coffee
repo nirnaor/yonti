@@ -9,6 +9,8 @@ AnswerResultView = Question.Views.QuestionView.extend
     "question": ".question"
     "guess": ".guess"
     "correction": ".correction"
+    "correction_container": ".correction-container"
+    "icon": ".question-icon.icon"
   onRender: ->
     result = @model.result()
     color = {
@@ -17,17 +19,18 @@ AnswerResultView = Question.Views.QuestionView.extend
       correct: "green"
     }[result]
 
-    @ui.guess.css("background", color)
+    # @ui.guess.css("background", color)
     @ui.correction.html(@model.get("correct_answer"))
 
     guess = @model.get("guess")
     if guess
       @ui.guess.html(guess.get("answer"))
-    else
-      @ui.guess.html("missing")
 
     if result is "correct"
-      @ui.correction.hide()
+      @ui.correction_container.hide()
+      @ui.icon.addClass "icon-check"
+    else
+      @ui.icon.addClass "icon-close"
 
    
 TestResultView = Question.Views.QuestionsCollectionView.extend

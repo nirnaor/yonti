@@ -53,6 +53,7 @@ QuestionCollection = Backbone.Collection.extend
 
 QuestionView = BaseList.ListItemView.extend
   template: "question"
+  className: "table-view-cell media"
   ui:
     "question": ".question"
     "guess": ".guess"

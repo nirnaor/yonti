@@ -9,9 +9,20 @@ $header_size: 60px;
   padding-top: 19px;
 }
 
-.results{
-  .correction{
-    background: green;
-    right: 105px;
+.icon-check{
+  color: green;
+}
+.icon-close{
+  color: red;
+}
+
+.answers{
+  .answer, .attached_question{
+    display: block;
+    width: 80%;
+  }
+
+  .attached_question{
+    width: 18%;
   }
 }
