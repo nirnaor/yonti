@@ -7,6 +7,7 @@ class Slide
     })
 
   to: (slide_number)->
+    return true
     @swiper.slideTo(slide_number)
 
 module.exports =

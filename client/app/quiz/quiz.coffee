@@ -5,7 +5,6 @@ Backbone = require "backbone"
 Marionette = require "backbone.marionette"
 Gestures = require "./../lib/gestures"
 Slide = require "../lib/slide"
-Category = require "../categories/category"
 Question = require "./question"
 TabsView = Question.TabsView
 Result = require "./result"
@@ -54,13 +53,11 @@ QuizView = Marionette.LayoutView.extend
     header: ".bar.bar-nav"
     questions: "div.questions"
     answers: "div.answers"
-    menu: "div.menu"
     results: "div.results"
     tabs: "nav.bar.bar-tab"
   childEvents:
     "show_menu_clicked": (childView, msg)->
-      console.log "show menu clicked"
-      @show_menu()
+      @triggerMethod "show_categories_clicked"
     "finish_clicked": (childView, msg)->
       console.log "finish clicked"
       @show_results()
@@ -119,31 +116,36 @@ QuizView = Marionette.LayoutView.extend
        
 
 
+  hide_region: (name)->  @getRegion(name).$el.hide()
+  show_region: (name)->  @getRegion(name).$el.show()
   show_questions: ->
     @showChildView("header", new HeaderView(mode: "questions"))
+    @hide_region "answers"
+    @show_region "questions"
     @showChildView("questions", new Question.Views.QuestionsCollectionView(collection:
       @questions))
+    
     @slide.to(0)
-  show_answers: ->
+  show_answers: (name)->
     header_view = new HeaderView(
       mode: "answers",
       question: @selected_question.get("question")
     )
     @showChildView("header", header_view)
+    @hide_region "questions"
+    @show_region "answers"
     @showChildView("answers", new Answer.Views.AnswersCollectionView(collection:
       @answers))
     @slide.to(1)
   show_results: ->
     result_view = new Result.TestResultView(collection: @questions)
+    @hide_region "questions"
+    @hide_region "answers"
     @showChildView("results", result_view)
+    @show_region "results"
     @slide.to(2)
     @showChildView("header", new HeaderView(
       mode: "results", grade: @questions.summary().grade))
-  show_menu: ->
-    @showChildView("header", new HeaderView(mode: "pick_test"))
-    @showChildView("menu", new Category.View(phrases:
-      @options.collection))
-    @slide.to(3)
 
 
   onRender: ->

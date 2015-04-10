@@ -5,10 +5,14 @@ Backbone = require "backbone"
 Backbone.$ = $
 Marionette = require "backbone.marionette"
 QuizView = require "./quiz/quiz"
+ManagerView = require("./manager/manager").View
 Question = require "./quiz/question"
 
 Backbone.Marionette.Renderer.render = (template, data)->
-  JST[template](data)
+  tmp = JST[template]
+  if typeof(tmp) is "undefined"
+    throw new Error "Couldn't find template with name #{template}"
+  tmp(data)
 
 DataManager = require "./lib/data_manager"
 
@@ -24,8 +28,12 @@ app.on("before:start", (options)->
 )
 
 app.on("start", (options)->
-  phrases_view = new QuizView.QuizView(
-    category: "sport"
+  # phrases_view = new QuizView.QuizView(
+  #   category: "sport"
+  #   collection: @phrases
+  #   el: $("body")
+  # ).render()
+  phrases_view = new ManagerView(
     collection: @phrases
     el: $("body")
   ).render()

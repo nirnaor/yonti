@@ -8,11 +8,11 @@ DataManager = Marionette.Object.extend
     unless typeof(local_data) is "undefined"
       @triggerMethod "load_finished", data: local_data
 
-    data = new GoogleData.Data()
-    data.on "load_finished",(ev)=>
-      console.log ev.data
-      @triggerMethod "load_finished", ev
-    data.load()
+    # data = new GoogleData.Data()
+    # data.on "load_finished",(ev)=>
+    #   console.log ev.data
+    #   @triggerMethod "load_finished", ev
+    # data.load()
 
 module.exports = 
   DataManager: DataManager

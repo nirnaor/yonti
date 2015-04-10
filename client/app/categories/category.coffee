@@ -1,8 +1,16 @@
+$ = require "jquery"
 _ = require "underscore"
 Backbone = require "backbone"
 Marionette = require "backbone.marionette"
 
 BaseList = require "../base//base_list"
+BaseLayout = require("../base/layout").BaseLayout
+
+CategoryHeader = Marionette.ItemView.extend
+  template: false
+  onRender: ->
+   $("<h1>").addClass("title").html("Pick a category").appendTo(@el)
+
 
 CategoryItem = BaseList.ListItemView.extend
   template: "category"
@@ -11,16 +19,23 @@ CategoryItem = BaseList.ListItemView.extend
     @triggerMethod("category_clicked", category: @model.get("category"))
 
 
-CategoryView = BaseList.ListView.extend
+CategoryListView = BaseList.ListView.extend
   initialize: (options)->
-    @collection = @options.phrases.categories()
+    @collection = @options.collection.categories()
       
   childView: CategoryItem
   template: false
+
+
+CategoryView = BaseLayout.extend
   childEvents:
     "category_clicked": (childView, msg)->
-      console.log "CategoryView noticed"
-      @triggerMethod("category_picked", category: msg.category)
+      @triggerMethod("category_picked", msg)
+  onRender: ->
+    @header.show(new CategoryHeader())
+    @content.show(new CategoryListView(collection: @options.collection))
+
+
   
  module.exports =
    View: CategoryView
