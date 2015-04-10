@@ -17,7 +17,8 @@ ManagerView = Marionette.LayoutView.extend
     "show_categories_clicked": (childView, msg)->
       @show_categories()
 
-  onRender: -> @show_categories()
+  # onRender: -> @show_categories()
+  onRender: -> @show_quiz("INR")
 
   show_categories: ->
     @quiz.$el.hide()
