@@ -121,6 +121,7 @@ QuizView = Marionette.LayoutView.extend
   show_questions: ->
     @showChildView("header", new HeaderView(mode: "questions"))
     @hide_region "answers"
+    @hide_region "results"
     @show_region "questions"
     @showChildView("questions", new Question.Views.QuestionsCollectionView(collection:
       @questions))
