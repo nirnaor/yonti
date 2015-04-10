@@ -10,6 +10,7 @@ CategoryHeader = Marionette.ItemView.extend
   template: false
   onRender: ->
    $("<h1>").addClass("title").html("Pick a category").appendTo(@el)
+   $("<h4>").html("V0.0.2").appendTo @el
 
 
 CategoryItem = BaseList.ListItemView.extend
