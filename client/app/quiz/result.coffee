@@ -1,6 +1,8 @@
 _ = require "underscore"
 Marionette = require "backbone.marionette"
 
+Gestures = require "../lib/gestures"
+
 Question = require "./question"
 
 AnswerResultView = Question.Views.QuestionView.extend
@@ -11,7 +13,9 @@ AnswerResultView = Question.Views.QuestionView.extend
     "correction": ".correction"
     "correction_container": ".correction-container"
     "icon": ".question-icon.icon"
+    "google": ".media-body"
   onRender: ->
+    @bind_google()
     result = @model.result()
     color = {
       missing: "yellow"
@@ -31,6 +35,14 @@ AnswerResultView = Question.Views.QuestionView.extend
       @ui.icon.addClass "icon-check"
     else
       @ui.icon.addClass "icon-close"
+
+  bind_google: ->
+    google_it = =>
+      search = @model.get "question"
+      console.log "Will google for :#{search}"
+      window.open('http://google.com/search?q='+ search)
+
+    Gestures.add(@ui.google[0], "tap", google_it, @)
 
    
 TestResultView = Question.Views.QuestionsCollectionView.extend
