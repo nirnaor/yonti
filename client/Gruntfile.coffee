@@ -80,7 +80,8 @@ module.exports = (grunt)->
       dest: "#{files_folder}"}
       {expand: true, src: "bower_components/tabletop/src/tabletop.js",
       dest: "#{files_folder}"}
-      {expand: true, src: "index.html", dest: "#{folder}"}
+      {expand: true, src: "index.html", dest: "#{folder}"},
+      {expand: true, src: "app/IcoMoonFonts/**/*", dest: "#{folder}"}
     ]
 
   config.copy =
