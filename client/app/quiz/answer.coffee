@@ -4,7 +4,9 @@ Marionette = require "backbone.marionette"
 
 BaseList = require "../base/base_list"
 
-Answer = Backbone.Model.extend({})
+Answer = Backbone.Model.extend
+  same_as: (answer)-> @get("answer") is answer.get("answer")
+
 AnswerCollection = Backbone.Collection.extend
   comparator: (answer)->
     # Using a sample to make the order random
@@ -21,6 +23,26 @@ AnswerCollection = Backbone.Collection.extend
               answer.unset("attached_question", silent: true)
               console.log "Reset duplicate answer"
     )
+
+  add: (models, options)->
+    models = [ models ] unless _(models).isArray()
+
+    new_models = []
+
+    # Looping on the new models to add
+    for model in models
+      # If collection doesnt have the same answer already
+      same_answer =  @find (existing_answer)->
+        model.same_as(existing_answer)
+      
+      # If we didnt find an answer, add it later
+      if typeof(same_answer) is "undefined"
+        new_models.push model
+
+
+    console.log "overriding add"
+    Backbone.Collection.prototype.add.call(@,new_models, options)
+
 
 
 

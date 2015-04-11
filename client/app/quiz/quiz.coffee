@@ -106,7 +106,7 @@ QuizView = Marionette.LayoutView.extend
       })
       @questions.add question
 
-      answer = new Question.Model({answer: phrase.get("meaning")})
+      answer = new Answer.Model({answer: phrase.get("meaning")})
       @answers.add answer
 
     @questions.on("change:guess", (changed_question)=>
