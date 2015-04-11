@@ -37,12 +37,8 @@ AnswerResultView = Question.Views.QuestionView.extend
       @ui.icon.addClass "icon-close"
 
   bind_google: ->
-    google_it = =>
-      search = @model.get "question"
-      console.log "Will google for :#{search}"
-      window.open('http://google.com/search?q='+ search)
-
-    Gestures.add(@ui.google[0], "tap", google_it, @)
+    search = @model.get "question"
+    @ui.google.attr("href", href="http://google.com/search?q=#{search}")
 
    
 TestResultView = Question.Views.QuestionsCollectionView.extend
