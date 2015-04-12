@@ -2,6 +2,7 @@ Marionette = require "backbone.marionette"
 
 CategoryView = require("../categories/category").View
 QuizView = require("../quiz/quiz").QuizView
+SettingsView = require("../settings/list").View
 
 ManagerView = Marionette.LayoutView.extend
   template: "manager_layout"
@@ -9,6 +10,7 @@ ManagerView = Marionette.LayoutView.extend
   regions:
     "categories": ".categories"
     "quiz": ".quiz"
+    "settings": ".settings"
 
   childEvents:
     "category_picked": (childView, msg)->
@@ -16,6 +18,8 @@ ManagerView = Marionette.LayoutView.extend
       @show_quiz(msg.category)
     "show_categories_clicked": (childView, msg)->
       @show_categories()
+    "show_settings_clicked": (childView, msg)->
+      @show_settings()
 
   onRender: -> @show_categories()
   # onRender: -> @show_quiz("medicine 2")
@@ -32,6 +36,12 @@ ManagerView = Marionette.LayoutView.extend
     @categories.reset()
     @quiz.show(new QuizView(collection: questions, category: category))
     @quiz.$el.show()
+
+  show_settings: ->
+    # @quiz.$el.hide()
+    # @categories.$el.hide()
+    @quiz.$el.hide()
+    @settings.show(new SettingsView())
 
 module.exports =
   View: ManagerView

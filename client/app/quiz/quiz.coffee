@@ -29,10 +29,14 @@ HeaderView = Marionette.ItemView.extend
   ui:
     "title": ".title"
     "show_menu": ".icon-list"
+    "show_settings": ".icon-gear"
   on_show_menu_clicked: ->
     @triggerMethod "show_menu_clicked"
+  on_show_settings_clicked: ->
+    @triggerMethod "show_settings_clicked"
   onRender: ->
     Gestures.add(@ui.show_menu.get(0), "tap", @on_show_menu_clicked, @)
+    Gestures.add(@ui.show_settings.get(0), "tap", @on_show_settings_clicked, @)
     header = {
       questions: "Pick a phrase"
       answers: @options.question
@@ -58,6 +62,8 @@ QuizView = Marionette.LayoutView.extend
   childEvents:
     "show_menu_clicked": (childView, msg)->
       @triggerMethod "show_categories_clicked"
+    "show_settings_clicked": (childView, msg)->
+      @triggerMethod "show_settings_clicked"
     "finish_clicked": (childView, msg)->
       console.log "finish clicked"
       @show_results()
