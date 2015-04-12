@@ -1,6 +1,7 @@
 Backbone = require "backbone"
 Marionette = require "backbone.marionette"
 
+BaseLayout = require("../base/layout").BaseLayout
 BaseList = require "../base/base_list"
 
 
@@ -20,12 +21,7 @@ SettingsCollectionView = BaseList.ListView.extend
     for setting in [ "edit phrases", "instant mode" ]
       @collection.add(new Backbone.Model(name: setting))
 
-SettingsView = Marionette.LayoutView.extend
-  template: "settings_layout"
-  regions:
-    "list": ".list"
-    "google": ".google"
-
+SettingsView = BaseLayout.extend
   childEvents:
     "item_clicked": (childView, msg)->
       name = childView.model.get("name")
@@ -36,12 +32,11 @@ SettingsView = Marionette.LayoutView.extend
       console.log "SettingsCollectionView noticed clicked"
 
   show_google_phrases: ->
-    @list.$el.hide()
     url = @options.options.data_manager.google_url
     model = new Backbone.Model(url: url)
-    @google.show(new GooglePhrasesView(model: model))
+    @content.show(new GooglePhrasesView(model: model))
   onRender: ->
-    @list.show(new SettingsCollectionView())
+    @content.show(new SettingsCollectionView())
 
 module.exports =
   View: SettingsView
