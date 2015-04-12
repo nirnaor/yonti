@@ -9,6 +9,7 @@ DataManager = Marionette.Object.extend
       @triggerMethod "load_finished", data: local_data
 
     data = new GoogleData.Data()
+    @google_url = data.public_spreadsheet_url
     data.on "load_finished",(ev)=>
       console.log ev.data
       @triggerMethod "load_finished", ev

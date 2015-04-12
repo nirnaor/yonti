@@ -41,7 +41,7 @@ ManagerView = Marionette.LayoutView.extend
     # @quiz.$el.hide()
     # @categories.$el.hide()
     @quiz.$el.hide()
-    @settings.show(new SettingsView())
+    @settings.show(new SettingsView(options: @options))
 
 module.exports =
   View: ManagerView

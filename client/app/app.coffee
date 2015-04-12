@@ -36,6 +36,7 @@ app.on("start", (options)->
   phrases_view = new ManagerView(
     collection: @phrases
     el: $("body")
+    data_manager: options.data_manager
   ).render()
 )
 
@@ -45,6 +46,6 @@ $ ->
   data.on "load_finished",(ev)->
     console.log "NOTICED ON APP THAT LOAD HAS FINISHED"
     console.log ev.data
-    app.start(data: ev.data)
+    app.start(data: ev.data, data_manager: data)
 
   data.load()

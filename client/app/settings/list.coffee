@@ -37,7 +37,9 @@ SettingsView = Marionette.LayoutView.extend
 
   show_google_phrases: ->
     @list.$el.hide()
-    @google.show(new GooglePhrasesView())
+    url = @options.options.data_manager.google_url
+    model = new Backbone.Model(url: url)
+    @google.show(new GooglePhrasesView(model: model))
   onRender: ->
     @list.show(new SettingsCollectionView())
 
