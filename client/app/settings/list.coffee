@@ -45,9 +45,11 @@ SettingsView = BaseLayout.extend
     url = @options.options.data_manager.google_url
     model = new Backbone.Model(url: url)
     @content.show(new GooglePhrasesView(model: model))
+    @set_header "Edit phrases"
   onRender: ->
-    @show_google_phrases()
-    # @content.show(new SettingsCollectionView())
+    # @show_google_phrases()
+    @content.show(new SettingsCollectionView())
+    @set_header "Settings"
 
 module.exports =
   View: SettingsView

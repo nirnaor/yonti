@@ -5,6 +5,9 @@ BaseLayout = Marionette.LayoutView.extend
   regions:
     header: ".bar.bar-nav"
     content: ".content"
+  ui:
+    header: "h1.title"
+  set_header: (text)-> @ui.header.html text
 
 module.exports =
   BaseLayout: BaseLayout
