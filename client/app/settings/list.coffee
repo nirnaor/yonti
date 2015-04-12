@@ -7,6 +7,16 @@ BaseList = require "../base/base_list"
 
 GooglePhrasesView = Marionette.ItemView.extend
   template: "google"
+  ui:
+    "mail": "a.mail"
+  onRender:->
+    subject = "Add Questions to your Yonti app"
+    url = @model.get("url")
+    body = "Click the attached to add more questions to your App. The questions will appear on your app: %0A #{url}"
+    href = "mailto:?subject=#{subject}&&body=#{body}"
+    @ui.mail.attr("href", href)
+
+
   
 SettingView = BaseList.ListItemView.extend
   template: "setting"
@@ -36,7 +46,8 @@ SettingsView = BaseLayout.extend
     model = new Backbone.Model(url: url)
     @content.show(new GooglePhrasesView(model: model))
   onRender: ->
-    @content.show(new SettingsCollectionView())
+    @show_google_phrases()
+    # @content.show(new SettingsCollectionView())
 
 module.exports =
   View: SettingsView
