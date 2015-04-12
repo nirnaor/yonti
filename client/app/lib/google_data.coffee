@@ -5,6 +5,7 @@ Data = Marionette.Object.extend
     LocalStorage.set("phrases", data)
     @triggerMethod "load_finished", data: data
   public_spreadsheet_url: "https://docs.google.com/spreadsheets/d/1tbNkD6NIozNB4nywTNdNGDhVyFcFlk-arOHG3oTqTho/pubhtml?gid=1987288858&single=true"
+  sharing_url: "https://docs.google.com/spreadsheets/d/1tbNkD6NIozNB4nywTNdNGDhVyFcFlk-arOHG3oTqTho/edit?usp=sharing"
   load: ->
     console.log "calling init"
     Tabletop.init( key: @public_spreadsheet_url,    callback: ( (data, tabletop)=> @showInfo(data)),simpleSheet: true)
