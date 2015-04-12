@@ -33,6 +33,7 @@ SettingsCollectionView = BaseList.ListView.extend
 
 SettingsView = BaseLayout.extend
   childEvents:
+    "on_back_clicked":-> alert "NIR"
     "item_clicked": (childView, msg)->
       name = childView.model.get("name")
 
@@ -46,10 +47,20 @@ SettingsView = BaseLayout.extend
     model = new Backbone.Model(url: url)
     @content.show(new GooglePhrasesView(model: model))
     @set_header "Edit phrases"
-  onRender: ->
-    # @show_google_phrases()
+    @previous_view = "settings"
+  show_settings: ->
     @content.show(new SettingsCollectionView())
     @set_header "Settings"
+    @previous_view = undefined
+  onRender: ->
+    BaseLayout.prototype.onRender.apply(@,arguments)
+    @show_settings()
+
+  on_back_clicked: ->
+    if @previous_view is "settings"
+      @show_settings()
+    else
+      @triggerMethod "show_categories_clicked"
 
 module.exports =
   View: SettingsView

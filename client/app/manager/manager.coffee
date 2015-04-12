@@ -27,6 +27,7 @@ ManagerView = Marionette.LayoutView.extend
 
   show_categories: ->
     @quiz.$el.hide()
+    if typeof(@settings.$el) isnt "undefined" then @settings.$el.hide()
     @categories.show(new CategoryView(collection: @options.collection))
     @categories.$el.show()
     console.log "this is manager"
