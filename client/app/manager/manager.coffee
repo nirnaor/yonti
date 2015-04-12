@@ -23,6 +23,7 @@ ManagerView = Marionette.LayoutView.extend
 
   onRender: -> @show_categories()
   # onRender: -> @show_quiz("medicine 2")
+  # onRender: -> @show_settings()
 
   show_categories: ->
     @quiz.$el.hide()
