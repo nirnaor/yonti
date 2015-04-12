@@ -14,9 +14,6 @@ CategoryHeader = Marionette.ItemView.extend
 
 CategoryItem = BaseList.ListItemView.extend
   template: "category"
-  item_clicked: (ev)->
-    console.log "category clicked"
-    @triggerMethod("category_clicked", category: @model.get("category"))
 
 
 CategoryListView = BaseList.ListView.extend
@@ -29,8 +26,10 @@ CategoryListView = BaseList.ListView.extend
 
 CategoryView = BaseLayout.extend
   childEvents:
-    "category_clicked": (childView, msg)->
-      @triggerMethod("category_picked", msg)
+    "item_clicked": (childView, msg)->
+      console.log "category clicked"
+      @triggerMethod("category_picked",
+        category: childView.model.get("category"))
   onRender: ->
     @header.show(new CategoryHeader())
     @content.show(new CategoryListView(collection: @options.collection))

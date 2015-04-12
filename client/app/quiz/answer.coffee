@@ -51,9 +51,6 @@ AnswerView = BaseList.ListItemView.extend
   ui:
     "answer": ".answer"
     "attached_question": ".attached_question"
-  item_clicked:->
-    console.log "AnswerView: answer clicked"
-    @triggerMethod "on_answer_clicked"
   onRender: ->
     BaseList.ListItemView.prototype.onRender.apply(@,arguments)
     question = @model.get("attached_question")
@@ -69,7 +66,7 @@ AnswersCollectionView = BaseList.ListView.extend
   tagName: "ul"
   childView: AnswerView
   childEvents:
-    "on_answer_clicked": (ev)->
+    "item_clicked": (ev)->
       console.log "AnswersCollectionView:answer clicked" 
       @triggerMethod "answer_picked", answer: ev.model
 

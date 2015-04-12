@@ -6,16 +6,13 @@ BaseList = require "../base/base_list"
 
 SettingView = BaseList.ListItemView.extend
   template: "setting"
-  item_clicked: (ev)->
-    console.log "setting clicked"
-    @triggerMethod "setting clicked"
 
 SettingsCollectionView = BaseList.ListView.extend
 
   childView: SettingView
 
   childEvents:
-    "setting clicked": (ev)->
+    "item_clicked": (ev)->
       console.log "SettingsCollectionView noticed clicked"
 
   initialize: (options)->

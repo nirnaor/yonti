@@ -8,7 +8,7 @@ ListItemView = Marionette.ItemView.extend
   onRender: ->
     hammer = Gestures.add(@el, "tap", @item_clicked, @)
   item_clicked: (ev)->
-    throw new Error("item_clicked should be implemented")
+    @triggerMethod "item_clicked"
 
 ListView = Marionette.CollectionView.extend
   className: "table-view"

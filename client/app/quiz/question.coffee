@@ -57,9 +57,6 @@ QuestionView = BaseList.ListItemView.extend
   ui:
     "question": ".question"
     "guess": ".guess"
-  item_clicked: ->
-    console.log "QuestionView: phrase clicked"
-    @triggerMethod "single_question_clicked"
   onRender: ->
     BaseList.ListItemView.prototype.onRender.apply(@,arguments)
     guess = @model.get("guess")
@@ -73,7 +70,7 @@ QuestionView = BaseList.ListItemView.extend
 QuestionsCollectionView = BaseList.ListView.extend
   childView: QuestionView
   childEvents:
-    "single_question_clicked": (ev)->
+    "item_clicked": (ev)->
       console.log "PhrasesCollectionView: phrase clicked"
       @triggerMethod "question_clicked", question: ev.model
 
