@@ -6,11 +6,6 @@ Marionette = require "backbone.marionette"
 BaseList = require "../base//base_list"
 BaseLayout = require("../base/layout").BaseLayout
 
-CategoryHeader = Marionette.ItemView.extend
-  template: false
-  onRender: ->
-   $("<h1>").addClass("title").html("Pick a category (V0.0.4)").appendTo(@el)
-
 
 CategoryItem = BaseList.ListItemView.extend
   template: "category"
@@ -31,7 +26,7 @@ CategoryView = BaseLayout.extend
       @triggerMethod("category_picked",
         category: childView.model.get("category"))
   onRender: ->
-    @header.show(new CategoryHeader())
+    @set_header "Pick it!"
     @content.show(new CategoryListView(collection: @options.collection))
 
 
