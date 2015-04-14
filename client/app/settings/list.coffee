@@ -29,7 +29,7 @@ InstantView = BaseList.ListItemView.extend
     LocalStorage.set("instant_mode", res)
 
   initialize: ->
-    @instant = LocalStorage.get("instant_mode") or false
+    @instant = LocalStorage.get("instant_mode") or true
   onRender: -> if @instant then @ui.toggle.addClass("active")
 
 
