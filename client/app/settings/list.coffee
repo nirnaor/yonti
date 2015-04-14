@@ -3,6 +3,7 @@ Marionette = require "backbone.marionette"
 
 BaseLayout = require("../base/layout").BaseLayout
 BaseList = require "../base/base_list"
+LocalStorage = require "../lib/local_storage"
 
 
 GooglePhrasesView = Marionette.ItemView.extend
@@ -21,6 +22,11 @@ GooglePhrasesView = Marionette.ItemView.extend
 
 InstantView = BaseList.ListItemView.extend
   template: "instant"
+  ui: toggle: ".toggle"
+  events: "toggle @ui.toggle": "instant_change"
+  instant_change: (ev)->
+    res = ev.originalEvent.detail.isActive
+    LocalStorage.set("instant_mode", res)
 
 SettingsListView = BaseList.ListView.extend
   onRender: ->
