@@ -3,9 +3,9 @@ Marionette = require "backbone.marionette"
 
 Gestures = require "../lib/gestures"
 
-Question = require "./question"
+BaseList = require("../base/base_list")
 
-AnswerResultView = Question.Views.QuestionView.extend
+AnswerResultView = BaseList.ListItemView.extend
   template: "result"
   ui:
     "question": ".question"
@@ -41,7 +41,7 @@ AnswerResultView = Question.Views.QuestionView.extend
     @ui.google.attr("href", href="http://google.com/search?q=#{search}")
 
    
-TestResultView = Question.Views.QuestionsCollectionView.extend
+TestResultView = BaseList.ListView.extend
   childView: AnswerResultView
 
 
