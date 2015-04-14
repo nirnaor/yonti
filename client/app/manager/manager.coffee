@@ -19,6 +19,7 @@ ManagerView = Marionette.LayoutView.extend
     "show_categories_clicked": (childView, msg)->
       @show_categories()
     "show_settings_clicked": (childView, msg)->
+      console.log "will show settings"
       @show_settings()
 
   onRender: -> @show_categories()
@@ -40,10 +41,10 @@ ManagerView = Marionette.LayoutView.extend
     @quiz.$el.show()
 
   show_settings: ->
-    # @quiz.$el.hide()
-    # @categories.$el.hide()
     @quiz.$el.hide()
+    @categories.$el.hide()
     @settings.show(new SettingsView(options: @options))
+    @settings.$el.show()
 
 module.exports =
   View: ManagerView

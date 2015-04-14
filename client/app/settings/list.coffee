@@ -61,6 +61,8 @@ SettingsView = BaseLayout.extend
       @show_settings()
     else
       @triggerMethod "show_categories_clicked"
+  on_show_settings_clicked: ->
+    console.log "will show settings"
 
 module.exports =
   View: SettingsView
