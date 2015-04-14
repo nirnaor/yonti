@@ -121,7 +121,10 @@ QuizView = Marionette.LayoutView.extend
   hide_region: (name)->  @getRegion(name).$el.hide()
   show_region: (name)->  @getRegion(name).$el.show()
   show_questions: ->
-    @showChildView("header", new HeaderView(mode: "questions"))
+    if @options.instant
+      @show_results_header()
+    else
+      @showChildView("header", new HeaderView(mode: "questions"))
     @hide_region "answers"
     @hide_region "results"
     @show_region "questions"
