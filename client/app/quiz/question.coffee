@@ -69,14 +69,24 @@ QuestionView = BaseList.ListItemView.extend
       @ui.guess.hide()
 
 InstantQuestionView = QuestionView.extend
+
   onRender: ->
     console.log "InstantQuestionView: Will check if an answer is here"
     QuestionView.prototype.onRender.apply(@,arguments)
     question = @model.get("guess")
-    if (typeof(question) isnt "undefined")
-      result_view_el = new AnswerResultView(model: @model).render().el
-      @$el.html result_view_el
-      @setElement result_view_el
+    @render_result() if (typeof(question) isnt "undefined")
+
+  render_result: ->
+    result_view = new AnswerResultView(model: @model).render()
+    result_view.on("body_clicked", @show_message)
+    @$el.html result_view.el
+    @setElement result_view.el
+
+  show_message: ->
+    message = "Oh, Eta Pali. In instant mode you can't repick your answer. " +
+      "if you want, you can turn it off in settings"
+    alert message
+
   
 QuestionsCollectionView = BaseList.ListView.extend
   getChildView: ->

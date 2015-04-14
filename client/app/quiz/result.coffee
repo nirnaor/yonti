@@ -14,6 +14,7 @@ AnswerResultView = BaseList.ListItemView.extend
     "correction_container": ".correction-container"
     "icon": ".question-icon.icon"
     "google": "a.google"
+    "body": ".media-body"
   onRender: ->
     @bind_google()
     result = @model.result()
@@ -27,6 +28,10 @@ AnswerResultView = BaseList.ListItemView.extend
     @ui.icon.addClass "icon-#{icon_class}"
     if result is "correct"
       @ui.correction_container.hide()
+
+    Gestures.add(@ui.body.get(0), "tap", @on_body_clicked, @)
+
+  on_body_clicked: -> @triggerMethod "body_clicked"
 
   bind_google: ->
     search = @model.get "question"
