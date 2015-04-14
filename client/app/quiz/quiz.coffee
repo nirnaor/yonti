@@ -125,8 +125,10 @@ QuizView = Marionette.LayoutView.extend
     @hide_region "answers"
     @hide_region "results"
     @show_region "questions"
-    @showChildView("questions", new Question.Views.QuestionsCollectionView(collection:
-      @questions))
+    questions_view = new Question.Views.QuestionsCollectionView(
+      collection: @questions, instant: @options.instant)
+     
+    @showChildView("questions", questions_view)
     
     @slide.to(0)
   show_answers: (name)->

@@ -44,7 +44,9 @@ ManagerView = Marionette.LayoutView.extend
     @categories.$el.hide()
     questions = @options.collection.by_category(category)
     @categories.reset()
-    @quiz.show(new QuizView(collection: questions, category: category))
+    quiz_view = new QuizView(collection: questions, category: category, instant: @is_instant())
+
+    @quiz.show(quiz_view)
     @quiz.$el.show()
 
   show_settings: ->

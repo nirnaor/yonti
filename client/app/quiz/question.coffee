@@ -90,17 +90,7 @@ InstantQuestionView = QuestionView.extend
   
 QuestionsCollectionView = BaseList.ListView.extend
   getChildView: ->
-    return @child_view if @child_view?
-    instant = LocalStorage.get("instant_mode")
-    if typeof(instant) is "undefined"
-      instant = true
-
-    if instant
-      result = InstantQuestionView
-    else
-      result = QuestionView
-    @child_view = result
-    @child_view
+    if @options.instant then return InstantQuestionView else QuestionView
 
   childEvents:
     "item_clicked": (ev)->
