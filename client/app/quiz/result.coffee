@@ -13,7 +13,7 @@ AnswerResultView = BaseList.ListItemView.extend
     "correction": ".correction"
     "correction_container": ".correction-container"
     "icon": ".question-icon.icon"
-    "google": ".media-body"
+    "google": "a.google"
   onRender: ->
     @bind_google()
     result = @model.result()

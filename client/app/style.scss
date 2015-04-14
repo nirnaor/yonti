@@ -26,3 +26,9 @@
     width: 18%;
   }
 }
+
+// Anchor is getting a default styling by ratchet so I'm overriding 
+// just the google badge
+a.badge.icomoon.icomoon-google.pull-right.google{
+  padding: 7px;
+}
