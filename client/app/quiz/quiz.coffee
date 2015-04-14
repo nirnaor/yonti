@@ -28,7 +28,7 @@ HeaderView = Marionette.ItemView.extend
   className: "header"
   ui:
     "title": ".title"
-    "show_menu": ".icon-list"
+    "show_menu": ".icon-home"
   on_show_menu_clicked: ->
     @triggerMethod "show_menu_clicked"
   onRender: ->
