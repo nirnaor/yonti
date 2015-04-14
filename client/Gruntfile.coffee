@@ -116,6 +116,7 @@ module.exports = (grunt)->
   _(mobile_shell_config).extend(platform_configuration("android"))
   config.shell = mobile_shell_config
   config.shell.clean_coffee = command: "rm -rf #{coffee_output}"
+  config.shell.deploy_web = command: "scp -r #{build_folder} root@192.241.186.177:/home/"
 
 
         
@@ -136,6 +137,7 @@ module.exports = (grunt)->
   "shell:build_ios", "shell:emulate_ios"])
   grunt.registerTask("build_android", ["mobile_base",
   "shell:platforms_android", "shell:build_android", "shell:emulate_android"])
+  grunt.registerTask("deploy_web", ["default", "shell:deploy_web" ])
  
 
  
