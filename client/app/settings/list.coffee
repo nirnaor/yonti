@@ -18,30 +18,19 @@ GooglePhrasesView = Marionette.ItemView.extend
 
 
   
-SettingView = BaseList.ListItemView.extend
-  template: "setting"
 
-SettingsCollectionView = BaseList.ListView.extend
+InstantView = BaseList.ListItemView.extend
+  template: "instant"
 
-  childView: SettingView
-
-
-  initialize: (options)->
-    @collection = new Backbone.Collection()
-    for setting in [ "edit phrases", "instant mode" ]
-      @collection.add(new Backbone.Model(name: setting))
+SettingsListView = BaseList.ListView.extend
+  onRender: ->
+    console.log "WT"
+    @$el.append(new InstantView().render().el)
+    edit_phrases = new BaseList.ListItemView(text: "Edit phrases")
+    edit_phrases.on "item_clicked", => @triggerMethod "edit_phrases"
+    @$el.append(edit_phrases.render().el)
 
 SettingsView = BaseLayout.extend
-  childEvents:
-    "on_back_clicked":-> alert "NIR"
-    "item_clicked": (childView, msg)->
-      name = childView.model.get("name")
-
-      switch name
-        when "edit phrases" then @show_google_phrases()
-      
-      console.log "SettingsCollectionView noticed clicked"
-
   show_google_phrases: ->
     url = @options.options.data_manager.google_url
     model = new Backbone.Model(url: url)
@@ -49,7 +38,9 @@ SettingsView = BaseLayout.extend
     @set_header "Edit phrases"
     @previous_view = "settings"
   show_settings: ->
-    @content.show(new SettingsCollectionView())
+    settings_list = new SettingsListView()
+    settings_list.on "edit_phrases", => @show_google_phrases()
+    @content.show(settings_list)
     @set_header "Settings"
     @previous_view = undefined
   onRender: ->
