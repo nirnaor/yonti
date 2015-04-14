@@ -149,6 +149,8 @@ QuizView = Marionette.LayoutView.extend
     @showChildView("results", result_view)
     @show_region "results"
     @slide.to(2)
+    @show_results_header()
+  show_results_header: ->
     @showChildView("header", new HeaderView(
       mode: "results", grade: @questions.summary().grade))
 
