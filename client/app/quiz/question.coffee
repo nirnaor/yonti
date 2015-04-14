@@ -3,6 +3,8 @@ Backbone = require "backbone"
 Marionette = require "backbone.marionette"
 
 BaseList = require "../base/base_list"
+AnswerResultView = require("./result").AnswerResultView
+LocalStorage = require "../lib/local_storage"
 
 Question = Backbone.Model.extend
   result: ->
@@ -66,9 +68,30 @@ QuestionView = BaseList.ListItemView.extend
     else
       @ui.guess.hide()
 
+InstantQuestionView = QuestionView.extend
+  onRender: ->
+    console.log "InstantQuestionView: Will check if an answer is here"
+    QuestionView.prototype.onRender.apply(@,arguments)
+    question = @model.get("guess")
+    if (typeof(question) isnt "undefined")
+      result_view_el = new AnswerResultView(model: @model).render().el
+      @$el.html result_view_el
+      @setElement result_view_el
   
 QuestionsCollectionView = BaseList.ListView.extend
-  childView: QuestionView
+  getChildView: ->
+    return @child_view if @child_view?
+    instant = LocalStorage.get("instant_mode")
+    if typeof(instant) is "undefined"
+      instant = true
+
+    if instant
+      result = InstantQuestionView
+    else
+      result = QuestionView
+    @child_view = result
+    @child_view
+
   childEvents:
     "item_clicked": (ev)->
       console.log "PhrasesCollectionView: phrase clicked"
