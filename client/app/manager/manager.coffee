@@ -3,6 +3,7 @@ Marionette = require "backbone.marionette"
 CategoryView = require("../categories/category").View
 QuizView = require("../quiz/quiz").QuizView
 SettingsView = require("../settings/list").View
+LocalStorage = require "../lib/local_storage"
 
 ManagerView = Marionette.LayoutView.extend
   template: "manager_layout"
@@ -21,6 +22,12 @@ ManagerView = Marionette.LayoutView.extend
     "show_settings_clicked": (childView, msg)->
       console.log "will show settings"
       @show_settings()
+
+  is_instant: ->
+    instant = LocalStorage.get("instant_mode")
+    if typeof(instant) is "undefined"
+      instant = true
+    instant
 
   onRender: -> @show_categories()
   # onRender: -> @show_quiz("medicine 2")
@@ -43,7 +50,7 @@ ManagerView = Marionette.LayoutView.extend
   show_settings: ->
     @quiz.$el.hide()
     @categories.$el.hide()
-    @settings.show(new SettingsView(options: @options))
+    @settings.show(new SettingsView(options: @options, instant: @is_instant()))
     @settings.$el.show()
 
 module.exports =

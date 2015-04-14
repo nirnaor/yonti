@@ -29,14 +29,14 @@ InstantView = BaseList.ListItemView.extend
     LocalStorage.set("instant_mode", res)
 
   initialize: ->
-    @instant = LocalStorage.get("instant_mode") or true
+    @instant = @options.instant
   onRender: -> if @instant then @ui.toggle.addClass("active")
 
 
 SettingsListView = BaseList.ListView.extend
   onRender: ->
     console.log "WT"
-    @$el.append(new InstantView().render().el)
+    @$el.append(new InstantView(instant: @options.instant).render().el)
     edit_phrases = new BaseList.ListItemView(text: "Edit phrases")
     edit_phrases.on "item_clicked", => @triggerMethod "edit_phrases"
     @$el.append(edit_phrases.render().el)
@@ -49,7 +49,7 @@ SettingsView = BaseLayout.extend
     @set_header "Edit phrases"
     @previous_view = "settings"
   show_settings: ->
-    settings_list = new SettingsListView()
+    settings_list = new SettingsListView(instant: @options.instant)
     settings_list.on "edit_phrases", => @show_google_phrases()
     @content.show(settings_list)
     @set_header "Settings"
