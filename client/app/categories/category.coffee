@@ -27,7 +27,7 @@ CategoryView = BaseLayout.extend
         category: childView.model.get("category"))
   onRender: ->
     BaseLayout.prototype.onRender.apply(@,arguments)
-    @set_header "Pick it!"
+    @set_header "What do you wnat to learn?"
     @content.show(new CategoryListView(collection: @options.collection))
   on_show_settings_clicked: ->
     @triggerMethod "show_settings_clicked"
