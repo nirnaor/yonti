@@ -64,6 +64,8 @@ module.exports = (grunt)->
 
   # Mobile deployment
   cordova_root = "yonti"
+  cordova_platforms = "#{cordova_root}/platforms"
+  android_folder = "#{cordova_platforms}/android"
   cordova_www = "#{cordova_root}/www/"
 
   files_to = (folder)->
@@ -85,6 +87,8 @@ module.exports = (grunt)->
     ]
 
   config.copy =
+    android_manifest:
+      src: "AndroidManifest.xml", dest: "#{android_folder}/AndroidManifest.xml"
     build: files_to(build_folder)
     cordova: files: [
       { src: [ '**' ], dest: cordova_www, cwd: build_folder, expand: true},
@@ -118,6 +122,26 @@ module.exports = (grunt)->
   config.shell.clean_coffee = command: "rm -rf #{coffee_output}"
   config.shell.deploy_web = command: "scp -r #{build_folder} root@192.241.186.177:/home/"
 
+  source_apk = "ant-build/MainActivity-release-unsigned.apk"
+  zipalign_location = "~/Library/Android/sdk/build-tools/21.1.2/zipalign"
+  alias_name = "yonti"
+  output_apk = "yonti.apk"
+
+  config.shell.copy_android_manifest =
+    command: "cp AndroidManifest.xml #{android_folder}"
+      
+
+  config.shell.deploy_android =
+    command: [
+      "keytool -genkey -v -keystore my-release-key.keystore -alias #{alias_name} -keyalg RSA -keysize 2048 -validity 10000",
+      "jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore #{source_apk} #{alias_name}",
+      "#{zipalign_location} -v 4 #{source_apk} #{output_apk}",
+      "echo file is ready for deployment at #{android_folder}/#{output_apk}",
+    ].join('&&')
+    options:
+      execOptions:
+        cwd: android_folder
+
 
         
 
@@ -136,8 +160,10 @@ module.exports = (grunt)->
   grunt.registerTask("build_ios", ["mobile_base", "shell:platforms_ios"
   "shell:build_ios", "shell:emulate_ios"])
   grunt.registerTask("build_android", ["mobile_base",
-  "shell:platforms_android", "shell:build_android", "shell:emulate_android"])
+  "shell:platforms_android","copy:android_manifest",  "shell:build_android",
+  "shell:emulate_android"])
   grunt.registerTask("deploy_web", ["default", "shell:deploy_web" ])
+  grunt.registerTask("deploy_android", [ "shell:deploy_android" ])
  
 
  
