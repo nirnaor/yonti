@@ -74,6 +74,10 @@ module.exports = (grunt)->
       # {expand: true, src: "#{coffee_output}/**/*", dest: "#{files_folder}"}
       {expand: true, src: "bower_components/ratchet/dist/css/ratchet.css",
       dest: "#{files_folder}"}
+      {expand: true, src: "bower_components/ratchet/dist/css/ratchet-theme-android.css",
+      dest: "#{files_folder}"}
+      {expand: true, src: "bower_components/ratchet/dist/css/ratchet-theme-ios.css",
+      dest: "#{files_folder}"}
       {expand: true, src: "bower_components/ratchet/dist/fonts/*",
       dest: "#{files_folder}"}
       {expand: true, src: "bower_components/ratchet/dist/js/ratchet.js",

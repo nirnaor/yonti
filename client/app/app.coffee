@@ -15,6 +15,7 @@ Backbone.Marionette.Renderer.render = (template, data)->
   tmp(data)
 
 DataManager = require "./lib/data_manager"
+Utils = require "./lib/utils"
 
 
 
@@ -22,9 +23,17 @@ DataManager = require "./lib/data_manager"
 app = new Marionette.Application()
 
 app.on("before:start", (options)->
+  # Start app based on phrases
   @phrases = new Question.Collection()
   _(options.data).forEach (el)=>
     @phrases.add(new Backbone.Model(el))
+
+  # Add theme css based on OS (Only android or ios)
+  theme = Utils.os()
+  return if theme is 'unknown'
+  url = "files/bower_components/ratchet/dist/css/ratchet-theme-#{theme}.css"
+  theme_css = $("<link>").attr("rel", "stylesheet").attr("type", "text/css").attr("href", url)
+  theme_css.appendTo("head")
 )
 
 app.on("start", (options)->
