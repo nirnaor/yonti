@@ -15,24 +15,24 @@ TabsView = Marionette.ItemView.extend
   ui:
     finish: "a.finish"
     restart: "a.restart"
+    show_menu: ".icon-home"
   onRender: ->
     Gestures.add(@ui.finish.get(0), "tap", @on_finish_clicked, @)
     Gestures.add(@ui.restart.get(0), "tap", @on_restart_clicked, @)
+    Gestures.add(@ui.show_menu.get(0), "tap", @on_show_menu_clicked, @)
   on_finish_clicked: ->
     @triggerMethod "finish_clicked"
   on_restart_clicked: ->
     @triggerMethod "restart_clicked"
+  on_show_menu_clicked: ->
+    @triggerMethod "show_menu_clicked"
 
 HeaderView = Marionette.ItemView.extend
   template: "header"
   className: "header"
   ui:
     "title": ".title"
-    "show_menu": ".icon-home"
-  on_show_menu_clicked: ->
-    @triggerMethod "show_menu_clicked"
   onRender: ->
-    Gestures.add(@ui.show_menu.get(0), "tap", @on_show_menu_clicked, @)
     header = {
       questions: "Pick a phrase"
       answers: @options.question
@@ -54,7 +54,7 @@ QuizView = Marionette.LayoutView.extend
     questions: "div.questions"
     answers: "div.answers"
     results: "div.results"
-    tabs: "nav.bar.bar-tab"
+    tabs: "nav.bar.bar-footer"
   childEvents:
     "show_menu_clicked": (childView, msg)->
       @triggerMethod "show_categories_clicked"
