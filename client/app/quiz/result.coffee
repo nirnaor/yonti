@@ -24,7 +24,8 @@ AnswerResultView = BaseList.ListItemView.extend
     if guess
       @ui.guess.html(guess.get("answer"))
 
-    icon_class = { correct: "check", mistake: "close" }[result]
+    icon_class =
+      { correct: "check", mistake: "close", missing: "close" }[result]
     @ui.icon.addClass "icon-#{icon_class}"
     if result is "correct"
       @ui.correction_container.hide()
