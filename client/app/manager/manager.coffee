@@ -5,15 +5,20 @@ QuizView = require("../quiz/quiz").QuizView
 SettingsView = require("../settings/list").View
 LocalStorage = require "../lib/local_storage"
 
+TestKindPickerView = require "./test_kind_picker"
+
 ManagerView = Marionette.LayoutView.extend
   template: "manager_layout"
 
   regions:
+    "tests_kinds": ".tests_kinds"
     "categories": ".categories"
     "quiz": ".quiz"
     "settings": ".settings"
 
   childEvents:
+    "community_clicked": (childView, msg)->
+      @show_categories()
     "category_picked": (childView, msg)->
       console.log "category #{msg.category} picked"
       @show_quiz(msg.category)
@@ -30,6 +35,7 @@ ManagerView = Marionette.LayoutView.extend
     instant
 
   onRender: -> @show_categories()
+  onRender: -> @show_test_kind_picker()
   # onRender: -> @show_quiz("medicine 2")
   # onRender: -> @show_settings()
 
@@ -54,6 +60,10 @@ ManagerView = Marionette.LayoutView.extend
     @categories.$el.hide()
     @settings.show(new SettingsView(options: @options, instant: @is_instant()))
     @settings.$el.show()
+
+  show_test_kind_picker: ->
+    @tests_kinds.show(new TestKindPickerView())
+
 
 module.exports =
   View: ManagerView
