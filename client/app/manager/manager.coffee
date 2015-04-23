@@ -17,6 +17,7 @@ ManagerView = Marionette.LayoutView.extend
     "settings": ".settings"
 
   childEvents:
+    "category_back_clicked": -> alert "kaka"; @show_test_kind_picker()
     "community_clicked": (childView, msg)->
       @show_categories()
     "category_picked": (childView, msg)->
@@ -62,6 +63,9 @@ ManagerView = Marionette.LayoutView.extend
     @settings.$el.show()
 
   show_test_kind_picker: ->
+    @settings.$el.show()
+    @quiz.$el.hide()
+    @categories.$el.hide()
     @tests_kinds.show(new TestKindPickerView())
 
 

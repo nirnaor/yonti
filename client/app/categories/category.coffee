@@ -25,6 +25,7 @@ CategoryView = BaseLayout.extend
       console.log "category clicked"
       @triggerMethod("category_picked",
         category: childView.model.get("category"))
+  on_back_clicked: -> @triggerMethod "category_back_clicked"
   onRender: ->
     BaseLayout.prototype.onRender.apply(@,arguments)
     @set_header "What do you want to learn?"
