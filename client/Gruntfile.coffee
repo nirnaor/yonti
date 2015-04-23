@@ -91,12 +91,15 @@ module.exports = (grunt)->
     ]
 
   config.copy =
-    android_manifest:
-      src: "AndroidManifest.xml", dest: "#{android_folder}/AndroidManifest.xml"
+    android_files:
+      [
+        {src: "AndroidManifest.xml", dest: "#{android_folder}/AndroidManifest.xml"}
+        {src: "config.xml", dest: "#{android_folder}/res/xml/config.xml"}
+      ].join("&&")
     build: files_to(build_folder)
     cordova: files: [
       { src: [ '**' ], dest: cordova_www, cwd: build_folder, expand: true},
-      { src: "config.xml", dest: "#{cordova_root}/"}
+      # { src: "config.xml", dest: "#{cordova_root}/"}
     ]
 
   command_in_root = (command)->
@@ -115,10 +118,11 @@ module.exports = (grunt)->
       command_in_root("cordova emulate #{platform_name}")
     result
 
+  domain_identifier = "com.nirnaor.kfir"
   mobile_shell_config = {}
   mobile_shell_config.create =
     command: [ "rm -rf #{cordova_root}",
-    "cordova create #{cordova_root} com.nirnaor.yonti YontiMemory" ].join "&&"
+    "cordova create #{cordova_root} #{domain_identifier} YontiMemory" ].join "&&"
 
   _(mobile_shell_config).extend(platform_configuration("ios"))
   _(mobile_shell_config).extend(platform_configuration("android"))
@@ -131,8 +135,6 @@ module.exports = (grunt)->
   alias_name = "yonti"
   output_apk = "yonti.apk"
 
-  config.shell.copy_android_manifest =
-    command: "cp AndroidManifest.xml #{android_folder}"
       
 
   config.shell.deploy_android =
@@ -164,7 +166,7 @@ module.exports = (grunt)->
   grunt.registerTask("build_ios", ["mobile_base", "shell:platforms_ios"
   "shell:build_ios", "shell:emulate_ios"])
   grunt.registerTask("build_android", ["mobile_base",
-  "shell:platforms_android","copy:android_manifest",  "shell:build_android",
+  "shell:platforms_android","copy:android_files",  "shell:build_android",
   "shell:emulate_android"])
   grunt.registerTask("deploy_web", ["default", "shell:deploy_web" ])
   grunt.registerTask("deploy_android", [ "shell:deploy_android" ])
