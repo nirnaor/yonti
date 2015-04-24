@@ -7,6 +7,7 @@ TestKindsListView = BaseList.ListView.extend
     community_tests = new BaseList.ListItemView(text: "Community tests")
     community_tests.on "item_clicked", => @triggerMethod "community_clicked"
     my_tests = new BaseList.ListItemView(text: "My Tests")
+    my_tests.on "item_clicked", => @triggerMethod "my_tests_clicked"
 
     for view in [ community_tests, my_tests ]
       @$el.append(view.render().el)
@@ -14,9 +15,11 @@ TestKindsListView = BaseList.ListView.extend
 TestKindPickerView = BaseLayout.extend
   childEvents:
     community_clicked: -> @triggerMethod "community_clicked"
+    my_tests_clicked: -> @triggerMethod "my_tests_clicked"
   onRender: ->
     BaseLayout.prototype.onRender.apply(@,arguments)
     @set_header "Choose type of test"
     @content.show(new TestKindsListView())
+
 
 module.exports = TestKindPickerView

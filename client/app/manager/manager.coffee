@@ -5,6 +5,9 @@ QuizView = require("../quiz/quiz").QuizView
 SettingsView = require("../settings/list").View
 LocalStorage = require "../lib/local_storage"
 
+SignUpLoginView = require("../users/module")
+
+
 TestKindPickerView = require "./test_kind_picker"
 
 ManagerView = Marionette.LayoutView.extend
@@ -15,12 +18,16 @@ ManagerView = Marionette.LayoutView.extend
     "categories": ".categories"
     "quiz": ".quiz"
     "settings": ".settings"
+    "users": ".users"
 
   childEvents:
     "category_back_clicked": ->
       @show_test_kind_picker()
     "community_clicked": (childView, msg)->
       @show_categories()
+    "my_tests_clicked": (childView, msg)->
+      unless app.user_logged_in()
+        @show_sign_up()
     "category_picked": (childView, msg)->
       console.log "category #{msg.category} picked"
       @show_quiz(msg.category)
@@ -37,7 +44,6 @@ ManagerView = Marionette.LayoutView.extend
     instant
 
   onRender: -> @show_categories()
-  onRender: -> @show_test_kind_picker()
   # onRender: -> @show_quiz("medicine 2")
   # onRender: -> @show_settings()
 
@@ -68,6 +74,13 @@ ManagerView = Marionette.LayoutView.extend
     @quiz.$el.hide()
     @categories.$el.hide()
     @tests_kinds.show(new TestKindPickerView())
+
+  show_sign_up: ->
+    @settings.$el.show()
+    @quiz.$el.hide()
+    @categories.$el.hide()
+    @tests_kinds.show(new TestKindPickerView())
+    @users.show(new SignUpLoginView())
 
 
 module.exports =

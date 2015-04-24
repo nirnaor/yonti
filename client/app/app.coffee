@@ -20,7 +20,9 @@ Utils = require "./lib/utils"
 
 
 
-app = new Marionette.Application()
+window.app = new Marionette.Application()
+
+app.user_logged_in = -> false
 
 app.on("before:start", (options)->
   # Start app based on phrases
