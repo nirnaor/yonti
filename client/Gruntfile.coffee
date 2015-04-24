@@ -12,15 +12,15 @@ module.exports = (grunt)->
   config.watch =
     code:
       files: "#{app_folder}/**/*.coffee"
-      tasks: [ "code" ]
+      tasks: [ "code", "copy:to_rails_public_dir" ]
       options: livereload: 35729
     templates:
       files: "#{app_folder}/**/*.jade"
-      tasks: [ "templates" ]
+      tasks: [ "templates", "copy:to_rails_public_dir" ]
       options: livereload: 35729
     style:
       files: "#{app_folder}/**/*.scss"
-      tasks: [ "style" ]
+      tasks: [ "style", "copy:to_rails_public_dir" ]
       options: livereload: 35729
 
   
@@ -91,6 +91,9 @@ module.exports = (grunt)->
     ]
 
   config.copy =
+    to_rails_public_dir:
+      {expand: true, src: "#{build_folder}/**/*", dest: "../server/public/"}
+
     android_files:
       [
         {src: "AndroidManifest.xml", dest: "#{android_folder}/AndroidManifest.xml"}
@@ -158,7 +161,8 @@ module.exports = (grunt)->
 
   grunt.registerTask("templates", [ "jade2js" ])
   grunt.registerTask("style", [ "compass" ])
-  grunt.registerTask("default", ["code", "templates", "style", "copy:build"])
+  grunt.registerTask("default", ["code", "templates", "style", "copy:build"
+  "copy:to_rails_public_dir"])
 
 
   grunt.registerTask("mobile_base", [ "default", "shell:create", "copy:cordova" ])
