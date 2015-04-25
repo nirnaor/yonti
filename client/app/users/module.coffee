@@ -21,7 +21,7 @@ SignUpView = Marionette.ItemView.extend
     for field, message of errors
       message = "#{field} - #{message}"
       console.log message
-      @ui.errors.html(message)
+      $("<li>").html(message).appendTo(@ui.errors)
 
 
 

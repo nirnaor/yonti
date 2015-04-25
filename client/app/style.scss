@@ -30,6 +30,13 @@
   }
 }
 
+.errors{
+  li{
+    color: red;
+  }
+}
+
+
 // Anchor is getting a default styling by ratchet so I'm overriding 
 // just the google badge
 a.badge.icomoon.icomoon-google.pull-right.google{
