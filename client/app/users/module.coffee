@@ -1,11 +1,38 @@
+_ = require "underscore"
+$ = require "jquery"
 Marionette = require "backbone.marionette"
 
 BaseLayout = require("../base/layout").BaseLayout
 BaseList = require "../base/base_list"
+Requests = require "../lib/requests"
 
 
 SignUpView = Marionette.ItemView.extend
   template: "sign_up"
+  ui:
+    sign_up: "button"
+    form: "form"
+  events:
+    "click @ui.sign_up": "on_sign_up"
+  on_sign_up: (ev)->
+    ev.preventDefault()
+
+    success = (data,textStatus,jqHXR) ->
+      console.log data
+      console.log "back from server"
+    error = (data,textStatus,jqHXR) ->
+      console.log "ERROR"
+
+    data = {}
+    for field in @ui.form.serializeArray()
+      data[field.name] = field.value
+    console.log data
+
+    Requests.post("users/", data, success, error)
+    
+
+
+    
 
 LoginView = Marionette.ItemView.extend
   template: "login"
