@@ -1,11 +1,16 @@
 _ = require "underscore"
 $ = require "jquery"
+Backbone = require "backbone"
 Marionette = require "backbone.marionette"
 
 BaseLayout = require("../base/layout").BaseLayout
 BaseList = require "../base/base_list"
 Requests = require "../lib/requests"
+LocalStorage = require "../lib/local_storage"
 Utils = require "../lib/utils"
+
+
+
 
 
 SignUpView = Marionette.ItemView.extend
@@ -58,11 +63,15 @@ LoginView = Marionette.ItemView.extend
     data = Utils.form_data(@ui.form)
 
     Requests.post("sessions/", data,
-      ( => @triggerMethod "signed_in_successfully"),
+      ( => @login_user(arguments[0])),
       ( => @on_login_failed())
     )
   on_login_failed: ->
     $("<li>").html("wrong username or password").appendTo(@ui.errors)
+
+  login_user: (user_attributes)->
+    user = new Backbone.Model(user_attributes)
+    LocalStorage.set("logged_in_user", user)
 
 
 SignUpLoginListView = BaseList.ListView.extend
