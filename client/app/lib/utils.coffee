@@ -7,5 +7,13 @@ os = ->
   else
     'unknown'
 
+
+form_data = (form) ->
+  data = {}
+  for field in form.serializeArray()
+    data[field.name] = field.value
+  data
+
 module.exports =
   os: os
+  form_data: form_data
