@@ -10,7 +10,19 @@ LocalStorage = require "../lib/local_storage"
 Utils = require "../lib/utils"
 
 
-
+logout = ->
+  LocalStorage.remove "user"
+current_user = ->
+  attributes = LocalStorage.get "user"
+  new Backbone.Model(attributes)
+is_logged_in = ->
+  user = LocalStorage.get "user"
+  typeof(user) isnt "undefined"
+login_user =  (user_attributes)->
+  user = new Backbone.Model(user_attributes)
+  LocalStorage.set("user", user)
+        
+        
 
 
 SignUpView = Marionette.ItemView.extend
@@ -41,10 +53,13 @@ SignUpView = Marionette.ItemView.extend
 
     # Try to sign up and sign in the server
     Requests.post("users/", data,
-      ( => @triggerMethod("signed_up_success")),
+      ( => @on_success(arguments[0])),
       ( => @fill_errors(arguments[0].responseJSON))
     )
-    
+
+  on_success: (user_attributes)->
+    login_user user_attributes
+    @triggerMethod("signed_up_success")
 
 
     
@@ -63,34 +78,50 @@ LoginView = Marionette.ItemView.extend
     data = Utils.form_data(@ui.form)
 
     Requests.post("sessions/", data,
-      ( => @login_user(arguments[0])),
+      ( => @on_login_success(arguments[0])),
       ( => @on_login_failed())
     )
+
   on_login_failed: ->
     $("<li>").html("wrong username or password").appendTo(@ui.errors)
 
-  login_user: (user_attributes)->
-    user = new Backbone.Model(user_attributes)
-    LocalStorage.set("logged_in_user", user)
+  on_login_success:(user_attributes) ->
+    login_user user_attributes
+    @triggerMethod "login_success"
+
 
 
 SignUpLoginListView = BaseList.ListView.extend
   onRender: ->
-    sign_up = new BaseList.ListItemView(text: "Sign up")
-    sign_up.on "item_clicked", => @triggerMethod "signup_clicked"
-    login = new BaseList.ListItemView(text: "Log In")
-    login.on "item_clicked", => @triggerMethod "login_clicked"
+    views = []
+    if is_logged_in()
+      user = current_user()
+      text = "Logged in as #{user.get("name")}"
+      logged_in_as = new BaseList.ListItemView(text: text)
+      log_out = new BaseList.ListItemView(text: "Log out")
+      log_out.on "item_clicked", =>
+        logout()
+        @triggerMethod "logout_success"
+      views = [ logged_in_as, log_out ]
+    else
+      sign_up = new BaseList.ListItemView(text: "Sign up")
+      sign_up.on "item_clicked", => @triggerMethod "signup_clicked"
+      login = new BaseList.ListItemView(text: "Log In")
+      login.on "item_clicked", => @triggerMethod "login_clicked"
+      views = [ sign_up, login ]
 
-    for view in [ sign_up, login ]
+    for view in views
       @$el.append(view.render().el)
 
 SignUpLoginView = BaseLayout.extend
   childEvents:
     signup_clicked: "sign_up"
     login_clicked: "login"
-    signed_up_success: "login"
-
+    signed_up_success: "onRender"
+    login_success: "onRender"
+    logout_success: "onRender"
   onRender: ->
+    console.log "User signed in: #{is_logged_in()}"
     BaseLayout.prototype.onRender.apply(@,arguments)
     @content.show(new SignUpLoginListView)
     # @login()
