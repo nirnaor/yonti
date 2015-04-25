@@ -7,8 +7,7 @@ post = (url, data, success, error)->
     crossDomain: true
     xhrFields:
       withCredentials: true
-    data:
-      user: data
+    data: data
     dataType: "json"
     success: success
     error: error

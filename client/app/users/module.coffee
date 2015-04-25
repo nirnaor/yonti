@@ -28,7 +28,7 @@ SignUpView = Marionette.ItemView.extend
   on_sign_up: (ev)->
     ev.preventDefault()
 
-    data = Utils.form_data(@ui.form)
+    data = user: Utils.form_data(@ui.form)
 
     # Validate passwords
     if data.password isnt data.password_confirmation
@@ -56,6 +56,13 @@ LoginView = Marionette.ItemView.extend
     ev.preventDefault()
     console.log "sign in clicked"
     data = Utils.form_data(@ui.form)
+
+    Requests.post("sessions/", data,
+      ( => @triggerMethod "signed_in_successfully"),
+      ( => @on_login_failed())
+    )
+  on_login_failed: ->
+    $("<li>").html("wrong username or password").appendTo(@ui.errors)
 
 
 SignUpLoginListView = BaseList.ListView.extend
