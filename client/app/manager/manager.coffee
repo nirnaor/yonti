@@ -79,7 +79,6 @@ ManagerView = Marionette.LayoutView.extend
     @settings.$el.show()
     @quiz.$el.hide()
     @categories.$el.hide()
-    @tests_kinds.show(new TestKindPickerView())
     @users.show(new SignUpLoginView())
 
 
