@@ -11,7 +11,6 @@ DataManager = Marionette.Object.extend
     data = new GoogleData.Data()
     @google_url = data.sharing_url
     data.on "load_finished",(ev)=>
-      console.log ev.data
       @triggerMethod "load_finished", ev
     data.load()
 

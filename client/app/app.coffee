@@ -56,7 +56,6 @@ $ ->
   # data = new DummyData.Data()
   data.on "load_finished",(ev)->
     console.log "NOTICED ON APP THAT LOAD HAS FINISHED"
-    console.log ev.data
     app.start(data: ev.data, data_manager: data)
 
   data.load()
