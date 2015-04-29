@@ -3,6 +3,9 @@ module GoogleUtils
     GoogleDrive.login(ENV["EMAIL"], ENV["EMAIL_PASSWORD"])
   end
 
+  # TODO: There shold already be a new link waiting for a new user
+  # in the cache. the user will get that URL and a new one 
+  # should be created on a different thread and update the cache
   def self.new_spreadsheet_for(username)
     require "rubygems"
     require "google/api_client"

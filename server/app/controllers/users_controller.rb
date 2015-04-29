@@ -1,7 +1,10 @@
+require "google_utils"
 class UsersController < ApplicationController
 
   def create
     user = User.new(user_parameters)
+    user.google_url = GoogleUtils.new_spreadsheet_for(user.name)
+
     if user.save
       render json: user
     else
