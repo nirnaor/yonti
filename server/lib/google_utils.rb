@@ -36,9 +36,22 @@ module GoogleUtils
 
     # The connection that I have to the user itself 
     # is the human_url that is saved for each user
-    sheets_json = yonti_folder.files.map { |file|
+    res = {}
+    yonti_folder.files.each do |file|
       rows = file.worksheets.first.rows
-      { file.human_url => file.rows }
-    }
+      res [ file.human_url ] = rows
+    end
+    res
+  end
+
+  def self.users_data
+    google_data = self.read_all_sheets
+    all_data = {}
+    User.all.each do |user|
+      user_data = google_data[user.google_url]
+      all_data[user.name] = user_data 
+    end
+
+    all_data
   end
 end

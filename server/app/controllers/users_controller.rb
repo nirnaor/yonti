@@ -12,6 +12,11 @@ class UsersController < ApplicationController
     end
   end
 
+  def data
+    all_data = GoogleUtils.users_data
+    render json: all_data
+  end
+
   def user_parameters
     params.require(:user).permit(:name, :password, :password_confimation)
   end

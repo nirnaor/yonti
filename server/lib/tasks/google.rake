@@ -12,4 +12,8 @@ namespace :google do
   task read_all_sheets: :environment do
     GoogleUtils.read_all_sheets
   end
+
+  task read_users_data: :environment do
+    puts GoogleUtils.users_data
+  end
 end
