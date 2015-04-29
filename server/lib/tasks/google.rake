@@ -8,4 +8,8 @@ namespace :google do
     # Simulating a unique username
     GoogleUtils.new_spreadsheet_for SecureRandom.uuid
   end
+
+  task read_all_sheets: :environment do
+    GoogleUtils.read_all_sheets
+  end
 end
