@@ -13,8 +13,7 @@ class UsersController < ApplicationController
   end
 
   def data
-    all_data = GoogleUtils.users_data
-    render json: all_data
+    render json: GoogleUtils.users_data
   end
 
   def user_parameters
