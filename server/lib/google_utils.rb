@@ -44,19 +44,23 @@ module GoogleUtils
     res
   end
 
+  def self.latest_users_data
+    google_data = self.read_all_sheets
+    all_data = {}
+    User.all.each do |user|
+      user_data = google_data[user.google_url]
+
+      # Filter out rows with empty cells
+      clean_user_data = user_data.reject { |row| row.include? "" }
+      all_data[user.name] = clean_user_data 
+    end
+
+    all_data
+  end
+
   def self.users_data
     data = Rails.cache.fetch("users_data") do 
-      google_data = self.read_all_sheets
-      all_data = {}
-      User.all.each do |user|
-        user_data = google_data[user.google_url]
-
-        # Filter out rows with empty cells
-        clean_user_data = user_data.reject { |row| row.include? "" }
-        all_data[user.name] = clean_user_data 
-      end
-
-      all_data
+      self.latest_users_data
     end
     data
   end

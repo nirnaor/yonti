@@ -13,7 +13,7 @@ namespace :google do
     GoogleUtils.read_all_sheets
   end
 
-  task read_users_data: :environment do
-    puts GoogleUtils.users_data
+  task update_latest_users_data: :environment do
+    Rails.cache.write("users_data", GoogleUtils.latest_users_data)
   end
 end
