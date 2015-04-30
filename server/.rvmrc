@@ -1,0 +1,2 @@
+rvm use --create 2.2.0
+rvm_trust_rvmrcs_flag=1
