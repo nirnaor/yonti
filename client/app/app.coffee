@@ -25,10 +25,6 @@ window.app = new Marionette.Application()
 app.user_logged_in = -> false
 
 app.on("before:start", (options)->
-  # Start app based on phrases
-  @phrases = new Question.Collection()
-  _(options.data).forEach (el)=>
-    @phrases.add(new Backbone.Model(el))
 
   # Add theme css based on OS (Only android or ios)
   theme = Utils.os()
@@ -39,13 +35,13 @@ app.on("before:start", (options)->
 )
 
 app.on("start", (options)->
-  # phrases_view = new QuizView.QuizView(
-  #   category: "sport"
-  #   collection: @phrases
-  #   el: $("body")
-  # ).render()
+
+  data = options.data
+  models = _(data).map (el)=> new Backbone.Model(el)
+  collection = new Question.Collection(models)
+
   phrases_view = new ManagerView(
-    collection: @phrases
+    collection: collection
     el: $("body")
     data_manager: options.data_manager
   ).render()
