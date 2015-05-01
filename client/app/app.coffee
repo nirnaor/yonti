@@ -5,6 +5,7 @@ Backbone = require "backbone"
 Backbone.$ = $
 Marionette = require "backbone.marionette"
 QuizView = require "./quiz/quiz"
+Users = require "./users/module"
 ManagerView = require("./manager/manager").View
 Question = require "./quiz/question"
 
@@ -22,7 +23,7 @@ Utils = require "./lib/utils"
 
 window.app = new Marionette.Application()
 
-app.user_logged_in = -> false
+app.user_logged_in = -> Users.is_logged_in()
 
 app.on("before:start", (options)->
 

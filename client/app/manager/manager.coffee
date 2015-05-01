@@ -5,7 +5,7 @@ QuizView = require("../quiz/quiz").QuizView
 SettingsView = require("../settings/list").View
 LocalStorage = require "../lib/local_storage"
 
-SignUpLoginView = require("../users/module")
+SignUpLoginView = require("../users/module").SignUpLoginView
 
 
 TestKindPickerView = require "./test_kind_picker"
@@ -43,7 +43,12 @@ ManagerView = Marionette.LayoutView.extend
       instant = true
     instant
 
-  onRender: -> @show_categories()
+  onRender: -> 
+    if app.user_logged_in() is true
+      @show_test_kind_picker()
+    else
+      @show_categories()
+
   # onRender: -> @show_quiz("medicine 2")
   # onRender: -> @show_settings()
 

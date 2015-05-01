@@ -135,4 +135,6 @@ SignUpLoginView = BaseLayout.extend
     @content.show(new LoginView)
 
 
-module.exports = SignUpLoginView
+module.exports =
+  SignUpLoginView: SignUpLoginView
+  is_logged_in: is_logged_in
