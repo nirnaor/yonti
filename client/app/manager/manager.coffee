@@ -8,7 +8,7 @@ LocalStorage = require "../lib/local_storage"
 SignUpLoginView = require("../users/module").SignUpLoginView
 
 
-TestKindPickerView = require "./test_kind_picker"
+HomeView = require "./home"
 
 ManagerView = Marionette.LayoutView.extend
   template: "manager_layout"
@@ -78,7 +78,7 @@ ManagerView = Marionette.LayoutView.extend
     @settings.$el.show()
     @quiz.$el.hide()
     @categories.$el.hide()
-    @tests_kinds.show(new TestKindPickerView())
+    @tests_kinds.show(new HomeView())
 
   show_sign_up: ->
     @settings.$el.show()

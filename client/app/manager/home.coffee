@@ -2,7 +2,7 @@ BaseLayout = require("../base/layout").BaseLayout
 BaseList = require "../base/base_list"
 
 
-TestKindsListView = BaseList.ListView.extend
+HomeListView = BaseList.ListView.extend
   onRender: ->
     community_tests = new BaseList.ListItemView(text: "Community tests")
     community_tests.on "item_clicked", => @triggerMethod "community_clicked"
@@ -12,14 +12,14 @@ TestKindsListView = BaseList.ListView.extend
     for view in [ community_tests, my_tests ]
       @$el.append(view.render().el)
 
-TestKindPickerView = BaseLayout.extend
+HomePickerView = BaseLayout.extend
   childEvents:
     community_clicked: -> @triggerMethod "community_clicked"
     my_tests_clicked: -> @triggerMethod "my_tests_clicked"
   onRender: ->
     BaseLayout.prototype.onRender.apply(@,arguments)
     @set_header "Choose type of test"
-    @content.show(new TestKindsListView())
+    @content.show(new HomeListView())
 
 
-module.exports = TestKindPickerView
+module.exports = HomePickerView
