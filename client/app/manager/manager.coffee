@@ -53,16 +53,7 @@ ManagerView = Marionette.LayoutView.extend
       console.log "users clicked"
       @show_users()
     "community_clicked": (childView, msg)->
-
-      all_categories = _(@data).map (user_categories, user_name, list)->
-        Category.collection_from_raw(user_categories)
-
-      # Concat all collections to one collection
-      result_categories = new Backbone.Collection()
-      for categories in all_categories
-        result_categories.add(categories.models)
-
-      @show_categories(result_categories)
+      @show_all_tests()
 
     "my_tests_clicked": (childView, msg)->
       console.log "my tests clicked"
@@ -79,6 +70,17 @@ ManagerView = Marionette.LayoutView.extend
       console.log "will show settings"
       @show_settings()
 
+  show_all_tests: ->
+    all_categories = _(@data).map (user_categories, user_name, list)->
+      Category.collection_from_raw(user_categories)
+
+    # Concat all collections to one collection
+    result_categories = new Backbone.Collection()
+    for categories in all_categories
+      result_categories.add(categories.models)
+
+    @show_categories(result_categories)
+
   show_single_user_tests: (user)->
     raw_categories = @data[user]
     categories = Category.collection_from_raw(raw_categories)
@@ -94,7 +96,7 @@ ManagerView = Marionette.LayoutView.extend
     if app.user_logged_in() is true
       @show_test_kind_picker()
     else
-      @show_categories()
+      @show_all_tests()
 
   # onRender: -> @show_quiz("medicine 2")
   # onRender: -> @show_settings()
