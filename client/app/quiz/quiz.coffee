@@ -51,9 +51,7 @@ QuizView = Marionette.LayoutView.extend
   template: "layout"
   regions:
     header: ".bar.bar-nav"
-    questions: "div.questions"
-    answers: "div.answers"
-    results: "div.results"
+    content: ".content"
     tabs: "nav.bar.bar-footer"
   childEvents:
     "show_menu_clicked": (childView, msg)->
@@ -124,13 +122,10 @@ QuizView = Marionette.LayoutView.extend
       @show_results_header()
     else
       @showChildView("header", new HeaderView(mode: "questions"))
-    @hide_region "answers"
-    @hide_region "results"
-    @show_region "questions"
     questions_view = new Question.Views.QuestionsCollectionView(
       collection: @questions, instant: @options.instant)
      
-    @showChildView("questions", questions_view)
+    @showChildView("content", questions_view)
     
     @slide.to(0)
   show_answers: (name)->
@@ -139,16 +134,12 @@ QuizView = Marionette.LayoutView.extend
       question: @selected_question.get("question")
     )
     @showChildView("header", header_view)
-    @hide_region "questions"
-    @show_region "answers"
-    @showChildView("answers", new Answer.Views.AnswersCollectionView(collection:
+    @showChildView("content", new Answer.Views.AnswersCollectionView(collection:
       @answers))
     @slide.to(1)
   show_results: ->
     result_view = new Result.TestResultView(collection: @questions)
-    @hide_region "questions"
-    @hide_region "answers"
-    @showChildView("results", result_view)
+    @showChildView("content", result_view)
     @show_region "results"
     @slide.to(2)
     @show_results_header()
