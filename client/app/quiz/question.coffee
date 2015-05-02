@@ -18,6 +18,7 @@ Question = Backbone.Model.extend
         return "mistake"
 
 QuestionCollection = Backbone.Collection.extend
+  model: Question
   initialize: (modles, options)->
     console.log "QuestionCollection initialize"
     @on("change:guess", (changed_question)->

@@ -57,7 +57,7 @@ QuizView = Marionette.LayoutView.extend
     tabs: "nav.bar.bar-footer"
   childEvents:
     "show_menu_clicked": (childView, msg)->
-      @triggerMethod "show_categories_clicked"
+      @triggerMethod "show_home_clicked"
     "show_settings_clicked": (childView, msg)->
       @triggerMethod "show_settings_clicked"
     "finish_clicked": (childView, msg)->
@@ -99,16 +99,15 @@ QuizView = Marionette.LayoutView.extend
     # Questions realted boilerplate
     @questions = new Question.Collection()
     @answers = new Answer.Collection()
-    @options.collection.forEach (phrase)=>
-      return if phrase.get("category") isnt @options.category
+    questions = @options.category.get("questions")
+    questions.forEach (phrase)=>
       question = new Question.Model({
-        question: phrase.get("phrase")
-        correct_answer: phrase.get("meaning")
-        category: phrase.get("category")
+        question: phrase.get("question")
+        correct_answer: phrase.get("answer")
       })
       @questions.add question
 
-      answer = new Answer.Model({answer: phrase.get("meaning")})
+      answer = new Answer.Model({answer: phrase.get("answer")})
       @answers.add answer
 
     @questions.on("change:guess", (changed_question)=>

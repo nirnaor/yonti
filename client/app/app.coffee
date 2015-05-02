@@ -24,6 +24,7 @@ Utils = require "./lib/utils"
 window.app = new Marionette.Application()
 
 app.user_logged_in = -> Users.is_logged_in()
+app.current_user = -> Users.current_user()
 
 app.on("before:start", (options)->
 
@@ -42,7 +43,7 @@ app.on("start", (options)->
   collection = new Question.Collection(models)
 
   phrases_view = new ManagerView(
-    collection: collection
+    data: options.data
     el: $("body")
     data_manager: options.data_manager
   ).render()

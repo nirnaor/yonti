@@ -89,7 +89,23 @@ LoginView = Marionette.ItemView.extend
     login_user user_attributes
     @triggerMethod "login_success"
 
+UsersList = BaseList.ListView.extend
+  onRender: ->
+    for user in @options.users
+      user_view = new BaseList.ListItemView(text: user)
+      user_view.on "item_clicked", =>
+        @triggerMethod "single_user_clicked", user: user
+      @$el.append(user_view.render().el)
 
+
+UsersListView = BaseLayout.extend
+  childEvents:
+    single_user_clicked: (childView, msg)->
+      console.log "YO!"
+      @triggerMethod "single_user_clicked", msg
+  onRender: ->
+    @content.show(new UsersList(users: @options.users))
+    @set_header "Pick a user to see his tests"
 
 SignUpLoginListView = BaseList.ListView.extend
   onRender: ->
@@ -117,9 +133,15 @@ SignUpLoginView = BaseLayout.extend
   childEvents:
     signup_clicked: "sign_up"
     login_clicked: "login"
-    signed_up_success: "onRender"
-    login_success: "onRender"
+    signed_up_success: "on_login_success"
+    login_success: "on_login_success"
     logout_success: "onRender"
+
+  on_login_success: ->
+    @onRender()
+    console.log "Noticed successful login"
+    @triggerMethod "login_success"
+
   onRender: ->
     console.log "User signed in: #{is_logged_in()}"
     BaseLayout.prototype.onRender.apply(@,arguments)
@@ -137,4 +159,6 @@ SignUpLoginView = BaseLayout.extend
 
 module.exports =
   SignUpLoginView: SignUpLoginView
+  UsersListView: UsersListView
   is_logged_in: is_logged_in
+  current_user: current_user

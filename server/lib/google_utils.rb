@@ -52,7 +52,23 @@ module GoogleUtils
 
       # Filter out rows with empty cells
       clean_user_data = user_data.reject { |row| row.include? "" }
-      all_data[user.name] = clean_user_data 
+
+      # Build categories hash: 
+      # { :politics => [], :sport => [] ... }
+      user_categories = clean_user_data.map { |phrase| phrase[2] }
+      user_categories_hash = Hash[user_categories.map {|v| [v,[]]}]
+
+      # Place only question and answer for each phrase. Place
+      user_data.map { |phrase| 
+
+        # Each phrase is in the format of
+        # [ Obama, USA, Politics]
+        # [ Merkel, Germany, Politics]
+
+        phrase_dict = {question: phrase[0], answer: phrase[1] }
+        user_categories_hash[phrase[2]] << phrase_dict
+      }
+      all_data[user.name] = user_categories_hash 
     end
 
     all_data
