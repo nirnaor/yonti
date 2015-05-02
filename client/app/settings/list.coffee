@@ -37,11 +37,23 @@ SettingsListView = BaseList.ListView.extend
   onRender: ->
     console.log "WT"
     @$el.append(new InstantView(instant: @options.instant).render().el)
+
     edit_phrases = new BaseList.ListItemView(text: "Edit phrases")
     edit_phrases.on "item_clicked", => @triggerMethod "edit_phrases"
     @$el.append(edit_phrases.render().el)
 
+    user_management = new BaseList.ListItemView(text: "Login/Logout/Signup")
+    user_management.on "item_clicked", => 
+      @triggerMethod "login_logout_clicked"
+
+    @$el.append(user_management.render().el)
+
+
+
 SettingsView = BaseLayout.extend
+  childEvents:
+    login_logout_clicked: (childView, msg)->
+      @triggerMethod "login_logout_clicked"
   show_google_phrases: ->
     url = app.current_user().get("google_url")
     model = new Backbone.Model(url: url)

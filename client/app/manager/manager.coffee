@@ -33,6 +33,9 @@ ManagerView = Marionette.LayoutView.extend
     # "blat": ".blat"
 
   childEvents:
+    login_logout_clicked: (childView, msg)->
+      console.log "login logout clicked"
+      @show_sign_up()
     login_success: (childView, msg)->
       console.log "login success"
       @show_edit_tests()
