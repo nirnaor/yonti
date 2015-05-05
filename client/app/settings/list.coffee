@@ -17,6 +17,14 @@ GooglePhrasesView = Marionette.ItemView.extend
     href = "mailto:?subject=#{subject}&&body=#{body}"
     @ui.mail.attr("href", href)
 
+GoogleLayoutView = BaseLayout.extend
+  onRender: ->
+    BaseLayout.prototype.onRender.apply(@,arguments)
+    @set_header "blat"
+    @content.show(new GooglePhrasesView(model: @options.model))
+
+  
+
 
   
 
@@ -80,4 +88,4 @@ SettingsView = BaseLayout.extend
 
 module.exports =
   View: SettingsView
-  GooglePhrasesView: GooglePhrasesView
+  GoogleLayoutView: GoogleLayoutView

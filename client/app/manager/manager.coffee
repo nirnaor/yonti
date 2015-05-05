@@ -9,7 +9,7 @@ QuizView = require("../quiz/quiz").QuizView
 Question = require("../quiz/question")
 Category = require("../categories/category")
 SettingsView = require("../settings/list").View
-GooglePhrasesView = require("../settings/list").GooglePhrasesView
+GoogleView = require("../settings/list").GoogleLayoutView
 Users = require("../users/module")
 LocalStorage = require "../lib/local_storage"
 
@@ -140,7 +140,7 @@ ManagerView = Marionette.LayoutView.extend
   show_edit_tests: ->
     google_url = app.current_user().get("google_url")
     model = new Backbone.Model(url: google_url)
-    @main.show(new GooglePhrasesView(model: model))
+    @main.show(new GoogleView(model: model))
 
 module.exports =
   View: ManagerView
