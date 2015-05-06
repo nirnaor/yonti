@@ -26,10 +26,45 @@ CategoryView = BaseLayout.extend
       @triggerMethod("category_picked",    category: childView.model)
     
   on_back_clicked: -> @triggerMethod "category_back_clicked"
+
+  # Each user has automatically 3 sample tests. 
+  # This method is to make sure that just these tests don't appear
+  # more than once
+  _remove_duplicate_sample_tests: (collection)->
+
+    # Get only the categories that contain the "Yonti example" string
+    all_sample_tests = collection.filter (category) ->
+      category.get("name").indexOf(" Yonti example") > -1
+
+    sample_names = all_sample_tests.map (category) -> category.get("name")
+
+
+    # Create a new collection and add the smaple tests only once
+    result_collection = new Backbone.Collection()
+
+    # This dict is used to add keys of the result names. If a key will exist
+    # it means that the sample test was already added
+    sample_keys_dict = {}
+
+    collection.forEach (category)->
+      name = category.get("name")
+      if _(sample_names).contains name
+        if typeof(sample_keys_dict[name]) is "undefined"
+          # Mark the name as taken and add it to the collection
+          sample_keys_dict[name] = 1
+          result_collection.add category
+      else
+        # If it's not a sample test it should be added anyway
+        result_collection.add category
+
+    result_collection
+
+
   onRender: ->
     BaseLayout.prototype.onRender.apply(@,arguments)
     @set_header "What do you want to learn?"
-    @content.show(new CategoryListView(collection: @options.collection))
+    unique_sample_tests = @_remove_duplicate_sample_tests(@options.collection)
+    @content.show(new CategoryListView(collection: unique_sample_tests))
 
 collection_from_raw = (raw_categories)->
   categories = new Backbone.Collection()
