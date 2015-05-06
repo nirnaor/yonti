@@ -116,7 +116,6 @@ QuizView = Marionette.LayoutView.extend
 
 
   hide_region: (name)->  @getRegion(name).$el.hide()
-  show_region: (name)->  @getRegion(name).$el.show()
   show_questions: ->
     if @options.instant
       @show_results_header()
@@ -140,7 +139,6 @@ QuizView = Marionette.LayoutView.extend
   show_results: ->
     result_view = new Result.TestResultView(collection: @questions)
     @showChildView("content", result_view)
-    @show_region "results"
     @slide.to(2)
     @show_results_header()
   show_results_header: ->
