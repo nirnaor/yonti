@@ -4,7 +4,6 @@ Marionette = require "backbone.marionette"
 
 Category = require("../categories/category")
 CategoryView = require("../categories/category").View
-Categories = require("../categories/category").Collection
 QuizView = require("../quiz/quiz").QuizView
 Question = require("../quiz/question")
 Category = require("../categories/category")

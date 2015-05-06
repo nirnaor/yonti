@@ -46,6 +46,5 @@ collection_from_raw = (raw_categories)->
  module.exports =
    View: CategoryView
    Model: Category
-   Collection: Category
    collection_from_raw: collection_from_raw
   
