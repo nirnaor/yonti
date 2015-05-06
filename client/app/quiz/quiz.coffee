@@ -8,6 +8,7 @@ Slide = require "../lib/slide"
 Question = require "./question"
 TabsView = Question.TabsView
 Result = require "./result"
+BaseLayout = require("../base/layout").BaseLayout
 
 
 TabsView = Marionette.ItemView.extend
@@ -27,27 +28,9 @@ TabsView = Marionette.ItemView.extend
   on_show_menu_clicked: ->
     @triggerMethod "show_menu_clicked"
 
-HeaderView = Marionette.ItemView.extend
-  template: "header"
-  className: "header"
-  ui:
-    "title": ".title"
-  onRender: ->
-    header = {
-      questions: "Pick a phrase"
-      answers: @options.question
-      results: "Grade: #{@options.grade}"
-    }[@options.mode]
-    @ui.title.html(header)
 
 
-
-
-
-
-
-
-QuizView = Marionette.LayoutView.extend
+QuizView = BaseLayout.extend
   template: "layout"
   regions:
     header: ".bar.bar-nav"
@@ -120,7 +103,7 @@ QuizView = Marionette.LayoutView.extend
     if @options.instant
       @show_results_header()
     else
-      @showChildView("header", new HeaderView(mode: "questions"))
+      @set_header "Pick a phrase"
     questions_view = new Question.Views.QuestionsCollectionView(
       collection: @questions, instant: @options.instant)
      
@@ -128,11 +111,7 @@ QuizView = Marionette.LayoutView.extend
     
     @slide.to(0)
   show_answers: (name)->
-    header_view = new HeaderView(
-      mode: "answers",
-      question: @selected_question.get("question")
-    )
-    @showChildView("header", header_view)
+    @set_header @selected_question.get("question")
     @showChildView("content", new Answer.Views.AnswersCollectionView(collection:
       @answers))
     @slide.to(1)
@@ -142,8 +121,7 @@ QuizView = Marionette.LayoutView.extend
     @slide.to(2)
     @show_results_header()
   show_results_header: ->
-    @showChildView("header", new HeaderView(
-      mode: "results", grade: @questions.summary().grade))
+    @set_header "grade: #{@questions.summary().grade}" 
 
 
   onRender: ->

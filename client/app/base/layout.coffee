@@ -6,7 +6,7 @@ Gestures = require "./../lib/gestures"
 BaseLayout = Marionette.LayoutView.extend
   template: "base_layout"
   regions:
-    header: ".bar.bar-nav"
+    header: ".bar.bar-nav h1"
     content: ".content"
   ui:
     header: "h1.title"
