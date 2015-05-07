@@ -90,9 +90,9 @@ SettingsView = BaseLayout.extend
       @show_settings()
 
   show_sign_up: ->
-    @header.$el.hide()
-    @content.$el.hide()
-    @bla.$el.hide()
+    # @header.$el.hide()
+    # @content.$el.hide()
+    # @bla.$el.hide()
     @settings.show(new SignUpLoginLayout)
 
   on_show_settings_clicked: ->

@@ -98,7 +98,6 @@ QuizView = BaseLayout.extend
        
 
 
-  hide_region: (name)->  @getRegion(name).$el.hide()
   show_questions: ->
     if @options.instant
       @show_results_header()

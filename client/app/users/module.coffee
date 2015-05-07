@@ -189,19 +189,22 @@ SignUpLoginLayout = BaseLayout.extend
     login_clicked: "login"
     signed_up_success: "on_login_success"
     login_success: "on_login_success"
-    logout_success: "onRender"
+    logout_success: "on_login_success"
   back_clicked_no_previous: ->
     console.log "SignUpLoginView back clicked no previous"
     @triggerMethod "back_no_previous"
 
   on_login_success: ->
-    @onRender()
-    console.log "Noticed successful login"
-    @triggerMethod "login_success"
+    # Going back to home after a successful login
+    app.vent.trigger "no_back_implemented"
+    # @onRender()
+    # console.log "Noticed successful login"
+    # @triggerMethod "login_success"
 
   onRender: ->
     console.log "User signed in: #{is_logged_in()}"
     BaseLayout.prototype.onRender.apply(@,arguments)
+    @set_header "Sign in to add your own tests"
     @fill_content(view:SignUpLoginListView)
     # @login()
 

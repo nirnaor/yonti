@@ -43,6 +43,12 @@ BaseLayout = Marionette.LayoutView.extend
     console.log "needs implementing on parent"
     app.vent.trigger("no_back_implemented")
 
+  hide_all_regions: ->
+    console.log "Hiding all regions"
+    for region_name, region of @getRegions()
+      console.log "Hiding region #{region_name}"
+      region.$el.hide()
+
 
 
 

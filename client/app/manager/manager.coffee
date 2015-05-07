@@ -22,12 +22,11 @@ ManagerView = BaseLayout.extend
     @data = options.data
     app.vent.on "no_back_implemented", =>
       console.log "Manager: No back is implemented so I must show myself"
-      @bla.$el.hide()
-      @settings.$el.hide()
+      @hide_all_regions()
       @header.$el.show()
       @content.$el.show()
-      @show_test_kind_picker()
-      # @onRender()
+      # @show_test_kind_picker()
+      @onRender()
 
   # regions:
   #   content: ".content"
@@ -129,7 +128,6 @@ ManagerView = BaseLayout.extend
     console.log "this is manager"
 
   show_quiz: (category)->
-    # @content.$el.hide()
     # @set_header "quiz view man"
     questions = category.get("questions")
 
@@ -146,14 +144,12 @@ ManagerView = BaseLayout.extend
     # When showing the quiz I can't switch the content because
     # it has a bar-footer class that cannot be nested under the content
 
-    @header.$el.hide()
-    @content.$el.hide()
+    @hide_all_regions()
     @bla.show(quiz_view)
 
   show_settings:(show_login_on_render=false) ->
-    @content.$el.hide()
-    @bla.$el.hide()
-    @header.$el.hide()
+    @hide_all_regions()
+    @settings.$el.show()
     console.log "ManagerView show_settings"
     args = options: @options, instant: @is_instant(),
     show_login_on_render: show_login_on_render
@@ -164,6 +160,7 @@ ManagerView = BaseLayout.extend
     @settings.show(new SettingsView(args))
 
   show_test_kind_picker: ->
+    @set_header "Home"
     @fill_content(view:HomeView)
 
 
