@@ -3,27 +3,35 @@ _ = require "underscore"
 Marionette = require "backbone.marionette"
 
 Category = require("../categories/category")
-CategoryView = require("../categories/category").View
+CategoryView = require("../categories/category").ListView
 QuizView = require("../quiz/quiz").QuizView
 Question = require("../quiz/question")
 Category = require("../categories/category")
-SettingsView = require("../settings/list").View
-GoogleView = require("../settings/list").GoogleLayoutView
+SettingsView = require("../settings/list").SettingsView
+GoogleView = require("../settings/list").GooglePhrasesView
 Users = require("../users/module")
+BaseLayout = require("../base/layout").BaseLayout
 LocalStorage = require "../lib/local_storage"
 
-SignUpLoginView = require("../users/module").SignUpLoginView
 
 
 HomeView = require "./home"
 
-ManagerView = Marionette.LayoutView.extend
+ManagerView = BaseLayout.extend
   initialize: (options)->
     @data = options.data
-  template: "manager_layout"
+    app.vent.on "no_back_implemented", =>
+      console.log "Manager: No back is implemented so I must show myself"
+      @bla.$el.hide()
+      @settings.$el.hide()
+      @header.$el.show()
+      @content.$el.show()
+      @show_test_kind_picker()
+      # @onRender()
 
-  regions:
-    main: ".main"
+  # regions:
+  #   content: ".content"
+  #   bla: ".bla"
     # "tests_kinds": ".tests_kinds"
     # "categories": ".categories"
     # "quiz": ".quiz"
@@ -32,9 +40,12 @@ ManagerView = Marionette.LayoutView.extend
     # "blat": ".blat"
 
   childEvents:
-    login_logout_clicked: (childView, msg)->
-      console.log "login logout clicked"
-      @show_sign_up()
+    show_config_view: (childView, msg)->
+      console.log "Manager:show config view"
+      @fill_content msg
+    back_no_previous: -> 
+      console.log "Manager: Back no previous"
+      @onRender()
     login_success: (childView, msg)->
       console.log "login success"
       @show_edit_tests()
@@ -44,13 +55,8 @@ ManagerView = Marionette.LayoutView.extend
         @show_edit_tests()
       else
         @show_sign_up()
-    single_user_clicked: (childView, msg)->
-      user = msg.user
-      console.log "single user clicked: #{user}"
-      @show_single_user_tests(user)
-
-    "category_back_clicked": ->
-      @show_test_kind_picker()
+    # "category_back_clicked": ->
+    #   @show_test_kind_picker()
     "users_clicked": ->
       console.log "users clicked"
       @show_users()
@@ -62,11 +68,14 @@ ManagerView = Marionette.LayoutView.extend
       if app.user_logged_in()
         user = app.current_user().get("name")
         @show_single_user_tests user
+      else
+        @show_sign_up()
 
     "category_picked": (childView, msg)->
       console.log "category #{msg.category} picked"
       @show_quiz(msg.category)
     "show_home_clicked": (childView, msg)->
+      console.log "need to show home"
       @show_test_kind_picker()
     "show_settings_clicked": (childView, msg)->
       console.log "will show settings"
@@ -83,10 +92,12 @@ ManagerView = Marionette.LayoutView.extend
 
     @show_categories(result_categories)
 
-  show_single_user_tests: (user)->
-    raw_categories = @data[user]
-    categories = Category.collection_from_raw(raw_categories)
-    @show_categories(categories)
+  back_clicked_no_previous: ->
+    console.log "ManagerView back_clicked_no_previous"
+    @show_test_kind_picker()
+
+  show_sign_up: ->
+    @show_settings(true)
 
   is_instant: ->
     instant = LocalStorage.get("instant_mode")
@@ -95,6 +106,7 @@ ManagerView = Marionette.LayoutView.extend
     instant
 
   onRender: -> 
+    BaseLayout.prototype.onRender.apply(@,arguments)
     if app.user_logged_in() is true
       @show_test_kind_picker()
     else
@@ -103,43 +115,76 @@ ManagerView = Marionette.LayoutView.extend
   # onRender: -> @show_quiz("medicine 2")
   # onRender: -> @show_settings()
 
-  _hide_all: ->
-    for region_name, region of @getRegions()
-      unless region.$el? 
-       resion.$el.hide()
+
+  show_single_user_tests: (user)->
+    raw_categories = @data[user]
+    categories = Category.collection_from_raw(raw_categories)
+    @show_categories(categories)
 
   show_categories: (categories_collection) ->
-    @_hide_all()
-
-    cat = new CategoryView(collection: categories_collection)
+    console.log "ManagerView show categories"
     # @categories.show(cat)
-    @main.show cat
+    @set_header "What do you want to learn"
+    @fill_content(view: CategoryView, args: {collection: categories_collection})
     console.log "this is manager"
 
   show_quiz: (category)->
-    @_hide_all()
+    # @content.$el.hide()
+    # @set_header "quiz view man"
     questions = category.get("questions")
-    quiz_view = new QuizView(collection: questions, category: category, instant: @is_instant())
 
-    @main.show(quiz_view)
+    args = collection: questions, category: category, instant: @is_instant()
+    # config =
+    #   view:QuizView
+    #   args: args
+        
 
-  show_settings: ->
-    @main.show(new SettingsView(options: @options, instant: @is_instant()))
+    # # @fill_content(config)
+    quiz_view = new QuizView(args)
+    # # @bla.show(quiz_view)
+
+    # When showing the quiz I can't switch the content because
+    # it has a bar-footer class that cannot be nested under the content
+
+    @header.$el.hide()
+    @content.$el.hide()
+    @bla.show(quiz_view)
+
+  show_settings:(show_login_on_render=false) ->
+    @content.$el.hide()
+    @bla.$el.hide()
+    @header.$el.hide()
+    console.log "ManagerView show_settings"
+    args = options: @options, instant: @is_instant(),
+    show_login_on_render: show_login_on_render
+    view_config =
+      view: SettingsView
+      args: args
+
+    @settings.show(new SettingsView(args))
 
   show_test_kind_picker: ->
-    @main.show(new HomeView())
+    @fill_content(view:HomeView)
 
-  show_sign_up: ->
-    @main.show(new SignUpLoginView())
 
   show_users: ->
-    users = _(@data).keys()
-    @main.show(new Users.UsersListView(users: users))
+    # users = _(@data).keys()
+    data = @data
+    config =
+      view: Users.UsersList
+      args:
+        data: data
+    @fill_content(config)
 
   show_edit_tests: ->
     google_url = app.current_user().get("google_url")
     model = new Backbone.Model(url: google_url)
-    @main.show(new GoogleView(model: model))
+    view_config = 
+      view: GoogleView
+      args:
+        model: model
+
+    @fill_content(view_config)
 
 module.exports =
   View: ManagerView

@@ -16,6 +16,10 @@ CategoryItem = BaseList.ListItemView.extend
 CategoryListView = BaseList.ListView.extend
   childView: CategoryItem
   template: false
+  childEvents:
+    item_clicked: (childView, msg)->
+      console.log "CategoryListView: item clicked"
+      @triggerMethod "category_picked", category: childView.model
 
 
 
@@ -25,7 +29,6 @@ CategoryView = BaseLayout.extend
       console.log "category clicked"
       @triggerMethod("category_picked",    category: childView.model)
     
-  on_back_clicked: -> @triggerMethod "category_back_clicked"
 
   # Each user has automatically 3 sample tests. 
   # This method is to make sure that just these tests don't appear
@@ -80,6 +83,7 @@ collection_from_raw = (raw_categories)->
   
  module.exports =
    View: CategoryView
+   ListView: CategoryListView
    Model: Category
    collection_from_raw: collection_from_raw
   

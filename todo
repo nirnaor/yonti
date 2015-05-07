@@ -1,0 +1,31 @@
+Features
+-----------------
+1. Clicking tests --> pick test --> home --> users -- > nir --> pick test
+  has a bug (probably because the regions hiding)
+2. After sign up or login I must move the user to home
+1.Handle unique tests of users that are created automaticaly - I
+  'll add 5 tests that will have a name such as Politics- Yonti sample test
+   and will show these ones only once per view
+3. Add a back button to all screens
+4. Consider using a swipe left event to trigger the back clicked
+4. Add transitions between slides
+5. Make the server hold a ready doc for a new user in the cache - to improve
+speed of sign up process.
+
+6. When answering a question - the scroll position should be the one of the 
+7. answer - currently it's the one of the questions which makes the user not 
+understand the answer in instant mode
+8. Strong input validation and try/catch on the client
+9. Use tap instead of click all over the app.
+
+9. Show usernames of the tests owners
+
+Code refactoring
+-------------------
+
+Done
+------------------------------------
+Make sure google view looks good in every workflow
+
+2. Fix header size (it should be taller like whatsapp and FB)
+1. Green icon on correct answer

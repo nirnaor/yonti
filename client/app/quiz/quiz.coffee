@@ -33,12 +33,12 @@ TabsView = Marionette.ItemView.extend
 QuizView = BaseLayout.extend
   template: "layout"
   regions:
-    header: ".bar.bar-nav"
-    content: ".content"
+    quiz_content: ".quiz_content"
     tabs: "nav.bar.bar-footer"
   childEvents:
     "show_menu_clicked": (childView, msg)->
-      @triggerMethod "show_home_clicked"
+      app.vent.trigger "no_back_implemented"
+      # @triggerMethod "show_home_clicked"
     "show_settings_clicked": (childView, msg)->
       @triggerMethod "show_settings_clicked"
     "finish_clicked": (childView, msg)->
@@ -107,17 +107,17 @@ QuizView = BaseLayout.extend
     questions_view = new Question.Views.QuestionsCollectionView(
       collection: @questions, instant: @options.instant)
      
-    @showChildView("content", questions_view)
+    @showChildView("quiz_content", questions_view)
     
     @slide.to(0)
   show_answers: (name)->
     @set_header @selected_question.get("question")
-    @showChildView("content", new Answer.Views.AnswersCollectionView(collection:
+    @showChildView("quiz_content", new Answer.Views.AnswersCollectionView(collection:
       @answers))
     @slide.to(1)
   show_results: ->
     result_view = new Result.TestResultView(collection: @questions)
-    @showChildView("content", result_view)
+    @showChildView("quiz_content", result_view)
     @slide.to(2)
     @show_results_header()
   show_results_header: ->
@@ -125,7 +125,7 @@ QuizView = BaseLayout.extend
 
 
   onRender: ->
-    @slide = new Slide.Slide(".content")
+    @slide = new Slide.Slide(".quiz_content")
     @show_questions()
     @showChildView("tabs", new TabsView())
 module.exports =

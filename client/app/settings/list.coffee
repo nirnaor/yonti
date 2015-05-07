@@ -4,6 +4,7 @@ Marionette = require "backbone.marionette"
 BaseLayout = require("../base/layout").BaseLayout
 BaseList = require "../base/base_list"
 LocalStorage = require "../lib/local_storage"
+SignUpLoginLayout= require("../users/module").SignUpLoginLayout
 
 
 GooglePhrasesView = Marionette.ItemView.extend
@@ -52,6 +53,7 @@ SettingsListView = BaseList.ListView.extend
 
     user_management = new BaseList.ListItemView(text: "Login/Logout/Signup")
     user_management.on "item_clicked", => 
+      console.log "UY"
       @triggerMethod "login_logout_clicked"
 
     @$el.append(user_management.render().el)
@@ -59,33 +61,46 @@ SettingsListView = BaseList.ListView.extend
 
 
 SettingsView = BaseLayout.extend
+  template: "settings_layout"
   childEvents:
     login_logout_clicked: (childView, msg)->
-      @triggerMethod "login_logout_clicked"
+      console.log "login logout clicked"
+      @show_sign_up()
+    back_no_previous: (childView, msg)->
+      @header.$el.show()
+      @content.$el.show()
+      @bla.$el.show()
+      @settings.$el.hide()
+      @onRender()
   show_google_phrases: ->
     url = app.current_user().get("google_url")
     model = new Backbone.Model(url: url)
     @content.show(new GooglePhrasesView(model: model))
     @set_header "Edit phrases"
-    @previous_view = "settings"
   show_settings: ->
-    settings_list = new SettingsListView(instant: @options.instant)
-    settings_list.on "edit_phrases", => @show_google_phrases()
-    @content.show(settings_list)
+    settings_list = new SettingsListView()
+    @fill_content(view:SettingsListView, args: {instant: @options.instant})
     @set_header "Settings"
-    @previous_view = undefined
   onRender: ->
     BaseLayout.prototype.onRender.apply(@,arguments)
-    @show_settings()
 
-  on_back_clicked: ->
-    if @previous_view is "settings"
-      @show_settings()
+    if @options.show_login_on_render is true
+      @show_sign_up()
     else
-      @triggerMethod "show_categories_clicked"
+      @show_settings()
+
+  show_sign_up: ->
+    @header.$el.hide()
+    @content.$el.hide()
+    @bla.$el.hide()
+    @settings.show(new SignUpLoginLayout)
+
   on_show_settings_clicked: ->
     console.log "will show settings"
 
 module.exports =
   View: SettingsView
+  SettingsListView: SettingsListView
+  SettingsView: SettingsView
   GoogleLayoutView: GoogleLayoutView
+  GooglePhrasesView: GooglePhrasesView
